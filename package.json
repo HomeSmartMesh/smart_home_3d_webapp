@@ -1,0 +1,23 @@
+{
+  "name": "mouse_hover_on_mesh",
+  "version": "1.0.0",
+  "description": "demo for mouse hover",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HomeSmartMesh/web_three_interface.git"
+  },
+  "keywords": [],
+  "author": "wassfila",
+  "license": "MIT",
+  "homepage": "https://www.homesmartmesh.com",
+  "scripts": {
+    "start": "",
+    "build": ""
+  },
+  "dependencies": {
+    "three": "^0.111.0",
+    "three-orbitcontrols": "^2.110.3"
+  },
+  "devDependencies": {}
+}
