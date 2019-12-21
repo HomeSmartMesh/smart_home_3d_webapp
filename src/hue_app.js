@@ -83,7 +83,7 @@ function onMeshMouseDown(event){
     if(event.detail.type == "light"){
         console.log(`hue_app> Mesh Light Mouse Down Event on '${event.detail.name}'`);
         if(event.detail.type == "light"){
-            if(typeof(light_idse) == "undefined"){
+            if(typeof(light_ids) == "undefined"){
                 console.log(`hue not authorised or or has no lights`);
                 return;
             }

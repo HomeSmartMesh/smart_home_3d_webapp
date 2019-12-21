@@ -1,5 +1,12 @@
 # hue lights integration
 
+<table>
+<tr>
+<td>Link to Github .io live demo (see HowTo / Usage)</td>
+<td><a href="https://homesmartmesh.github.io/smart_home_3d_webapp/">smart home 3d webapp</a></td>
+</tr>
+</table>
+<br>
 <img src="./media/demo1.gif" width="600">
 
 We see in this demo a home 3d model augmented with interactive mesh items. Some meshes represent light bulbs and generate events when the user clicks on them. Those events are handled by a hue light client that interacts with the real hue gateway. The hue client publishes as events the actual state of the switched light, and that state is updated by the mesh bulb color and the associated 3d light.
@@ -11,7 +18,7 @@ As a demonstration for the reaction time of the real light switching on and off,
 ## Create your own home model
 
 The created home model should have custom properties. It is also possible to use the existing home model file and edit it as it is a json format : `./3d_models/home.gltf`. It is possible to rename the `hue: ` field with your own hue lights names as known by the hue gateway.
- 
+
 Example below :
 
     "extras" : {
@@ -19,15 +26,35 @@ Example below :
         "type" : "light",
         "hue" : "Bathroom main"
 
+## Usage
+* preffered and recommended way : host this repo on your own local rapsberry pi webserver. A vpn is recommended as a solution to remotely get into your local netwrok. Any sort of port exposing and https secure hosting will require a complete security check and would be run with an unknown risk.
+
+* non preferred way : but can be used for test and demonstration purpose, directly from github.io : https://homesmartmesh.github.io/smart_home_3d_webapp/
+
+Limitation when using from github .io :
+ - Github .io are the exact deployment of this same repo, the master branch is deployed so is not stable and might not run as it did the last time you used it.
+ - Network safety : As the hue.js script is using http, a mixed content http/https error will happen when using from github .io as it is an https server. It is still possible to override this safety.
+
+<a style="color:red">So only if you really have to know what you're doing as this might expose you at risk if done through an untrusted website :</a>
+
+<img src="./media/unsafe1.png" width="300">
+<br>
+<br>
+<img src="./media/unsafe2.png" width="300">
+
+then reload the page
+
 ## First time usage
 
+
+0. if this web
 1. press the Hue Gateway authorisation button
 2. Load or reload the web app page
 3. An alert will apear on the screen to wait in case the authorisation button is not pressed yet
 
 <img src="./media/alert_first_time.png" width="400">
 
-4. The user creation will proceed and the username will be stored as local storage
+4. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
 
 <img src="./media/local_storage.png" width="600">
 
