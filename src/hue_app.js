@@ -23,13 +23,6 @@ function get_lights_state(){
     });
 }
 
-function use_server_bound_user(){
-    $.getJSON("user.json", function(user_data) {
-        user = bridge.user(user_data.username);
-    
-    });
-}
-
 function create_user(bridge_ip){
     let bridge = hue.bridge(bridge_ip);
     //check connection
@@ -40,13 +33,13 @@ function create_user(bridge_ip){
             let username = data[0].success.username;
             console.log('New username:', username);
             localStorage.setItem("username",username);
-            let user = bridge.user(username);
+            user = bridge.user(username);
+            get_lights_state();
         }
         else if(typeof(data[0].error) != "undefined"){
             console.error(data[0].error);
         }
     });
-    return user;
 }
 
 function init(){
@@ -63,23 +56,20 @@ function init(){
             if (localStorage.getItem("username") === null) {
                 alert("First time usage, creating user, make sure the hue gateway button is pressed to authorise");
                 console.log(`using bridge at ip (${bridge_ip})`);
-                console.log(`creation skipped in debug`);
-                user = create_user(bridge_ip);
-                //user = create_server_bound_user(bridge_ip);
+                create_user(bridge_ip);
+                //create_server_bound_user(bridge_ip);
             }
             else{
                 let username = localStorage.getItem("username");
                 console.log(`using username from browser's local storage`);
                 let bridge = hue.bridge(bridge_ip);
                 user = bridge.user(username);
+                get_lights_state();
             }
         }
         else{
             bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
             console.error(`${bridges.length} bridges found - not supported`);
-        }
-        if(typeof(user) !== "undefined"){
-            get_lights_state();
         }
     }).catch(e => console.log('Error finding bridges', e));
             
@@ -88,21 +78,6 @@ function init(){
 
 }
 
-
-//once, manual user creation, call this exported function from main and save the username in user.json
-function create_server_bound_user(bridge_ip){
-    var bridge = hue.bridge(bridge_ip);
-    // create user account (requires link button to be pressed)
-    bridge.createUser('mesh_view#dell').then(data => {
-        // extract bridge-generated username from returned data
-        var username = data[0].success.username;
-
-        console.log('New username:', username);
-        // instantiate user object with username
-        let user = bridge.user(username);
-    });
-    return user;
-}
 
 function onMeshMouseDown(event){
     if(event.detail.type == "light"){

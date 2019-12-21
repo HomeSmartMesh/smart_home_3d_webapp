@@ -8,19 +8,9 @@ As a demonstration for the reaction time of the real light switching on and off,
 
 # How to
 
-1. Caution, this step is not user firendly: There is no automated way yet to retrive the user authorisation. It is first required to create a `./user.json` file with the user authorisation. Modify `main.js` to replace hue init with the create_user function :
+## Create your own home model
 
-    `//hue.init();`
-
-    `hue.create_user();`
-
-After pressing the hue gateway button and loading the page, the use will be logged in the console. It is required to write it in the file `./user.json`
-
-    {
-        "username":"x-xXxXxXxXXXxxxxxxxxxX"
-    }
-
-1. create your own home 3d model, with custom properties or edit the json file `./3d_models/home.gltf` to rename the hue field with theyour own hue lights names as known by the hue gateway.
+The created home model should have custom properties. It is also possible to use the existing home model file and edit it as it is a json format : `./3d_models/home.gltf`. It is possible to rename the `hue: ` field with your own hue lights names as known by the hue gateway.
  
 Example below :
 
@@ -29,10 +19,24 @@ Example below :
         "type" : "light",
         "hue" : "Bathroom main"
 
+## First time usage
+
+1. press the Hue Gateway authorisation button
+2. Load or reload the web app page
+3. An alert will apear on the screen to wait in case the authorisation button is not pressed yet
+
+<img src="./media/alert_first_time.png" width="400">
+
+4. The user creation will proceed and the username will be stored as local storage
+
+<img src="./media/local_storage.png" width="600">
+
+5. The webapp can be now used in sync with the hue Gateway interactions. In case a Gateway sync is not needed, it is possible to click "Ok" on the later and proceed with a non synced app.
+
 
 # Dependencies
 
-* three.js
+* [three.js](https://threejs.org/)
 * [jsHue.js](https://github.com/blargoner/jshue)
 * [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface)
 
