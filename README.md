@@ -8,13 +8,19 @@ As a demonstration for the reaction time of the real light switching on and off,
 
 # How to
 
-1. It is first required to create a user.json file with the user authorisation. If no user authorisation is already available, it is possible to create it by modifying the javascript and manually calling `hue.create_user()` once. This process has not been seemlessly integrated yet.
+1. Caution, this step is not user firendly: There is no automated way yet to retrive the user authorisation. It is first required to create a `./user.json` file with the user authorisation. Modify `main.js` to replace hue init with the create_user function :
+
+    `//hue.init();`
+
+    `hue.create_user();`
+
+After pressing the hue gateway button and loading the page, the use will be logged in the console. It is required to write it in the file `./user.json`
 
     {
         "username":"x-xXxXxXxXXXxxxxxxxxxX"
     }
 
-2. create your own home 3d model, with custom properties or edit the json file `./3d_models/home.gltf` to rename the hue field with theyour own hue lights names as known by the hue gateway.
+1. create your own home 3d model, with custom properties or edit the json file `./3d_models/home.gltf` to rename the hue field with theyour own hue lights names as known by the hue gateway.
  
 Example below :
 
@@ -27,7 +33,7 @@ Example below :
 # Dependencies
 
 * three.js
-* jsHue.js  
+* [jsHue.js](https://github.com/blargoner/jshue)
 * [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface)
 
 ## Features

@@ -1,6 +1,3 @@
 {
-    "glTF_model":"./3d_models/home.gltf",
-    "hue":{
-        "ip":"10.0.0.38"
-    }
+    "glTF_model":"./3d_models/home.gltf"
 }
