@@ -34,8 +34,10 @@ Example below :
 Limitation when using from github .io :
  - Github .io are the exact deployment of this same repo, the master branch is deployed so is not stable and might not run as it did the last time you used it.
  - Network safety : As the hue.js script is using http, a mixed content http/https error will happen when using from github .io as it is an https server. It is still possible to override this safety.
+ - It is not possible to customize your own 3d model
+ - It is not possible to update the name of your hue lights (you could still rename some to match the `./3d_models/home.gltf` content)
 
-<a style="color:red">So only if you really have to know what you're doing as this might expose you at risk if done through an untrusted website :</a>
+<a style="color:red">So proceed with this only if you know what you're doing. This might expose you at risk if done through an untrusted website :</a>
 
 <img src="./media/unsafe1.png" width="300">
 <br>
@@ -75,3 +77,18 @@ then reload the page
 ## web_three_interface
 The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) is not a direct dependency but is used as a boiler plate for 3d interactive meshes. It is still a useful repo that helps understand the workflow step by step with increasingly complex demo, and also debug in case one step is failing.
 
+# Interaction models with glTF custom properties
+The currently provided 3d interaction types are :
+* Light
+* Lightgroup
+* State : Mesh States
+* Animted : glTF Mesh Animation
+* Color : Properties Color Animation
+
+<img src="./media/data_structure.svg">
+
+## Events propagation model and API
+<img src="./media/parameters.svg">
+
+## Mouse events propagation
+<img src="./media/mouse_events.svg">
