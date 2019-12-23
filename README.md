@@ -19,7 +19,9 @@ As a demonstration for the reaction time of the real light switching on and off,
 
 [blender file download from google drive](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing)
 
-Note that files within the [project's google drive folder](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing) will have commit ids to match them with this repo.
+The blender model export in .glTF is already part of this repo. So you would only need the blender file in case you'd like a template to start with and customise.
+
+Files within the [project's google drive folder](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing) will have commit ids to match them with this repo.
 
 # How to
 
