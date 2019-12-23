@@ -2086,6 +2086,11 @@
         },
         {
             "doubleSided" : true,
+            "name" : "Main Bathroom Heater Material",
+            "pbrMetallicRoughness" : {}
+        },
+        {
+            "doubleSided" : true,
             "name" : "Bulb",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
@@ -2707,7 +2712,8 @@
                         "NORMAL" : 134,
                         "TEXCOORD_0" : 135
                     },
-                    "indices" : 129
+                    "indices" : 129,
+                    "material" : 4
                 }
             ]
         },
@@ -2826,7 +2832,7 @@
                         "TEXCOORD_0" : 156
                     },
                     "indices" : 157,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         },
@@ -2917,7 +2923,7 @@
                         "TEXCOORD_0" : 174
                     },
                     "indices" : 175,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         },
@@ -2936,7 +2942,7 @@
                         "TEXCOORD_0" : 178
                     },
                     "indices" : 175,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         },
@@ -2955,7 +2961,7 @@
                         "TEXCOORD_0" : 181
                     },
                     "indices" : 175,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         },
@@ -3188,7 +3194,7 @@
                         "TEXCOORD_0" : 220
                     },
                     "indices" : 157,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         },
@@ -3207,7 +3213,7 @@
                         "TEXCOORD_0" : 223
                     },
                     "indices" : 157,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         },
@@ -3226,7 +3232,7 @@
                         "TEXCOORD_0" : 226
                     },
                     "indices" : 175,
-                    "material" : 4
+                    "material" : 5
                 }
             ]
         }

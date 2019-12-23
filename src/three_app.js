@@ -179,9 +179,13 @@ function onWindowResize() {
 
 function add_ambient_light(){
 
+	var light = new THREE.PointLight( 0xffffff, 10, 100 );
+	light.position.set( 0, 10, 0 );
+	scene.add( light );
+
 	var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-	dirLight.position.set( 1, 4, 0 );
-	dirLight.castShadow = true;
+	dirLight.position.set( 0, 1.5, 0 );
+	dirLight.castShadow = false;
 
 	dirLight.shadow.mapSize.width = 2048;
 	dirLight.shadow.mapSize.height = 2048;
@@ -193,7 +197,7 @@ function add_ambient_light(){
 	dirLight.shadow.camera.far = 7;
 	dirLight.shadow.bias = - 0.01;
 
-	scene.add( dirLight );
+	//scene.add( dirLight );
 }
 
 function get_scene_box(scene){
@@ -338,7 +342,7 @@ function apply_mqtt_map(scene){
 	} );
 }
 
-function apply_shadows(scene){
+function apply_lights_shadows_setup(scene){
 	scene.traverse(obj =>{
 		if(obj.type == "Mesh"){
 			if(obj.userData.type == "wall"){
@@ -349,8 +353,10 @@ function apply_shadows(scene){
 			}
 		}else if(obj.type == "PointLight"){
 			obj.castShadow = true;
+			obj.intensity = 0;
 		}else if(obj.type == "SpotLight"){
 			obj.castShadow = false;
+			obj.intensity = 0;
 		}
 	});
 }
@@ -404,7 +410,7 @@ function load_scene(user_on_load,gltf_filename){
 			apply_param_animations(gltf,scene);
 			apply_custom_view(scene);
 			apply_mqtt_map(scene);
-			apply_shadows(scene);
+			apply_lights_shadows_setup(scene);
 			add_ambient_light();
 			camera = create_camera();
 			renderer = create_renderer();

@@ -1,9 +1,6 @@
 import * as three from "./three_app.js";
 import * as mouse from "./three_mouse.js";
 
-import * as mqtt from './mqtt_app.js';
-
-
 var rooms_light_state = {};
 
 var hue_mesh_name = {};
@@ -43,7 +40,6 @@ function on_load(){
 	});
 
 	console.log("home_app> ===> on_load()");
-	mqtt.init();
 	three.animate();
 }
 
@@ -91,10 +87,9 @@ function onMqttMessage(e){
 	const obj = three.mqtt_to_object(e.detail.topic);
 	if(obj.userData.type == "heating"){
 		const obj_name = obj.name;
-		console.log(`home_app> mqtt message for heater : ${obj_name}`);
 		const heating_demand = e.detail.payload.pi_heating_demand;
 		const ratio = heating_demand / 255;
-		console.log(`home_app> mqtt message for heater : ${obj_name} heating ration at ${ratio}`);
+		console.log(`home_app> heat mqtt : ${obj_name} ratio at ${ratio}`);
 		send_custom_event('three_param',{name:obj_name,Cool:1-ratio,Hot:ratio});
 	}
 }

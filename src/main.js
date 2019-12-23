@@ -4,4 +4,4 @@ import * as mqtt from './mqtt_app.js';
 
 home.init();
 hue.init();
-//mqtt.init();
+mqtt.init();
