@@ -11,7 +11,7 @@ function send_custom_event(event_name,data){
 }
 
 function init(){
-	three.init(on_load,"./3d_models/home.gltf");
+	three.init(on_load,"3d_models/home.gltf");// ""../"" fail "./" fail
 
 	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
 	window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
