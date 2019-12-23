@@ -1,8 +1,7 @@
 import {
-	Matrix4,
 	Raycaster,
 	Vector2
-} from "../libs/three/three.module.js";
+} from "../jsm/three/three.module.js";
 
 
 var camera;
@@ -28,8 +27,6 @@ function get_mesh_intersect(l_x,l_y){
 	vect2.y = - ( ( l_y - rect.top ) / rect.height ) * 2 + 1;
 
 	let result = "";
-	camera.projectionMatrixInverse = new THREE.Matrix4();
-	camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
 	raycaster.setFromCamera( vect2, camera );
 	var intersects = raycaster.intersectObjects( mesh_list, true );
 	if(intersects.length > 0){

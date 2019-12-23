@@ -5,18 +5,19 @@ var rooms_light_state = {};
 
 var hue_mesh_name = {};
 
-function init(){
-	$.getJSON("home.json", function(home_data) {
-		three.init(on_load,home_data.glTF_model);
+function send_custom_event(event_name,data){
+	var event = new CustomEvent(event_name, {detail:data});
+	window.dispatchEvent(event);
+}
 
-		window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
-		window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
-		//window.addEventListener( 'mesh_mouse_down', onMeshMouseDown, false );
-		//window.addEventListener( 'mesh_touch_start', onMeshMouseDown, false );
-		window.addEventListener( 'hue_lights_on_startup', onHueStartup, false );
-		window.addEventListener( 'hue_light_state', onHueLightState, false );
-	});
-	
+function init(){
+	three.init(on_load,"../3d_models/home.gltf");
+
+	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
+	window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
+	window.addEventListener( 'hue_lights_on_startup', onHueStartup, false );
+	window.addEventListener( 'hue_light_state', onHueLightState, false );
+	window.addEventListener( 'mqtt_message', onMqttMessage, false );
 }
 
 function on_load(){
@@ -29,54 +30,30 @@ function on_load(){
 			if(mesh.userData.hue != "undefined"){
 				hue_mesh_name[mesh.userData.hue] = mesh.name;
 			}
-			//three.setBulbState(mesh.name,"switch",false);
-			//three.setBulbState(mesh.name,"init",true);
 		}
 		else if(mesh.userData.type == "lightgroup"){
 			three.setBulbState(mesh.name,"init",true);
 		}
 		else if(mesh.userData.type == "heating"){
-			three.setHeatState(mesh.name,true);
+			
 		}
 	});
 
-
+	console.log("home_app> ===> on_load()");
 	three.animate();
 }
 
 function onMeshMouseEnter(e){
-	//console.log(`Mesh Mouse Enter in ${e.detail.name}`);
 	document.getElementById('viewer').style.cursor = "pointer";
-	//three.setBulbState(e.detail.name,"highlight",true);
 }
 
 function onMeshMouseExit(e){
-	//console.log(`Mesh Mouse Exit out of ${e.detail.name}`)
 	document.getElementById('viewer').style.cursor = "default";
-	//three.setBulbState(e.detail.name,"highlight",false);
-}
-
-function swap_light_state(name){
-	if(typeof rooms_light_state[name] == "undefined"){
-		rooms_light_state[name] = true;
-	}
-	else{
-		rooms_light_state[name] = ! rooms_light_state[name];
-	}
-	return rooms_light_state[name];
 }
 
 function onMeshMouseDown(e){
 	console.log(`Mesh Mouse Down on ${e.detail.name}`);
-	if(e.detail.type == "light"){
-		const current_state = three.getLightState(e.detail.name);
-		three.setBulbState(e.detail.name,"switch",!current_state);
-	}
-	else if(e.detail.type == "lightgroup"){
-		const current_state = three.getLightGroupState(e.detail.name);
-		three.setBulbGroupState(e.detail.name,"switch",!current_state);
-	}
-	else if(e.detail.type == "heating"){
+	if(e.detail.type == "heating"){
 		const current_state = three.getHeatState(e.detail.name);
 		three.setHeatState(e.detail.name,!current_state);
 	}
@@ -104,6 +81,17 @@ function onHueStartup(e){
 		}
 	}
 
+}
+
+function onMqttMessage(e){
+	const obj = three.mqtt_to_object(e.detail.topic);
+	if(obj.userData.type == "heating"){
+		const obj_name = obj.name;
+		const heating_demand = e.detail.payload.pi_heating_demand;
+		const ratio = heating_demand / 255;
+		console.log(`home_app> heat mqtt : ${obj_name} ratio at ${ratio}`);
+		send_custom_event('three_param',{name:obj_name,Cool:1-ratio,Hot:ratio});
+	}
 }
 
 export{init};

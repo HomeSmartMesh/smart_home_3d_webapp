@@ -103,8 +103,11 @@ function onMeshMouseDown(event){
                     send_custom_event("hue_light_state",{name:event.detail.name,on:light_set_state});
                 }
             });
-            }
-    
+        }
+        else if(e.detail.type == "lightgroup"){
+            //
+        }
+            
     }
 }
 //----------------------------------------------------------------------------------

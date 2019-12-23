@@ -13,6 +13,14 @@ We see in this demo a home 3d model augmented with interactive mesh items. Some 
 
 As a demonstration for the reaction time of the real light switching on and off, we can see in the gif animation the power consumption log of the light switched. This log comes from a [shelly 2.5 device](https://shelly.cloud/shelly-25-wifi-smart-relay-roller-shutter-home-automation/) with power monitoring capabilites. This measure device is itself powering up the hue light. Note that the slow power up and down ramp are due to the hue effect of slow variation when switching on and off.
 
+# blender model
+
+<img src="./media/blender_model.png" width="600">
+
+[blender file download from google drive](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing)
+
+Note that files within the [project's google drive folder](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing) will have commit ids to match them with this repo.
+
 # How to
 
 ## Create your own home model
@@ -49,24 +57,26 @@ then reload the page
 ## First time usage
 
 
-0. if this web
-1. press the Hue Gateway authorisation button
-2. Load or reload the web app page
-3. An alert will apear on the screen to wait in case the authorisation button is not pressed yet
+1. create your own glTF model from blender (or use existing one)
+2. adjust the light names to match your hue lights names
+3. press the Hue Gateway authorisation button
+4. Load or reload the web app page
+5. An alert will apear on the screen to wait for confirmation
 
 <img src="./media/alert_first_time.png" width="400">
 
-4. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
+6. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
 
 <img src="./media/local_storage.png" width="600">
 
-5. The webapp can be now used in sync with the hue Gateway interactions. In case a Gateway sync is not needed, it is possible to click "Ok" on the later and proceed with a non synced app.
+7. The webapp can be now used in sync with the hue Gateway interactions. In case a Gateway sync is not needed, it is possible to click "Ok" on the later and proceed with a non synced app.
 
 
 # Dependencies
 
 * [three.js](https://threejs.org/)
 * [jsHue.js](https://github.com/blargoner/jshue)
+* [mqttws31](https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js)
 * [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface)
 
 ## Features
