@@ -89,6 +89,13 @@ then reload the page
 ## web_three_interface
 The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) is not a direct dependency but is used as a boiler plate for 3d interactive meshes. It is still a useful repo that helps understand the workflow step by step with increasingly complex demo, and also debug in case one step is failing.
 
+# Features plan
+
+* update 3d items interactions with clicks and holds for brightness
+* fall back on interactive demo mode from within the same app
+* use lower poly mesh
+* add stats and fps
+
 # Interaction models with glTF custom properties
 The currently provided 3d interaction types are :
 * Light
