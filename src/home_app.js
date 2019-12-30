@@ -1,9 +1,11 @@
 import * as three from "./three_app.js";
 import * as mouse from "./three_mouse.js";
+import * as control from "./three_control.js";
 
-var rooms_light_state = {};
+import config from "../config.js";
 
 var hue_mesh_name = {};
+var hue_light_states = {};
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -11,15 +13,20 @@ function send_custom_event(event_name,data){
 }
 
 function init(){
-	three.init(on_load,"3d_models/home.gltf");// ""../"" fail "./" fail
+	three.init(on_load,config.glTF_model);
 
 	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
 	window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
 	window.addEventListener( 'hue_lights_on_startup', onHueStartup, false );
 	window.addEventListener( 'hue_light_state', onHueLightState, false );
-	window.addEventListener( 'mqtt_message', onMqttMessage, false );
+	window.addEventListener( 'mesh_control', onMeshControl, false );
+	window.addEventListener( 'mesh_click', onMeshClick, false );
+	window.addEventListener( 'mesh_hold', onMeshHold, false );
+	
 }
 
+
+//in this callback, three is ready
 function on_load(){
 	mouse.init(three.getCamera());
 	const mouse_mesh_list = three.getMouseMeshList();
@@ -30,54 +37,93 @@ function on_load(){
 			if(mesh.userData.hue != "undefined"){
 				hue_mesh_name[mesh.userData.hue] = mesh.name;
 			}
+			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});
 		}
 		else if(mesh.userData.type == "lightgroup"){
-			three.setBulbState(mesh.name,"init",true);
+			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});		
 		}
 		else if(mesh.userData.type == "heating"){
-			
+			send_custom_event("three_param",{name:mesh.name, color:0});
 		}
 	});
 
-	console.log("home_app> ===> on_load()");
+	control.init(three.getScene(),three.getCamera(),three.getControl());
+	//control.init(scene,camera,orbit_control);
+
 	three.animate();
+
 }
 
 function onMeshMouseEnter(e){
+	//console.log(`Mesh Mouse Enter in ${e.detail.name}`);
 	document.getElementById('viewer').style.cursor = "pointer";
+	//three.setBulbState(e.detail.name,"highlight",true);
 }
 
 function onMeshMouseExit(e){
+	//console.log(`Mesh Mouse Exit out of ${e.detail.name}`)
 	document.getElementById('viewer').style.cursor = "default";
+	//three.setBulbState(e.detail.name,"highlight",false);
 }
 
 function onMeshMouseDown(e){
-	console.log(`Mesh Mouse Down on ${e.detail.name}`);
-	if(e.detail.type == "heating"){
-		const current_state = three.getHeatState(e.detail.name);
-		three.setHeatState(e.detail.name,!current_state);
+}
+
+function onMeshControl(e){
+	//console.log(`home_app> onMeshControl() ${e.detail.name} has ${e.detail.config} at ${e.detail.val.toFixed(2)}`);
+	if(e.detail.name === "Kitchen"){
+		if(e.detail.config == "slider"){
+			items_anim[e.detail.name] = e.detail.val;
+			items_anim.Emissive = e.detail.val*0.5;
+			items_anim.Light = e.detail.val*0.8;
+			items_anim.Color = e.detail.val;
+			send_custom_event("three_param",{name:"Kitchen", emissive:items_anim.Emissive});
+			send_custom_event("three_param",{name:"Kitchen", light:items_anim.Light});
+			send_custom_event("three_param",{name:"Kitchen", color:items_anim.Color});
+		}
 	}
 }
+
+function onMeshClick(e){
+	console.log(`home_app> mesh_click on ${e.detail.name}`);
+	if(e.detail.type == "light"){
+		const current_state = hue_light_states[e.detail.name];
+		set_light(e.detail.name,!current_state);
+	}
+	else if(e.detail.type == "lightgroup"){
+	}
+	else if(e.detail.type == "heating"){
+	}
+}
+
+function onMeshHold(e){
+	control.run(e.detail.name,e.detail.y);
+}
+
+function set_light(name,state){
+	const var_light = (state === true)? 1 : 0;
+	const var_emissive = (state === true)? 0.5 : 0;
+	//console.log(`${name} has emissive set to ${var_emissive}`);
+	send_custom_event("three_param",{name:name, light:var_light, emissive:var_emissive});
+}
+
 function onHueLightState(e){
-
-	three.setBulbState(e.detail.name,"switch",e.detail.on);
-
+	hue_light_states[e.detail.name] = e.detail.on;
+	set_light(e.detail.name,e.detail.on);
 }
 
 function onHueStartup(e){
 	for (const [light_id,light] of Object.entries(e.detail)) {
 		if(light.name in hue_mesh_name){
 			if(light.state.reachable){
-				three.setBulbState(hue_mesh_name[light.name],"highlight",true);
+				send_custom_event("three_param",{name:light.name, color:1});
 				console.log(`home_app> - ${light.name} is ${light.state.on}`);
-				three.setBulbState(hue_mesh_name[light.name],"switch",light.state.on);
 			}
 			else{
+				send_custom_event("three_param",{name:light.name, color:0});
 				console.log(`home_app> - ${light.name} is not reachable`);
-				three.setBulbState(hue_mesh_name[light.name],"highlight",false);
-				three.setBulbState(hue_mesh_name[light.name],"switch",false);
 			}
-
+			set_light(light.name,light.state.on);
 		}
 	}
 
