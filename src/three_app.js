@@ -1,130 +1,41 @@
-import * as THREE from "../jsm/three/three.module.js";
-import { OrbitControls } from "../jsm/three/OrbitControls.js";
-import { GLTFLoader } from "../jsm/three/GLTFLoader.js";
+import * as THREE from "../../jsm/three/three.module.js";
+import { OrbitControls } from "../../jsm/three/OrbitControls.js";
+import { GLTFLoader } from "../../jsm/three/GLTFLoader.js";
 
 var camera, scene, renderer;
-var controls;
+var orbit_control;
 
 var anim_params = {};
-var mqtt_map = {};
+var color_params = {};
+var user_hue_to_name = {};
 
-function setBulb_MeshState(light_mesh,state_name,value){
-	if(state_name == "init"){
-		if(value){
-			var emit = new THREE.Color( 0, 0.2, 0.2 );
-		}
-		else{
-			var emit = new THREE.Color( 0, 0, 0 );
-		}
-	}
-	else if(state_name == "switch"){
-		if(value){
-			var emit = new THREE.Color( 0, 0.5, 0 );
-		}
-		else{
-			var emit = new THREE.Color( 0, 0, 0 );
-		}
-	}
-	else{
-		if(state_name == "highlight"){
-			if(value){
-				var emit = new THREE.Color( 1, 0, 0 );
-			}
-			else{
-				var emit = new THREE.Color( 0, 0, 0 );
-			}
-		}
-		else{
-			var emit = light_mesh.material.emissive;
-		}
-	}
-		var material = new THREE.MeshPhongMaterial( {
-			color: light_mesh.material.color,
-			emissive: emit,
-			side: light_mesh.material.side,
-			flatShading: light_mesh.material.flatShading
-		});
-		light_mesh.material = material;
-		//console.log(`${name} has emissive at ${emit.getHexString()}`);
-}
-
-function setBulb_LightState(light,state_name,value){
-	if(value){
-		//TODO custom Property for light does not appear on SpotLight object and child is Object3D without userData
-		light.intensity = 10;
-	}
-	else{
-		light.intensity = 0;
-	}
-}
-
-function getLightState(name){
-	const light_mesh = scene.getObjectByName(name);
-	const light = light_mesh.children[0].children[0];
-	if(light.intensity > 0){
-		return true;
-	}
-	else{
-		return false;
-	}
-}
-
-function setBulbState(name,state_name,value){
-	const light_mesh = scene.getObjectByName(name);
-	setBulb_MeshState(light_mesh,state_name,value);
-
-	if(state_name == "switch"){
-			if(light_mesh.children[0].children[0] != "undefined"){
-			const light = light_mesh.children[0].children[0];
-			setBulb_LightState(light,state_name,value);
-		}
-		else{
-			console.log(`light mesh ${name} has no grand child`);
-		}
-	}
-}
-
-/**
- * 
- * @param {*} name : the light group name
- * @return true, if any of the lights are on, otherwise false
- */
-function getLightGroupState(name){
-	const light_group_mesh = scene.getObjectByName(name);
-	for(let mesh_id in light_group_mesh.children){
-		const mesh = light_group_mesh.children[mesh_id];
-		if(mesh.userData.type == "light"){
-			if(getLightState(mesh.name)){
-				return true;
-			}
-		}
-	};
-	return false;
-}
-
-function setBulbGroupState(name,state_name,value){
-	const light_group_mesh = scene.getObjectByName(name);
-	setBulb_MeshState(light_group_mesh,state_name,value);
-	if(state_name == "switch"){
-			setBulb_LightState(light_group_mesh,state_name,value);
-	}
-
-	light_group_mesh.children.forEach(mesh =>{
-		if(mesh.userData.type == "light"){
-			setBulbState(mesh.name,state_name,value);
-		}
-	});
-}
-
-function create_camera(){
+function create_camera(gltf){
+	let res_cam;
 	var container = document.getElementById('viewer');
 	var w = container.clientWidth;
 	var h = container.clientHeight;
-	camera = new THREE.PerspectiveCamera( 45, w / h, 0.01, 50 );
-	camera.position.y = 5;
-	camera.position.x = 0;
-	camera.position.z = 5;
-	return camera;
+	const scene_cam = gltf.scene.getObjectByName("Camera");
+	if(typeof(scene_cam) != "undefined"){
+		const gltf_cam = gltf.cameras[0];
+		if(gltf_cam.type == "PerspectiveCamera"){
+			//issue assigning the camera does not succeed, so mapping params on creation
+			res_cam = new THREE.PerspectiveCamera( gltf_cam.fov, w / h, gltf_cam.near, gltf_cam.far );
+			console.log(`three_app> create_camera()`);
+			res_cam.position.copy(scene_cam.position);
+			res_cam.rotation.copy(scene_cam.rotation);
+		}
+	}
+
+	if(typeof(res_cam) == "undefined"){
+		res_cam = new THREE.PerspectiveCamera( cam.fov, w / h, 0.01, 50 );
+		console.log(`three_app> create_camera()`);
+		console.log(cam.position);
+		res_cam.position.setX(0);
+		res_cam.position.setY(5);
+		res_cam.position.setz(5);
+	}
+
+	return res_cam;
 }
 
 function create_renderer(){
@@ -148,23 +59,23 @@ function create_renderer(){
 }
 
 function add_view_orbit(camera,renderer){
-	controls = new OrbitControls( camera, renderer.domElement );
+	orbit_control = new OrbitControls( camera, renderer.domElement );
 
-	//controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+	//orbit_control.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
-	controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-	controls.dampingFactor = 1.5;//0.1:too rolly, 1: smooth, 2 unstable
+	orbit_control.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+	orbit_control.dampingFactor = 1.5;//0.1:too rolly, 1: smooth, 2 unstable
 
-	controls.screenSpacePanning = false;
+	orbit_control.screenSpacePanning = false;
 
-	controls.minDistance = 0.10;
-	controls.maxDistance = 30;
+	orbit_control.minDistance = 0.10;
+	orbit_control.maxDistance = 30;
 
-	controls.minPolarAngle =  10 * Math.PI / 180;
-	controls.maxPolarAngle =  80 * Math.PI / 180;
+	orbit_control.minPolarAngle =  10 * Math.PI / 180;
+	orbit_control.maxPolarAngle =  80 * Math.PI / 180;
 
-	controls.rotateSpeed = 0.7;
-	return controls;
+	orbit_control.rotateSpeed = 0.7;
+	return orbit_control;
 }
 
 function onWindowResize() {
@@ -179,25 +90,8 @@ function onWindowResize() {
 
 function add_ambient_light(){
 
-	var light = new THREE.PointLight( 0xffffff, 10, 100 );
-	light.position.set( 0, 10, 0 );
+	var light = new THREE.AmbientLight( 0xB0B0B0 );
 	scene.add( light );
-
-	var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-	dirLight.position.set( 0, 1.5, 0 );
-	dirLight.castShadow = false;
-
-	dirLight.shadow.mapSize.width = 2048;
-	dirLight.shadow.mapSize.height = 2048;
-	var d = 6;
-	dirLight.shadow.camera.left = - d;
-	dirLight.shadow.camera.right = d;
-	dirLight.shadow.camera.top = d;
-	dirLight.shadow.camera.bottom = - d;
-	dirLight.shadow.camera.far = 7;
-	dirLight.shadow.bias = - 0.01;
-
-	//scene.add( dirLight );
 }
 
 function get_scene_box(scene){
@@ -237,7 +131,7 @@ function center_scene(scene){
 	console.log(`now scene boxed from (${box.min.x},${box.min.y},${box.min.z}) to (${box.max.x},${box.max.y},${box.max.z}) with size (${s.x},${s.y},${s.z})`);
 }
 
-function apply_custom_visibility(scene){
+function init_custom_visibility(scene){
 	scene.traverse(obj =>{
 		//though only meshes are taken as input, here everything is shifted as lights shall shift too
 		//hierarchical structure does move end leaves multiple times, so selection of meshes only moved as workaround
@@ -249,6 +143,11 @@ function apply_custom_visibility(scene){
 	} );
 }
 
+/**
+ * To be deprecated
+ * @param {*} obj 
+ * @param {*} view_name 
+ */
 function set_obj_state(obj,view_name){
 	console.log(`three_app> set_obj_state() ${obj.name} to : ${view_name}`);
 	obj.userData.state = view_name;
@@ -284,65 +183,19 @@ function get_obj_states(obj_name){
 	}
 }
 
-function set_obj_color(anim_obj,target_coeffs){
-	let sum_Color = new THREE.Color(0,0,0);
-	for(const name in anim_obj.ref_colors){
-		const ref_color = anim_obj.ref_colors[name];
-		//console.log(`  - ref color of '${name}' (${ref_color.r},${ref_color.g},${ref_color.b}) has coeff : ${target_coeffs[name]}`);
-		let part_color = ref_color.clone();
-		part_color.multiplyScalar(target_coeffs[name]);
-		sum_Color.add(part_color);
-	}
-	const obj = anim_obj.object
-	obj.material.color = sum_Color;
-	//console.log(`three_app> set_obj_color() ${obj.name} to (${sum_Color.r},${sum_Color.g},${sum_Color.b})`);
-}
-
-function init_obj_color(anim_obj){
-	const obj = anim_obj["object"];
-	anim_obj.ref_colors = {};
-	anim_obj.coeffs = {};
-	obj.children.forEach(child =>{
-		anim_obj.ref_colors[child.name] = child.material.color;
-		anim_obj.coeffs[child.name] = obj.userData[child.name];
-		//child.visible = false;
+function init_custom_colors(scene){
+	scene.traverse(obj =>{
+		if(typeof obj.userData.mutateColor != "undefined"){
+			color_params[obj.name] = {};
+			color_params[obj.name]["object"] = obj;
+			color_params[obj.name]["color1"] = obj.material.color.getHexString();
+			color_params[obj.name]["color2"] = obj.userData.mutateColor;
+			console.log(`${obj.name} can mutate color from ${obj.material.color.getHexString()} to ${obj.userData.mutateColor}`);
+		}
 	});
-	//obj.children[0].visible = true;
-	set_obj_color(anim_obj,anim_obj.coeffs);
 }
 
-function apply_custom_view(scene){
-	scene.traverse(obj =>{
-		if(typeof obj.userData.state != "undefined"){
-			console.log(`${obj.name} has ${obj.children.length} states :`);
-			set_obj_state(obj,obj.userData.state);
-			anim_params[obj.name] = {};
-			anim_params[obj.name]["type"] = "state";
-			anim_params[obj.name]["object"] = obj;
-			anim_params[obj.name]["state"] = obj.userData.state;
-		}
-		if(typeof obj.userData.colorParams != "undefined"){
-			if(obj.userData.colorParams == "true"){
-				console.log(`${obj.name} has ${obj.children.length} child colors :`);
-				anim_params[obj.name] = {};
-				anim_params[obj.name]["type"] = "color";
-				anim_params[obj.name]["object"] = obj;
-				init_obj_color(anim_params[obj.name]);
-			}
-		}
-	} );
-}
-
-function apply_mqtt_map(scene){
-	scene.traverse(obj =>{
-		if(typeof obj.userData.mqtt != "undefined"){
-			console.log(`${obj.name} has mqtt : ${obj.userData.mqtt}`);
-			mqtt_map[obj.userData.mqtt] = obj;
-		}
-	} );
-}
-
-function apply_lights_shadows_setup(scene){
+function init_shadows(scene){
 	scene.traverse(obj =>{
 		if(obj.type == "Mesh"){
 			if(obj.userData.type == "wall"){
@@ -353,31 +206,13 @@ function apply_lights_shadows_setup(scene){
 			}
 		}else if(obj.type == "PointLight"){
 			obj.castShadow = true;
-			obj.intensity = 0;
 		}else if(obj.type == "SpotLight"){
 			obj.castShadow = false;
-			obj.intensity = 0;
 		}
 	});
 }
 
-function back(){
-
-	gltf.animations.forEach(clip =>{
-
-		console.log(`clip '${clip.name}' :`);
-		clip.tracks.forEach(track =>{
-			console.log(` - KeyframeTrack '${track.name}' with ${track.times.length} times`);
-		});
-		const obj_mixer = new THREE.AnimationMixer(scene.getObjectByName("Axis"));
-		const animAction = obj_mixer.clipAction(clip);
-		animAction.play();
-		obj_mixer.setTime(2);
-
-	});
-}
-
-function apply_param_animations(gltf,scene){
+function init_custom_animations(gltf,scene){
 	scene.traverse(obj =>{
 		if(obj.type == "Mesh"){
 			if(typeof obj.userData.parameter != "undefined"){
@@ -400,21 +235,29 @@ function apply_param_animations(gltf,scene){
 	
 }
 
+function init_custom_names(scene){
+	scene.traverse(obj =>{
+		if(typeof(obj.userData.hue) != "undefined"){
+			user_hue_to_name[obj.userData.hue] = obj.name;
+		}
+	});
+}
+
 function load_scene(user_on_load,gltf_filename){
 	var loader = new GLTFLoader();
 	loader.load(gltf_filename,
 		// called when the resource is loaded
 		gltf => {
 			scene = gltf.scene;
-			apply_custom_visibility(scene);
-			apply_param_animations(gltf,scene);
-			apply_custom_view(scene);
-			apply_mqtt_map(scene);
-			apply_lights_shadows_setup(scene);
+			init_custom_visibility(scene);
+			init_custom_animations(gltf,scene);
+			init_custom_colors(scene);
+			init_custom_names(scene);
+			init_shadows(scene);
 			add_ambient_light();
-			camera = create_camera();
+			camera = create_camera(gltf);
 			renderer = create_renderer();
-			controls = add_view_orbit(camera,renderer);
+			orbit_control = add_view_orbit(camera,renderer);
 			user_on_load();
 			//setParam("Axis","pull",4);
 		},
@@ -437,10 +280,9 @@ function init(on_load,glTF_filename){
 function animate() {
 	requestAnimationFrame( animate );
 
-	controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+	orbit_control.update(); // only required if orbit_control.enableDamping = true, or if orbit_control.autoRotate = true
 
 	renderer.render( scene, camera );
-
 }
 
 function getMouseMeshList(){
@@ -458,16 +300,67 @@ function getCamera(){
 	return camera;
 }
 
-function onParamUpdate(e){
+function getScene(){
+	return scene;
+}
 
-	const obj_name = e.detail.name;
-	if(!(obj_name in anim_params)){
-		console.warn(`${obj_name} has no animation paramter`);
+function getControl(){
+	return orbit_control;	
+}
+
+function update_light(params){
+	const parent = scene.getObjectByName(params.name);
+	parent.traverse(obj =>{
+		if(["PointLight","SpotLight","DirectionalLight"].includes(obj.type)){
+			const maxLight = (typeof(obj.parent.userData.maxLight) == "undefined")?50:obj.parent.userData.maxLight;
+			obj.intensity = params.light * maxLight;
+			//console.log(`three_app> '${params.name}' has light '${obj.name}' set to ${obj.intensity}`);
+		}
+	});
+}
+
+function update_emissive(params){
+	const obj = scene.getObjectByName(params.name);
+	if(typeof(obj) != "undefined"){
+		if(typeof(obj.material) != "undefined" ){
+			obj.material.emissive = new THREE.Color(params.emissive,params.emissive,params.emissive);
+		}
+		else{
+			console.warn(`${params.name} object has no material`);
+		}
+	}
+	else{
+		console.warn(`${params.name} does not exist in the scene`);
+	}
+}
+
+function update_color(params){
+	const obj_name = params.name;
+	//console.log(`${obj_name} color update`);
+	if(typeof(color_params[obj_name]) != "undefined"){
+		const val = params.color;
+		let weight_col1 = new THREE.Color(parseInt(color_params[obj_name].color1,16));
+		let weight_col2 = new THREE.Color(parseInt(color_params[obj_name].color2,16));
+		weight_col1.multiplyScalar(1-val);//0 gets full color 1
+		weight_col2.multiplyScalar(val);
+		let sum_color = new THREE.Color();
+		sum_color.addColors(weight_col1,weight_col2);
+		const obj = scene.getObjectByName(obj_name);
+		obj.material.color = sum_color;
+		//console.log(`setting ${obj_name} to color ${sum_color.getHexString()}`);
+	}
+}
+
+function check_update_anim(params){
+	const obj_name = params.name;
+	const val = params.val;
+	if(typeof(anim_params[obj_name]) == "undefined"){
+		console.warn(`no anim params for ${obj_name}`);
+		console.log(params);
 		return;
 	}
 	if(anim_params[obj_name].type == "mixer"){
-		const val = e.detail.val;
-		const param_name = e.detail.param;
+		const param_name = params.param;
 		const mixer = anim_params[obj_name][param_name].mixer;
 		const duration = anim_params[obj_name][param_name].duration;
 		let time = val * duration;
@@ -480,28 +373,33 @@ function onParamUpdate(e){
 		mixer.setTime(time);
 	}
 	else if(anim_params[obj_name].type == "state"){
-		const val = e.detail.val;
 		const obj = anim_params[obj_name].object;
 		set_obj_state(obj,val);
 	}
 	else if(anim_params[obj_name].type == "color"){
-		set_obj_color(anim_params[obj_name],e.detail);
+		set_obj_color(anim_params[obj_name],params);
 	}
 }
 
-function mqtt_to_object(topic){
-	return mqtt_map[topic];
+function onParamUpdate(e){
+	const params = e.detail;
+	if(typeof(params.color) != "undefined"){
+		update_color(params);
+	}
+	if(typeof(params.emissive) != "undefined"){
+		update_emissive(params);
+	}
+	if(typeof(params.light) != "undefined"){
+		update_light(params);
+	}
+	//check_update_anim(params);
 }
 
 export{
 		init,
 		animate,
 		getMouseMeshList,
-		setBulbState,
-		setBulbGroupState,
-		getLightState,
-		getLightGroupState,
 		getCamera,
-		get_obj_states,
-		mqtt_to_object
+		getScene,
+		getControl
 	};

@@ -3,6 +3,7 @@ var hue = jsHue();
 var user;
 var lights;
 var light_ids;
+var hue_available = false;
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -16,6 +17,7 @@ function get_lights_state(){
         console.log("getLights response");
         lights = data;
         send_custom_event('hue_lights_on_startup',lights);
+        hue_available = true;
         light_ids = {};
         for (const [light_id,light] of Object.entries(lights)) {
             light_ids[light.name] = light_id;
@@ -73,41 +75,35 @@ function init(){
         }
     }).catch(e => console.log('Error finding bridges', e));
             
-    window.addEventListener( 'mesh_mouse_down', onMeshMouseDown, false );
-    window.addEventListener( 'mesh_touch_start', onMeshMouseDown, false );
+    window.addEventListener( 'mesh_click', onMeshClick, false );
 
 }
 
 
-function onMeshMouseDown(event){
-    if(event.detail.type == "light"){
-        console.log(`hue_app> Mesh Light Mouse Down Event on '${event.detail.name}'`);
-        if(event.detail.type == "light"){
-            if(typeof(light_ids) == "undefined"){
-                console.log(`hue not authorised or or has no lights`);
+function onMeshClick(event){
+    const name = event.detail.name;
+    const hue_name = event.detail.userData.hue;
+    if(typeof(hue_name) != "undefined"){
+        console.log(`hue_app> Mesh Light click on '${name}' with hue = '${hue_name}'`);
+            if(!hue_available){
+                console.log(`hue not available`);
                 return;
             }
-            var l_id = light_ids[event.detail.hue];
+            var l_id = light_ids[hue_name];
             user.getLight(l_id).then(data => {
-                if(data.state.reachable == true) {
-                    var light_set_state;
-                    if(data.state.on == true){
-                        light_set_state = false;
-                    }
-                    else{
-                        light_set_state = true;
-                    }
-                    user.setLightState(l_id, { on: light_set_state }).then(data => {
-                        console.log(`hue_app> set hue light '${event.detail.hue}' to ${light_set_state}`);
+                if(typeof(data[0]) != "undefined"){
+                    console.warn(`hue_app> hue light '${hue_name}' unreachable`);
+                    console.warn(data[0].error);
+                    send_custom_event("hue_light_state",{name:hue_name,reach:false});
+                }
+                else if(data.state.reachable == true) {
+                    const light_new_state = !data.state.on;
+                    user.setLightState(l_id, { on: light_new_state }).then(data => {
+                        send_custom_event("hue_light_state",{name:hue_name,on:light_new_state});
+                        console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
                     });
-                    send_custom_event("hue_light_state",{name:event.detail.name,on:light_set_state});
                 }
             });
-        }
-        else if(e.detail.type == "lightgroup"){
-            //
-        }
-            
     }
 }
 //----------------------------------------------------------------------------------
