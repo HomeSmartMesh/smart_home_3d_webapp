@@ -40,16 +40,6 @@ function get_mesh_intersect(l_x,l_y){
 	return result;
 }
 
-function send_custom_object_event(event_name,object_name,obj,event){
-	if(obj.userData.type == "light"){
-		send_custom_event(event_name,{ type: obj.userData.type, name: object_name, hue:obj.userData.hue,event:event});
-	}
-	else{
-		send_custom_event(event_name,{ type: obj.userData.type, name: object_name,event:event});
-	}
-}
-
-
 function process_mouse_event(event_name, event){
 	event.preventDefault();
 
@@ -58,17 +48,17 @@ function process_mouse_event(event_name, event){
 	if ( obj != "") {
 		if((mouse.object != "")&&(mouse.object != obj.name)){
 			//jump from object to object, exist last one
-			send_custom_event("mesh_mouse_enter",{ type: obj.userData.type, name: mouse.object});
+			send_custom_event("mesh_mouse_enter",{ name: mouse.object, userData: obj.userData});
 			mouse.is_inside_object = false;
 		}
 		mouse.object = obj.name;
-		mouse.object_type = obj.userData.type;
+		mouse.userData = obj.userData;
 		if(!mouse.is_inside_object){
-			send_custom_event("mesh_mouse_enter",{ type: obj.userData.type, name: mouse.object});
+			send_custom_event("mesh_mouse_enter",{ name: mouse.object, userData: obj.userData});
 		}
 		mouse.is_inside_object = true;
 		mouse.y = event.clientY;
-		send_custom_object_event(event_name,mouse.object,obj,event);
+		send_custom_event(event_name,{ name: obj.name,userData:obj.userData, event:event});
 	}
 	else{
 		if(mouse.is_inside_object){
@@ -81,7 +71,7 @@ function process_mouse_event(event_name, event){
 function eventDelay(){
 	//console.log(`event mouse status = ${mouse.status}`);
 	if(mouse.status === "started"){
-		send_custom_event("mesh_hold",{name:mouse.object,type:mouse.object_type,y:mouse.y});
+		send_custom_event("mesh_hold",{name:mouse.object,userData:mouse.userData,y:mouse.y});
 		mouse.status = "idle";
 	}
 }
@@ -99,9 +89,9 @@ function onTouch(event){
 		if ( obj != "") {
 			mouse.is_inside_object = true;
 			mouse.object = obj.name;
-			mouse.object_type = obj.userData.type;
+			mouse.userData = obj.userData;
 			mouse.y = event.targetTouches[0].clientY;
-			send_custom_object_event("mesh_touch_start",obj.name,obj,event);
+			send_custom_event("mesh_touch_start",{ name: object_name, userData:obj.userData, event:event});
 		}
 	}
 	if(mouse.is_inside_object){
@@ -129,7 +119,7 @@ function onMouseUp(){
 	send_custom_event("mesh_mouse_up",{});
 	if(mouse.status === "started"){
 		//console.log(`three_mouse> onMouseUp --> click on ${mouse.object} ; status = ${mouse.status}`);
-		send_custom_event("mesh_click",{name:mouse.object,type:mouse.object_type});
+		send_custom_event("mesh_click",{name:mouse.object,userData:mouse.userData});
 	}
 	mouse.status = "idle";
 }

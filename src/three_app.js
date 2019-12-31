@@ -7,6 +7,7 @@ var orbit_control;
 
 var anim_params = {};
 var color_params = {};
+var user_hue_to_name = {};
 
 function create_camera(){
 	var container = document.getElementById('viewer');
@@ -217,6 +218,14 @@ function init_custom_animations(gltf,scene){
 	
 }
 
+function init_custom_names(scene){
+	scene.traverse(obj =>{
+		if(typeof(obj.userData.hue) != "undefined"){
+			user_hue_to_name[obj.userData.hue] = obj.name;
+		}
+	});
+}
+
 function load_scene(user_on_load,gltf_filename){
 	var loader = new GLTFLoader();
 	loader.load(gltf_filename,
@@ -226,6 +235,7 @@ function load_scene(user_on_load,gltf_filename){
 			init_custom_visibility(scene);
 			init_custom_animations(gltf,scene);
 			init_custom_colors(scene);
+			init_custom_names(scene);
 			init_shadows(scene);
 			add_ambient_light();
 			camera = create_camera(scene);
@@ -285,7 +295,9 @@ function update_light(params){
 	const parent = scene.getObjectByName(params.name);
 	parent.traverse(obj =>{
 		if(["PointLight","SpotLight","DirectionalLight"].includes(obj.type)){
-			obj.intensity = params.light * parent.userData.maxLight;
+			const maxLight = (typeof(obj.parent.userData.maxLight) == "undefined")?50:obj.parent.userData.maxLight;
+			obj.intensity = params.light * maxLight;
+			//console.log(`three_app> '${params.name}' has light '${obj.name}' set to ${obj.intensity}`);
 		}
 	});
 }
@@ -322,7 +334,7 @@ function update_color(params){
 	}
 }
 
-function update_anim(params){
+function check_update_anim(params){
 	const obj_name = params.name;
 	const val = params.val;
 	if(typeof(anim_params[obj_name]) == "undefined"){
@@ -357,15 +369,13 @@ function onParamUpdate(e){
 	if(typeof(params.color) != "undefined"){
 		update_color(params);
 	}
-	else if(typeof(params.emissive) != "undefined"){
+	if(typeof(params.emissive) != "undefined"){
 		update_emissive(params);
 	}
-	else if(typeof(params.light) != "undefined"){
+	if(typeof(params.light) != "undefined"){
 		update_light(params);
 	}
-	else{
-		update_anim(params);
-	}
+	//check_update_anim(params);
 }
 
 export{

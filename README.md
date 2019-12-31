@@ -111,3 +111,7 @@ The currently provided 3d interaction types are :
 
 ## Mouse events propagation
 <img src="./media/mouse_events.svg">
+
+## glTF limitations
+* no material animation
+* No Custom Properties export for Light Object Data Properties (green), only Object Properties (orange)

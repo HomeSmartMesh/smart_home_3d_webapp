@@ -33,10 +33,8 @@ function on_load(){
 	mouse.SetMeshList(mouse_mesh_list);
 
 	mouse_mesh_list.forEach(mesh => {
-		if(mesh.userData.type == "light"){
-			if(mesh.userData.hue != "undefined"){
-				hue_mesh_name[mesh.userData.hue] = mesh.name;
-			}
+		if(mesh.userData.hue != "undefined"){
+			hue_mesh_name[mesh.userData.hue] = mesh.name;
 			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});
 		}
 		else if(mesh.userData.type == "lightgroup"){
@@ -86,9 +84,9 @@ function onMeshControl(e){
 
 function onMeshClick(e){
 	console.log(`home_app> mesh_click on ${e.detail.name}`);
-	if(e.detail.type == "light"){
+	if(e.detail.userData.type == "light"){
 		const current_state = hue_light_states[e.detail.name];
-		set_light(e.detail.name,!current_state);
+		set_mesh_light(e.detail.name,!current_state);
 	}
 	else if(e.detail.type == "lightgroup"){
 	}
@@ -100,7 +98,7 @@ function onMeshHold(e){
 	control.run(e.detail.name,e.detail.y);
 }
 
-function set_light(name,state){
+function set_mesh_light(name,state){
 	const var_light = (state === true)? 1 : 0;
 	const var_emissive = (state === true)? 0.5 : 0;
 	//console.log(`${name} has emissive set to ${var_emissive}`);
@@ -108,22 +106,28 @@ function set_light(name,state){
 }
 
 function onHueLightState(e){
-	hue_light_states[e.detail.name] = e.detail.on;
-	set_light(e.detail.name,e.detail.on);
+	const mesh_name = hue_mesh_name[e.detail.name];
+	hue_light_states[mesh_name] = e.detail.on;
+	set_mesh_light(mesh_name,e.detail.on);
 }
 
 function onHueStartup(e){
 	for (const [light_id,light] of Object.entries(e.detail)) {
 		if(light.name in hue_mesh_name){
+			const mesh_name = hue_mesh_name[light.name];
 			if(light.state.reachable){
-				send_custom_event("three_param",{name:light.name, color:1});
-				console.log(`home_app> - ${light.name} is ${light.state.on}`);
+				send_custom_event("three_param",{name:mesh_name, color:1});
+				set_mesh_light(mesh_name,light.state.on);
+				console.log(`home_app> - ${mesh_name} is ${light.state.on}`);
 			}
 			else{
-				send_custom_event("three_param",{name:light.name, color:0});
-				console.log(`home_app> - ${light.name} is not reachable`);
+				send_custom_event("three_param",{name:mesh_name, color:0});
+				set_mesh_light(mesh_name,false);
+				console.log(`home_app> - ${mesh_name} is not reachable`);
 			}
-			set_light(light.name,light.state.on);
+		}
+		else{
+			console.warn(`home_app> hue light '${light.name}' does not exist as mesh`);
 		}
 	}
 

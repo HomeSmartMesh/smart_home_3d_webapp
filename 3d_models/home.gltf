@@ -1871,6 +1871,9 @@
             "children" : [
                 169
             ],
+            "extras" : {
+                "maxLight" : 10
+            },
             "name" : "Office Light1",
             "scale" : [
                 2,
@@ -1887,6 +1890,11 @@
             "children" : [
                 170
             ],
+            "extras" : {
+                "hue" : "Office main",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 64,
             "name" : "Office Bulb",
             "scale" : [
@@ -2086,17 +2094,222 @@
         },
         {
             "doubleSided" : true,
-            "name" : "Main Bathroom Heater Material",
-            "pbrMetallicRoughness" : {}
+            "name" : "Bathroom_Bulb Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
         },
         {
             "doubleSided" : true,
-            "name" : "Bulb",
+            "name" : "Corridor Bulb Mesh Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.8000000715255737,
-                    0.5440534353256226,
-                    0.2676786482334137,
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Hallway Light 1 Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Hallway Light 2 Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "LivingTop1 Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "LivingTop2 Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "LivingTop3 Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "LivingTop5 Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "malms 1 Mesh Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "malms 2 Mesh Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "malms 3 Mesh Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "malms 4 Mesh Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Livingroom Malms Light Group Mesh Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Office_Bulb_Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.061710502952337265,
+                    0.03815069794654846,
+                    0.03854774683713913,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Kitchen Bulb Mesh Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Toilet_Bulb_Mat",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2712,8 +2925,7 @@
                         "NORMAL" : 134,
                         "TEXCOORD_0" : 135
                     },
-                    "indices" : 129,
-                    "material" : 4
+                    "indices" : 129
                 }
             ]
         },
@@ -2832,7 +3044,7 @@
                         "TEXCOORD_0" : 156
                     },
                     "indices" : 157,
-                    "material" : 5
+                    "material" : 4
                 }
             ]
         },
@@ -2942,7 +3154,7 @@
                         "TEXCOORD_0" : 178
                     },
                     "indices" : 175,
-                    "material" : 5
+                    "material" : 6
                 }
             ]
         },
@@ -2961,7 +3173,7 @@
                         "TEXCOORD_0" : 181
                     },
                     "indices" : 175,
-                    "material" : 5
+                    "material" : 7
                 }
             ]
         },
@@ -2997,7 +3209,8 @@
                         "NORMAL" : 186,
                         "TEXCOORD_0" : 187
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 8
                 }
             ]
         },
@@ -3015,7 +3228,8 @@
                         "NORMAL" : 189,
                         "TEXCOORD_0" : 190
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 9
                 }
             ]
         },
@@ -3033,7 +3247,8 @@
                         "NORMAL" : 192,
                         "TEXCOORD_0" : 193
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 10
                 }
             ]
         },
@@ -3051,7 +3266,8 @@
                         "NORMAL" : 195,
                         "TEXCOORD_0" : 196
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 10
                 }
             ]
         },
@@ -3069,7 +3285,8 @@
                         "NORMAL" : 198,
                         "TEXCOORD_0" : 199
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 11
                 }
             ]
         },
@@ -3104,7 +3321,8 @@
                         "NORMAL" : 204,
                         "TEXCOORD_0" : 205
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 12
                 }
             ]
         },
@@ -3122,7 +3340,8 @@
                         "NORMAL" : 207,
                         "TEXCOORD_0" : 208
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 13
                 }
             ]
         },
@@ -3140,7 +3359,8 @@
                         "NORMAL" : 210,
                         "TEXCOORD_0" : 211
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 14
                 }
             ]
         },
@@ -3158,7 +3378,8 @@
                         "NORMAL" : 213,
                         "TEXCOORD_0" : 214
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 15
                 }
             ]
         },
@@ -3175,16 +3396,12 @@
                         "NORMAL" : 216,
                         "TEXCOORD_0" : 217
                     },
-                    "indices" : 171
+                    "indices" : 171,
+                    "material" : 16
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "Office main"
-            },
             "name" : "Office_Bulb_Mesh",
             "primitives" : [
                 {
@@ -3194,7 +3411,7 @@
                         "TEXCOORD_0" : 220
                     },
                     "indices" : 157,
-                    "material" : 5
+                    "material" : 17
                 }
             ]
         },
@@ -3213,7 +3430,7 @@
                         "TEXCOORD_0" : 223
                     },
                     "indices" : 157,
-                    "material" : 5
+                    "material" : 18
                 }
             ]
         },
@@ -3232,7 +3449,7 @@
                         "TEXCOORD_0" : 226
                     },
                     "indices" : 175,
-                    "material" : 5
+                    "material" : 19
                 }
             ]
         }
