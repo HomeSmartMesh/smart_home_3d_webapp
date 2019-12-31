@@ -9,16 +9,33 @@ var anim_params = {};
 var color_params = {};
 var user_hue_to_name = {};
 
-function create_camera(){
+function create_camera(gltf){
+	let res_cam;
 	var container = document.getElementById('viewer');
 	var w = container.clientWidth;
 	var h = container.clientHeight;
-	camera = new THREE.PerspectiveCamera( 45, w / h, 0.01, 50 );
-	const imported_camera = scene.getObjectByName("Camera");
-	//camera.position = imported_camera.position;
-	//camera.rotation = imported_camera.rotation;
-	camera.position.y = 5;	camera.position.x = 0;	camera.position.z = 5;
-	return camera;
+	const scene_cam = gltf.scene.getObjectByName("Camera");
+	if(typeof(scene_cam) != "undefined"){
+		const gltf_cam = gltf.cameras[0];
+		if(gltf_cam.type == "PerspectiveCamera"){
+			//issue assigning the camera does not succeed, so mapping params on creation
+			res_cam = new THREE.PerspectiveCamera( gltf_cam.fov, w / h, gltf_cam.near, gltf_cam.far );
+			console.log(`three_app> create_camera()`);
+			res_cam.position.copy(scene_cam.position);
+			res_cam.rotation.copy(scene_cam.rotation);
+		}
+	}
+
+	if(typeof(res_cam) == "undefined"){
+		res_cam = new THREE.PerspectiveCamera( cam.fov, w / h, 0.01, 50 );
+		console.log(`three_app> create_camera()`);
+		console.log(cam.position);
+		res_cam.position.setX(0);
+		res_cam.position.setY(5);
+		res_cam.position.setz(5);
+	}
+
+	return res_cam;
 }
 
 function create_renderer(){
@@ -238,7 +255,7 @@ function load_scene(user_on_load,gltf_filename){
 			init_custom_names(scene);
 			init_shadows(scene);
 			add_ambient_light();
-			camera = create_camera(scene);
+			camera = create_camera(gltf);
 			renderer = create_renderer();
 			orbit_control = add_view_orbit(camera,renderer);
 			user_on_load();

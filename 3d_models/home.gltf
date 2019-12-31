@@ -259,6 +259,7 @@
             "extras" : {
                 "glTF2ExportSettings" : {
                     "export_apply" : 0,
+                    "export_cameras" : 1,
                     "export_extras" : 1,
                     "export_format" : "GLTF_EMBEDDED",
                     "export_lights" : 1
@@ -266,24 +267,37 @@
             },
             "name" : "Scene",
             "nodes" : [
-                0,
-                179
+                1,
+                180
             ]
         }
     ],
     "nodes" : [
         {
+            "camera" : 0,
+            "name" : "Camera_Orientation",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                0
+            ],
             "name" : "Camera",
             "rotation" : [
-                0.43977731466293335,
-                0.017082486301660538,
-                -0.008366688154637814,
-                0.8979054093360901
+                0.4366999864578247,
+                0.008476975373923779,
+                -0.004115242976695299,
+                0.8995578289031982
             ],
             "translation" : [
-                -6.271018981933594,
-                9.013792037963867,
-                13.06398868560791
+                -0.7210190296173096,
+                9.153792381286621,
+                9.523988723754883
             ]
         },
         {
@@ -292,13 +306,13 @@
         },
         {
             "children" : [
-                1
+                2
             ],
             "name" : "Balcony"
         },
         {
             "children" : [
-                2
+                3
             ],
             "name" : "Balcony:1"
         },
@@ -312,13 +326,13 @@
         },
         {
             "children" : [
-                5
+                6
             ],
             "name" : "DoorWall (2)"
         },
         {
             "children" : [
-                6
+                7
             ],
             "name" : "DoorWall (2):1"
         },
@@ -328,13 +342,13 @@
         },
         {
             "children" : [
-                8
+                9
             ],
             "name" : "LivingroomWall"
         },
         {
             "children" : [
-                9
+                10
             ],
             "name" : "LivingroomWall:1"
         },
@@ -348,13 +362,13 @@
         },
         {
             "children" : [
-                11
+                12
             ],
             "name" : "NeighboursWall (1)"
         },
         {
             "children" : [
-                12
+                13
             ],
             "name" : "NeighboursWall (1):1"
         },
@@ -364,29 +378,29 @@
         },
         {
             "children" : [
-                14
+                15
             ],
             "name" : "OfficeWall"
         },
         {
             "children" : [
-                15
+                16
             ],
             "name" : "OfficeWall:1"
         },
         {
             "children" : [
-                4,
-                7,
-                10,
-                13,
-                16
+                5,
+                8,
+                11,
+                14,
+                17
             ],
             "name" : "Bathroom.001"
         },
         {
             "children" : [
-                17
+                18
             ],
             "name" : "Bathroom:1"
         },
@@ -400,13 +414,13 @@
         },
         {
             "children" : [
-                20
+                21
             ],
             "name" : "DoorWall"
         },
         {
             "children" : [
-                21
+                22
             ],
             "name" : "DoorWall:1"
         },
@@ -420,13 +434,13 @@
         },
         {
             "children" : [
-                23
+                24
             ],
             "name" : "OfficeWall (1)"
         },
         {
             "children" : [
-                24
+                25
             ],
             "name" : "OfficeWall (1):1"
         },
@@ -436,13 +450,13 @@
         },
         {
             "children" : [
-                26
+                27
             ],
             "name" : "OutWall"
         },
         {
             "children" : [
-                27
+                28
             ],
             "name" : "OutWall:1"
         },
@@ -452,29 +466,29 @@
         },
         {
             "children" : [
-                29
+                30
             ],
             "name" : "WindowWall"
         },
         {
             "children" : [
-                30
+                31
             ],
             "name" : "WindowWall:1"
         },
         {
             "children" : [
-                19,
-                22,
-                25,
-                28,
-                31
+                20,
+                23,
+                26,
+                29,
+                32
             ],
             "name" : "Bedroom"
         },
         {
             "children" : [
-                32
+                33
             ],
             "name" : "Bedroom:1"
         },
@@ -489,13 +503,13 @@
         },
         {
             "children" : [
-                34
+                35
             ],
             "name" : "Center.003"
         },
         {
             "children" : [
-                35
+                36
             ],
             "name" : "Center.002"
         },
@@ -505,13 +519,13 @@
         },
         {
             "children" : [
-                37
+                38
             ],
             "name" : "Corridor.002"
         },
         {
             "children" : [
-                38
+                39
             ],
             "name" : "Corridor:1"
         },
@@ -525,26 +539,26 @@
         },
         {
             "children" : [
-                41
+                42
             ],
             "name" : "OutWall (2)"
         },
         {
             "children" : [
-                42
+                43
             ],
             "name" : "OutWall (2):1"
         },
         {
             "children" : [
-                40,
-                43
+                41,
+                44
             ],
             "name" : "Hallway"
         },
         {
             "children" : [
-                44
+                45
             ],
             "name" : "Hallway:1"
         },
@@ -558,13 +572,13 @@
         },
         {
             "children" : [
-                46
+                47
             ],
             "name" : "CookWall"
         },
         {
             "children" : [
-                47
+                48
             ],
             "name" : "CookWall:1"
         },
@@ -574,13 +588,13 @@
         },
         {
             "children" : [
-                49
+                50
             ],
             "name" : "DoorWall (4)"
         },
         {
             "children" : [
-                50
+                51
             ],
             "name" : "DoorWall (4):1"
         },
@@ -594,13 +608,13 @@
         },
         {
             "children" : [
-                53
+                54
             ],
             "name" : "OutWall (1)"
         },
         {
             "children" : [
-                54
+                55
             ],
             "name" : "OutWall (1):1"
         },
@@ -610,29 +624,29 @@
         },
         {
             "children" : [
-                56
+                57
             ],
             "name" : "WindowWall (2)"
         },
         {
             "children" : [
-                57
+                58
             ],
             "name" : "WindowWall (2):1"
         },
         {
             "children" : [
-                48,
-                51,
+                49,
                 52,
-                55,
-                58
+                53,
+                56,
+                59
             ],
             "name" : "Kitchen.001"
         },
         {
             "children" : [
-                59
+                60
             ],
             "name" : "Kitchen:1"
         },
@@ -642,13 +656,13 @@
         },
         {
             "children" : [
-                61
+                62
             ],
             "name" : "BalconyWall"
         },
         {
             "children" : [
-                62
+                63
             ],
             "name" : "BalconyWall:1"
         },
@@ -658,13 +672,13 @@
         },
         {
             "children" : [
-                64
+                65
             ],
             "name" : "EntranceWall"
         },
         {
             "children" : [
-                65
+                66
             ],
             "name" : "EntranceWall:1"
         },
@@ -674,13 +688,13 @@
         },
         {
             "children" : [
-                67
+                68
             ],
             "name" : "InternalWall"
         },
         {
             "children" : [
-                68
+                69
             ],
             "name" : "InternalWall:1"
         },
@@ -698,29 +712,29 @@
         },
         {
             "children" : [
-                71
+                72
             ],
             "name" : "NeighboursWall (2)"
         },
         {
             "children" : [
-                72
+                73
             ],
             "name" : "NeighboursWall (2):1"
         },
         {
             "children" : [
-                63,
-                66,
-                69,
+                64,
+                67,
                 70,
-                73
+                71,
+                74
             ],
             "name" : "Living Room"
         },
         {
             "children" : [
-                74
+                75
             ],
             "name" : "Living Room:1"
         },
@@ -730,13 +744,13 @@
         },
         {
             "children" : [
-                76
+                77
             ],
             "name" : "BedroomWall"
         },
         {
             "children" : [
-                77
+                78
             ],
             "name" : "BedroomWall:1"
         },
@@ -746,13 +760,13 @@
         },
         {
             "children" : [
-                79
+                80
             ],
             "name" : "DoorWall (1)"
         },
         {
             "children" : [
-                80
+                81
             ],
             "name" : "DoorWall (1):1"
         },
@@ -766,13 +780,13 @@
         },
         {
             "children" : [
-                82
+                83
             ],
             "name" : "NeighboursWall"
         },
         {
             "children" : [
-                83
+                84
             ],
             "name" : "NeighboursWall:1"
         },
@@ -786,29 +800,29 @@
         },
         {
             "children" : [
-                86
+                87
             ],
             "name" : "WindowWall (1)"
         },
         {
             "children" : [
-                87
+                88
             ],
             "name" : "WindowWall (1):1"
         },
         {
             "children" : [
-                78,
-                81,
-                84,
+                79,
+                82,
                 85,
-                88
+                86,
+                89
             ],
             "name" : "Office.001"
         },
         {
             "children" : [
-                89
+                90
             ],
             "name" : "Office:1"
         },
@@ -822,13 +836,13 @@
         },
         {
             "children" : [
-                91
+                92
             ],
             "name" : "BathroomWall"
         },
         {
             "children" : [
-                92
+                93
             ],
             "name" : "BathroomWall:1"
         },
@@ -838,13 +852,13 @@
         },
         {
             "children" : [
-                94
+                95
             ],
             "name" : "CupboardWall"
         },
         {
             "children" : [
-                95
+                96
             ],
             "name" : "CupboardWall:1"
         },
@@ -854,13 +868,13 @@
         },
         {
             "children" : [
-                97
+                98
             ],
             "name" : "DoorWall (3)"
         },
         {
             "children" : [
-                98
+                99
             ],
             "name" : "DoorWall (3):1"
         },
@@ -874,13 +888,13 @@
         },
         {
             "children" : [
-                100
+                101
             ],
             "name" : "LivingroomWall (1)"
         },
         {
             "children" : [
-                101
+                102
             ],
             "name" : "LivingroomWall (1):1"
         },
@@ -890,32 +904,32 @@
         },
         {
             "children" : [
-                93,
-                96,
-                99,
-                102,
-                103
+                94,
+                97,
+                100,
+                103,
+                104
             ],
             "name" : "Toilet"
         },
         {
             "children" : [
-                104
+                105
             ],
             "name" : "Toilet:1"
         },
         {
             "children" : [
-                3,
-                18,
-                33,
-                36,
-                39,
-                45,
-                60,
-                75,
-                90,
-                105
+                4,
+                19,
+                34,
+                37,
+                40,
+                46,
+                61,
+                76,
+                91,
+                106
             ],
             "name" : "Building",
             "rotation" : [
@@ -965,8 +979,8 @@
         },
         {
             "children" : [
-                107,
-                108
+                108,
+                109
             ],
             "mesh" : 37,
             "name" : "Bathroom Heater",
@@ -1011,8 +1025,8 @@
         },
         {
             "children" : [
-                110,
-                111
+                111,
+                112
             ],
             "mesh" : 40,
             "name" : "Bedroom Heater",
@@ -1071,11 +1085,11 @@
         },
         {
             "children" : [
-                109,
-                112,
+                110,
                 113,
                 114,
-                115
+                115,
+                116
             ],
             "name" : "Heating",
             "scale" : [
@@ -1105,7 +1119,7 @@
         },
         {
             "children" : [
-                117
+                118
             ],
             "name" : "Bathroom Light1",
             "scale" : [
@@ -1121,12 +1135,12 @@
         },
         {
             "children" : [
-                118
+                119
             ],
             "extras" : {
                 "mouseEvent" : "true",
                 "muteteColor" : "45C050",
-                "hue" : "Bathroom"
+                "hue" : "Bathroom main"
             },
             "mesh" : 44,
             "name" : "Bathroom",
@@ -1157,7 +1171,7 @@
         },
         {
             "children" : [
-                120
+                121
             ],
             "name" : "Malm Light Frame",
             "scale" : [
@@ -1168,8 +1182,13 @@
         },
         {
             "children" : [
-                121
+                122
             ],
+            "extras" : {
+                "hue" : "Bed Malm",
+                "mutateColor" : "45C050",
+                "mouseEvent" : "true"
+            },
             "mesh" : 45,
             "name" : "Malm Frame",
             "scale" : [
@@ -1199,7 +1218,7 @@
         },
         {
             "children" : [
-                123
+                124
             ],
             "name" : "N Night Light Frame",
             "scale" : [
@@ -1210,8 +1229,13 @@
         },
         {
             "children" : [
-                124
+                125
             ],
+            "extras" : {
+                "hue" : "Bed N",
+                "mutateColor" : "45C050",
+                "mouseEvent" : "true"
+            },
             "mesh" : 46,
             "name" : "N Night Frame",
             "scale" : [
@@ -1241,7 +1265,7 @@
         },
         {
             "children" : [
-                126
+                127
             ],
             "name" : "W Night Light Frame",
             "scale" : [
@@ -1252,8 +1276,13 @@
         },
         {
             "children" : [
-                127
+                128
             ],
+            "extras" : {
+                "hue" : "Bed W",
+                "mutateColor" : "45C050",
+                "mouseEvent" : "true"
+            },
             "mesh" : 47,
             "name" : "W Night Frame",
             "scale" : [
@@ -1269,9 +1298,9 @@
         },
         {
             "children" : [
-                122,
-                125,
-                128
+                123,
+                126,
+                129
             ],
             "mesh" : 48,
             "name" : "Bedroom Light Group",
@@ -1302,7 +1331,7 @@
         },
         {
             "children" : [
-                130
+                131
             ],
             "name" : "Corridor Light Frame",
             "scale" : [
@@ -1313,12 +1342,12 @@
         },
         {
             "children" : [
-                131
+                132
             ],
             "extras" : {
                 "mutateColor" : "45C050",
                 "mouseEvent" : "true",
-                "hue" : "Corridor"
+                "hue" : "corridor"
             },
             "mesh" : 49,
             "name" : "Corridor",
@@ -1349,7 +1378,7 @@
         },
         {
             "children" : [
-                133
+                134
             ],
             "name" : "Hallway Light 1",
             "scale" : [
@@ -1360,8 +1389,13 @@
         },
         {
             "children" : [
-                134
+                135
             ],
+            "extras" : {
+                "hue" : "Entrance White 1",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 50,
             "name" : "Hallway Light 1 Frame",
             "scale" : [
@@ -1391,7 +1425,7 @@
         },
         {
             "children" : [
-                136
+                137
             ],
             "name" : "Hallway Light 2",
             "scale" : [
@@ -1402,8 +1436,13 @@
         },
         {
             "children" : [
-                137
+                138
             ],
+            "extras" : {
+                "hue" : "Entrance White 2",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 51,
             "name" : "Hallway Light 2 Frame",
             "scale" : [
@@ -1419,8 +1458,8 @@
         },
         {
             "children" : [
-                135,
-                138
+                136,
+                139
             ],
             "mesh" : 52,
             "name" : "Hallway Light Group",
@@ -1451,7 +1490,7 @@
         },
         {
             "children" : [
-                140
+                141
             ],
             "extras" : {
                 "max" : 10
@@ -1465,8 +1504,13 @@
         },
         {
             "children" : [
-                141
+                142
             ],
+            "extras" : {
+                "hue" : "LivingTop1",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 53,
             "name" : "LivingTop1",
             "scale" : [
@@ -1496,7 +1540,7 @@
         },
         {
             "children" : [
-                143
+                144
             ],
             "name" : "LivingTop_Spot2",
             "scale" : [
@@ -1507,8 +1551,13 @@
         },
         {
             "children" : [
-                144
+                145
             ],
+            "extras" : {
+                "hue" : "LivingTop2",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 54,
             "name" : "LivingTop2",
             "scale" : [
@@ -1538,7 +1587,7 @@
         },
         {
             "children" : [
-                146
+                147
             ],
             "name" : "LivingTop_Spot3",
             "scale" : [
@@ -1549,8 +1598,13 @@
         },
         {
             "children" : [
-                147
+                148
             ],
+            "extras" : {
+                "hue" : "LivingTop3",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 55,
             "name" : "LivingTop3",
             "scale" : [
@@ -1580,7 +1634,7 @@
         },
         {
             "children" : [
-                149
+                150
             ],
             "name" : "LivingTop_Spot4",
             "scale" : [
@@ -1591,8 +1645,13 @@
         },
         {
             "children" : [
-                150
+                151
             ],
+            "extras" : {
+                "hue" : "LivingTop4",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 56,
             "name" : "LivingTop4",
             "scale" : [
@@ -1622,7 +1681,7 @@
         },
         {
             "children" : [
-                152
+                153
             ],
             "name" : "LivingTop_Spot5",
             "scale" : [
@@ -1633,8 +1692,13 @@
         },
         {
             "children" : [
-                153
+                154
             ],
+            "extras" : {
+                "hue" : "LivingTop5",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 57,
             "name" : "LivingTop5",
             "scale" : [
@@ -1650,11 +1714,11 @@
         },
         {
             "children" : [
-                142,
-                145,
-                148,
-                151,
-                154
+                143,
+                146,
+                149,
+                152,
+                155
             ],
             "mesh" : 58,
             "name" : "Livingroom Center Light Group",
@@ -1685,7 +1749,7 @@
         },
         {
             "children" : [
-                156
+                157
             ],
             "name" : "malms 1 Light",
             "scale" : [
@@ -1696,8 +1760,13 @@
         },
         {
             "children" : [
-                157
+                158
             ],
+            "extras" : {
+                "hue" : "malms 1",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 59,
             "name" : "malms 1 Frame",
             "scale" : [
@@ -1727,7 +1796,7 @@
         },
         {
             "children" : [
-                159
+                160
             ],
             "name" : "malms 2 Light",
             "scale" : [
@@ -1738,8 +1807,13 @@
         },
         {
             "children" : [
-                160
+                161
             ],
+            "extras" : {
+                "hue" : "malms 2",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 60,
             "name" : "malms 2 Frame",
             "scale" : [
@@ -1769,7 +1843,7 @@
         },
         {
             "children" : [
-                162
+                163
             ],
             "name" : "malms 3 Light",
             "scale" : [
@@ -1780,8 +1854,13 @@
         },
         {
             "children" : [
-                163
+                164
             ],
+            "extras" : {
+                "hue" : "malms 3",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
+            },
             "mesh" : 61,
             "name" : "malms 3 Frame",
             "scale" : [
@@ -1811,7 +1890,7 @@
         },
         {
             "children" : [
-                165
+                166
             ],
             "extras" : {
                 "max" : 10
@@ -1825,10 +1904,12 @@
         },
         {
             "children" : [
-                166
+                167
             ],
             "extras" : {
-                "type" : "light"
+                "hue" : "malms 4",
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050"
             },
             "mesh" : 62,
             "name" : "malms 4 Frame",
@@ -1845,10 +1926,10 @@
         },
         {
             "children" : [
-                158,
-                161,
-                164,
-                167
+                159,
+                162,
+                165,
+                168
             ],
             "mesh" : 63,
             "name" : "Livingroom Malms Light Group",
@@ -1879,7 +1960,7 @@
         },
         {
             "children" : [
-                169
+                170
             ],
             "extras" : {
                 "maxLight" : 10
@@ -1898,7 +1979,7 @@
         },
         {
             "children" : [
-                170
+                171
             ],
             "extras" : {
                 "hue" : "Office main",
@@ -1934,7 +2015,7 @@
         },
         {
             "children" : [
-                172
+                173
             ],
             "name" : "Kitchen Light",
             "scale" : [
@@ -1950,7 +2031,7 @@
         },
         {
             "children" : [
-                173
+                174
             ],
             "extras" : {
                 "mouseEvent" : "true",
@@ -1986,7 +2067,7 @@
         },
         {
             "children" : [
-                175
+                176
             ],
             "name" : "Toilet Light Frame",
             "scale" : [
@@ -1997,12 +2078,12 @@
         },
         {
             "children" : [
-                176
+                177
             ],
             "extras" : {
                 "mouseEvent" : "true",
                 "mutateColor" : "45C050",
-                "hue" : "Toilet_Bulb"
+                "hue" : "Toilet"
             },
             "mesh" : 66,
             "name" : "Toilet Bulb",
@@ -2019,15 +2100,15 @@
         },
         {
             "children" : [
-                119,
-                129,
-                132,
-                139,
-                155,
-                168,
-                171,
-                174,
-                177
+                120,
+                130,
+                133,
+                140,
+                156,
+                169,
+                172,
+                175,
+                178
             ],
             "name" : "Lights",
             "scale" : [
@@ -2043,9 +2124,9 @@
         },
         {
             "children" : [
-                106,
-                116,
-                178
+                107,
+                117,
+                179
             ],
             "name" : "Center",
             "scale" : [
@@ -2053,6 +2134,17 @@
                 0.10000000149011612,
                 0.10000000149011612
             ]
+        }
+    ],
+    "cameras" : [
+        {
+            "name" : "Camera.001",
+            "perspective" : {
+                "yfov" : 0.898520222320552,
+                "zfar" : 100,
+                "znear" : 0.10000000149011612
+            },
+            "type" : "perspective"
         }
     ],
     "materials" : [
@@ -2117,9 +2209,51 @@
             "name" : "Bathroom_Bulb Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Malm Light Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "N Night Light Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "W Night Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -3050,11 +3184,6 @@
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "Bathroom main"
-            },
             "name" : "Bathroom_Bulb",
             "primitives" : [
                 {
@@ -3069,11 +3198,6 @@
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "Bed Malm"
-            },
             "name" : "Malm Mesh",
             "primitives" : [
                 {
@@ -3082,16 +3206,12 @@
                         "NORMAL" : 159,
                         "TEXCOORD_0" : 160
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 5
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "Bed N"
-            },
             "name" : "N Night Light",
             "primitives" : [
                 {
@@ -3100,16 +3220,12 @@
                         "NORMAL" : 163,
                         "TEXCOORD_0" : 164
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 6
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "Bed W"
-            },
             "name" : "W Night Light",
             "primitives" : [
                 {
@@ -3118,7 +3234,8 @@
                         "NORMAL" : 166,
                         "TEXCOORD_0" : 167
                     },
-                    "indices" : 161
+                    "indices" : 161,
+                    "material" : 7
                 }
             ]
         },
@@ -3141,11 +3258,6 @@
             ]
         },
         {
-            "extras" : {
-                "hue" : "corridor",
-                "type" : "light",
-                "mouseEvent" : "true"
-            },
             "name" : "Corridor Bulb Mesh",
             "primitives" : [
                 {
@@ -3155,16 +3267,11 @@
                         "TEXCOORD_0" : 174
                     },
                     "indices" : 175,
-                    "material" : 5
+                    "material" : 8
                 }
             ]
         },
         {
-            "extras" : {
-                "hue" : "Entrance White 1",
-                "type" : "light",
-                "mouseEvent" : "true"
-            },
             "name" : "Hallway Light 1",
             "primitives" : [
                 {
@@ -3174,16 +3281,11 @@
                         "TEXCOORD_0" : 178
                     },
                     "indices" : 175,
-                    "material" : 6
+                    "material" : 9
                 }
             ]
         },
         {
-            "extras" : {
-                "hue" : "Entrance White 2",
-                "type" : "light",
-                "mouseEvent" : "true"
-            },
             "name" : "Hallway Light 2",
             "primitives" : [
                 {
@@ -3193,7 +3295,7 @@
                         "TEXCOORD_0" : 181
                     },
                     "indices" : 175,
-                    "material" : 7
+                    "material" : 10
                 }
             ]
         },
@@ -3216,11 +3318,6 @@
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "LivingTop1"
-            },
             "name" : "LivingTop1",
             "primitives" : [
                 {
@@ -3230,16 +3327,11 @@
                         "TEXCOORD_0" : 187
                     },
                     "indices" : 161,
-                    "material" : 8
+                    "material" : 11
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "LivingTop2"
-            },
             "name" : "LivingTop2",
             "primitives" : [
                 {
@@ -3249,16 +3341,11 @@
                         "TEXCOORD_0" : 190
                     },
                     "indices" : 161,
-                    "material" : 9
+                    "material" : 12
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "LivingTop3"
-            },
             "name" : "LivingTop3",
             "primitives" : [
                 {
@@ -3268,16 +3355,11 @@
                         "TEXCOORD_0" : 193
                     },
                     "indices" : 161,
-                    "material" : 10
+                    "material" : 13
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "LivingTop4"
-            },
             "name" : "LivingTop4",
             "primitives" : [
                 {
@@ -3287,16 +3369,11 @@
                         "TEXCOORD_0" : 196
                     },
                     "indices" : 161,
-                    "material" : 10
+                    "material" : 13
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "LivingTop5"
-            },
             "name" : "LivingTop5",
             "primitives" : [
                 {
@@ -3306,7 +3383,7 @@
                         "TEXCOORD_0" : 199
                     },
                     "indices" : 161,
-                    "material" : 11
+                    "material" : 14
                 }
             ]
         },
@@ -3328,11 +3405,6 @@
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "malms 1"
-            },
             "name" : "malms 1 Mesh",
             "primitives" : [
                 {
@@ -3342,16 +3414,11 @@
                         "TEXCOORD_0" : 205
                     },
                     "indices" : 161,
-                    "material" : 12
+                    "material" : 15
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "malms 2"
-            },
             "name" : "malms 2 Mesh",
             "primitives" : [
                 {
@@ -3361,16 +3428,11 @@
                         "TEXCOORD_0" : 208
                     },
                     "indices" : 161,
-                    "material" : 13
+                    "material" : 16
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "malms 3"
-            },
             "name" : "malms 3 Mesh",
             "primitives" : [
                 {
@@ -3380,16 +3442,11 @@
                         "TEXCOORD_0" : 211
                     },
                     "indices" : 161,
-                    "material" : 14
+                    "material" : 17
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "malms 4"
-            },
             "name" : "malms 4 Mesh",
             "primitives" : [
                 {
@@ -3399,7 +3456,7 @@
                         "TEXCOORD_0" : 214
                     },
                     "indices" : 161,
-                    "material" : 15
+                    "material" : 18
                 }
             ]
         },
@@ -3417,7 +3474,7 @@
                         "TEXCOORD_0" : 217
                     },
                     "indices" : 171,
-                    "material" : 16
+                    "material" : 19
                 }
             ]
         },
@@ -3431,7 +3488,7 @@
                         "TEXCOORD_0" : 220
                     },
                     "indices" : 157,
-                    "material" : 17
+                    "material" : 20
                 }
             ]
         },
@@ -3445,16 +3502,11 @@
                         "TEXCOORD_0" : 223
                     },
                     "indices" : 157,
-                    "material" : 18
+                    "material" : 21
                 }
             ]
         },
         {
-            "extras" : {
-                "hue" : "Toilet",
-                "type" : "light",
-                "mouseEvent" : "true"
-            },
             "name" : "Toilet Bulb Mesh",
             "primitives" : [
                 {
@@ -3464,7 +3516,7 @@
                         "TEXCOORD_0" : 226
                     },
                     "indices" : 175,
-                    "material" : 19
+                    "material" : 22
                 }
             ]
         }

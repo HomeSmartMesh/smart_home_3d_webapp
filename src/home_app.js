@@ -138,7 +138,7 @@ function onHueStartup(e){
 			}
 		}
 		else{
-			console.warn(`home_app> hue light '${light.name}' does not exist as mesh`);
+			console.warn(`home_app> no Object has hue property = '${light.name}'`);
 		}
 	}
 
