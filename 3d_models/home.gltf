@@ -1123,6 +1123,11 @@
             "children" : [
                 118
             ],
+            "extras" : {
+                "mouseEvent" : "true",
+                "muteteColor" : "45C050",
+                "hue" : "Bathroom"
+            },
             "mesh" : 44,
             "name" : "Bathroom",
             "scale" : [
@@ -1310,6 +1315,11 @@
             "children" : [
                 131
             ],
+            "extras" : {
+                "mutateColor" : "45C050",
+                "mouseEvent" : "true",
+                "hue" : "Corridor"
+            },
             "mesh" : 49,
             "name" : "Corridor",
             "scale" : [
@@ -1942,6 +1952,11 @@
             "children" : [
                 173
             ],
+            "extras" : {
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050",
+                "hue" : "Kitchen"
+            },
             "mesh" : 65,
             "name" : "Kitchen",
             "scale" : [
@@ -1984,6 +1999,11 @@
             "children" : [
                 176
             ],
+            "extras" : {
+                "mouseEvent" : "true",
+                "mutateColor" : "45C050",
+                "hue" : "Toilet_Bulb"
+            },
             "mesh" : 66,
             "name" : "Toilet Bulb",
             "scale" : [
@@ -2111,9 +2131,9 @@
             "name" : "Corridor Bulb Mesh Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2125,9 +2145,9 @@
             "name" : "Hallway Light 1 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2139,9 +2159,9 @@
             "name" : "Hallway Light 2 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2153,9 +2173,9 @@
             "name" : "LivingTop1 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2167,9 +2187,9 @@
             "name" : "LivingTop2 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2181,9 +2201,9 @@
             "name" : "LivingTop3 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2195,9 +2215,9 @@
             "name" : "LivingTop5 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2209,9 +2229,9 @@
             "name" : "malms 1 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2223,9 +2243,9 @@
             "name" : "malms 2 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2237,9 +2257,9 @@
             "name" : "malms 3 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2251,9 +2271,9 @@
             "name" : "malms 4 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2293,9 +2313,9 @@
             "name" : "Kitchen Bulb Mesh Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2307,9 +2327,9 @@
             "name" : "Toilet_Bulb_Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
+                    0.061246052384376526,
+                    0.0382043682038784,
+                    0.0382043793797493,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -3416,11 +3436,6 @@
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "light",
-                "hue" : "Kitchen"
-            },
             "name" : "Kitchen Bulb Mesh",
             "primitives" : [
                 {

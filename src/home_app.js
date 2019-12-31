@@ -4,8 +4,9 @@ import * as control from "./three_control.js";
 
 import config from "../config.js";
 
-var hue_mesh_name = {};
-var hue_light_states = {};
+let is_emulation = false;
+let hue_mesh_name = {};
+let hue_light_states = {};
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -83,14 +84,16 @@ function onMeshControl(e){
 }
 
 function onMeshClick(e){
-	console.log(`home_app> mesh_click on ${e.detail.name}`);
+	//console.log(`home_app> mesh_click on ${e.detail.name}`);
 	if(e.detail.userData.type == "light"){
-		const current_state = hue_light_states[e.detail.name];
-		set_mesh_light(e.detail.name,!current_state);
+		if(is_emulation){
+			const current_state = hue_light_states[e.detail.name];
+			set_mesh_light(e.detail.name,!current_state);
+		}
 	}
-	else if(e.detail.type == "lightgroup"){
+	else if(e.detail.userData.type == "lightgroup"){
 	}
-	else if(e.detail.type == "heating"){
+	else if(e.detail.userData.type == "heating"){
 	}
 }
 
@@ -106,9 +109,17 @@ function set_mesh_light(name,state){
 }
 
 function onHueLightState(e){
-	const mesh_name = hue_mesh_name[e.detail.name];
-	hue_light_states[mesh_name] = e.detail.on;
-	set_mesh_light(mesh_name,e.detail.on);
+	if(typeof(e.detail.reach) != "undefined"){
+		const mesh_name = hue_mesh_name[e.detail.name];
+		hue_light_states[mesh_name] = false;
+		set_mesh_light(mesh_name,false);
+		send_custom_event("three_param",{name:mesh_name, color:0});
+	}
+	else if(typeof(e.detail.on) != "undefined"){
+		const mesh_name = hue_mesh_name[e.detail.name];
+		hue_light_states[mesh_name] = e.detail.on;
+		set_mesh_light(mesh_name,e.detail.on);
+	}
 }
 
 function onHueStartup(e){

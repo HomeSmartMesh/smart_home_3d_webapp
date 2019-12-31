@@ -91,15 +91,17 @@ function onMeshClick(event){
             }
             var l_id = light_ids[hue_name];
             user.getLight(l_id).then(data => {
-                if(data.state.reachable == true) {
+                if(typeof(data[0]) != "undefined"){
+                    console.warn(`hue_app> hue light '${hue_name}' unreachable`);
+                    console.warn(data[0].error);
+                    send_custom_event("hue_light_state",{name:hue_name,reach:false});
+                }
+                else if(data.state.reachable == true) {
                     const light_new_state = !data.state.on;
                     user.setLightState(l_id, { on: light_new_state }).then(data => {
                         send_custom_event("hue_light_state",{name:hue_name,on:light_new_state});
                         console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
                     });
-                }
-                else{
-                    console.warn(`hue_app> hue light '${hue_name}' unreachable`);
                 }
             });
     }
