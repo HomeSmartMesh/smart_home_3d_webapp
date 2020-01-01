@@ -31,10 +31,14 @@ function init(){
 
 //in this callback, three is ready
 function on_load(){
+
+	document.getElementById("three_bar").innerHTML = "on_load()";
+	document.getElementById("three_bar").style.width = "10%";
 	mouse.init(three.getCamera());
 	const mouse_mesh_list = three.getMouseMeshList();
 	mouse.SetMeshList(mouse_mesh_list);
 
+	document.getElementById("three_bar").style.width = "40%";
 	mouse_mesh_list.forEach(mesh => {
 
 		if(typeof(mesh.userData.mqtt) != "undefined"){
@@ -55,10 +59,16 @@ function on_load(){
 
 	});
 
+	document.getElementById("three_bar").style.width = "70%";
 	control.init(three.getScene(),three.getCamera(),three.getControl());
 	//control.init(scene,camera,orbit_control);
 
+	document.getElementById("three_bar").style.width = "90%";
 	three.animate();
+
+	document.getElementById("three_bar").style.width = "100%";
+	document.getElementById("three_bar").style.display = "none";
+
 
 }
 

@@ -2,6 +2,8 @@ import * as THREE from "./../jsm/three/three.module.js";
 import { OrbitControls } from "./../jsm/three/OrbitControls.js";
 import { GLTFLoader } from "./../jsm/three/GLTFLoader.js";
 
+import config from "./../config.js";
+
 var camera, scene, renderer;
 var orbit_control;
 
@@ -9,10 +11,9 @@ var anim_params = {};
 var color_params = {};
 var user_hue_to_name = {};
 
-var is_stats = false;
+var is_stats = config.stats.enabled_by_default;
 var stats1,stats2,stats3;
 var xPanel;
-
 
 function create_camera(gltf){
 	let res_cam;
@@ -252,28 +253,55 @@ function init_custom_names(scene){
 }
 
 function load_scene(user_on_load,gltf_filename){
+	document.getElementById("three_bar").innerHTML = "glTF loading()";
+	document.getElementById("three_bar").style.width = "0%";
 	var loader = new GLTFLoader();
 	loader.load(gltf_filename,
 		// called when the resource is loaded
 		gltf => {
+			document.getElementById("three_bar").innerHTML = "glTF loaded()";
+			document.getElementById("three_bar").style.width = "0%";
 			scene = gltf.scene;
 			init_custom_visibility(scene);
 			init_custom_animations(gltf,scene);
+			document.getElementById("three_bar").style.width = "10%";
 			init_custom_colors(scene);
 			init_custom_names(scene);
+			document.getElementById("three_bar").style.width = "50%";
 			init_shadows(scene);
 			add_ambient_light();
+			document.getElementById("three_bar").style.width = "70%";
 			camera = create_camera(gltf);
 			renderer = create_renderer();
 			orbit_control = add_view_orbit(camera,renderer);
+			document.getElementById("three_bar").style.width = "100%";
 			user_on_load();
 			//setParam("Axis","pull",4);
 		},
 		// called while loading is progressing
-		xhr => console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ),
+		xhr => {
+			var elem = document.getElementById("myBar");
+			const percent = xhr.loaded / xhr.total * 100;
+			document.getElementById("three_bar").style.width = percent +"%";
+			//elem.style.width = percent + "%";
+			console.log( percent + '% loaded' )},
 		// called when loading has errors
 		error => console.log( 'An error happened',error )
 	);
+}
+
+function set_stats_view(l_view){
+	is_stats = l_view;
+	if(is_stats){
+		stats1.showPanel(0); // Panel 0 = fps
+		stats2.showPanel(1); // Panel 1 = ms
+		stats3.showPanel(3);
+	}
+	else{
+		stats1.showPanel();
+		stats2.showPanel();
+		stats3.showPanel();
+	}
 }
 
 function init_stats(){
@@ -289,15 +317,16 @@ function init_stats(){
 	stats3.domElement.style.cssText = 'position:absolute;top:0px;left:160px;';
 	xPanel = stats3.addPanel( new Stats.Panel( 'tri', '#ff8', '#221' ) );
 	document.body.appendChild(stats3.domElement);
-	stats1.showPanel();
-	stats2.showPanel();
-	stats3.showPanel();
+	set_stats_view(is_stats);
 }
 
 function init(on_load,glTF_filename){
+
 	console.log("three_app> init()");
 
 	init_stats();
+
+	document.getElementById("three_bar").style.width = "0%";
 
 	load_scene(on_load,glTF_filename);
 
@@ -308,17 +337,7 @@ function init(on_load,glTF_filename){
 
 function onKeyPress(e){
 	if(String.fromCharCode(event.which) === 's'){
-		is_stats = ! is_stats;
-		if(is_stats){
-			stats1.showPanel(0); // Panel 0 = fps
-			stats2.showPanel(1); // Panel 1 = ms
-			stats3.showPanel(3);
-		}
-		else{
-			stats1.showPanel();
-			stats2.showPanel();
-			stats3.showPanel();
-		}
+		set_stats_view(! is_stats);
 	}
 }
 
@@ -338,6 +357,7 @@ function animate() {
 		stats2.end();
 		xPanel.update( renderer.info.render.triangles , 10000);
 	}
+
 }
 
 function getMouseMeshList(){

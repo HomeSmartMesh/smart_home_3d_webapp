@@ -45,6 +45,7 @@ function create_user(bridge_ip){
 }
 
 function init(){
+
     if (typeof(Storage) == "undefined") {
         console.error("local storage is not supported");
         return;
