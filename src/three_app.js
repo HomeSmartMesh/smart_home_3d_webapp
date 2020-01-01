@@ -9,11 +9,6 @@ var anim_params = {};
 var color_params = {};
 var user_hue_to_name = {};
 
-var is_stats = false;
-var stats1,stats2,stats3;
-var xPanel;
-
-
 function create_camera(gltf){
 	let res_cam;
 	var container = document.getElementById('viewer');
@@ -73,10 +68,10 @@ function add_view_orbit(camera,renderer){
 
 	orbit_control.screenSpacePanning = false;
 
-	orbit_control.minDistance = 5;
-	orbit_control.maxDistance = camera.far;
+	orbit_control.minDistance = 0.10;
+	orbit_control.maxDistance = 30;
 
-	orbit_control.minPolarAngle =  30 * Math.PI / 180;
+	orbit_control.minPolarAngle =  10 * Math.PI / 180;
 	orbit_control.maxPolarAngle =  80 * Math.PI / 180;
 
 	orbit_control.rotateSpeed = 0.7;
@@ -273,68 +268,21 @@ function load_scene(user_on_load,gltf_filename){
 	);
 }
 
-function init_stats(){
-	stats1 = new Stats();
-	stats1.domElement.style.cssText = 'position:absolute;top:0px;left:0px;';
-	document.body.appendChild(stats1.domElement);
-	
-	stats2 = new Stats();
-	stats2.domElement.style.cssText = 'position:absolute;top:0px;left:80px;';
-	document.body.appendChild(stats2.domElement);
-
-	stats3 = new Stats();
-	stats3.domElement.style.cssText = 'position:absolute;top:0px;left:160px;';
-	xPanel = stats3.addPanel( new Stats.Panel( 'tri', '#ff8', '#221' ) );
-	document.body.appendChild(stats3.domElement);
-	stats1.showPanel();
-	stats2.showPanel();
-	stats3.showPanel();
-}
-
 function init(on_load,glTF_filename){
 	console.log("three_app> init()");
-
-	init_stats();
 
 	load_scene(on_load,glTF_filename);
 
 	window.addEventListener( 'resize', onWindowResize, false );
 	window.addEventListener( 'three_param', onParamUpdate, false );
-	window.addEventListener( 'keypress', onKeyPress, false );
-}
-
-function onKeyPress(e){
-	if(String.fromCharCode(event.which) === 's'){
-		is_stats = ! is_stats;
-		if(is_stats){
-			stats1.showPanel(0); // Panel 0 = fps
-			stats2.showPanel(1); // Panel 1 = ms
-			stats3.showPanel(3);
-		}
-		else{
-			stats1.showPanel();
-			stats2.showPanel();
-			stats3.showPanel();
-		}
-	}
 }
 
 function animate() {
-
-	if(is_stats){
-		stats1.begin();
-		stats2.begin();
-	}
-
-	orbit_control.update(); // only required if orbit_control.enableDamping = true, or if orbit_control.autoRotate = true
-	renderer.render( scene, camera );
 	requestAnimationFrame( animate );
 
-	if(is_stats){
-		stats1.end();
-		stats2.end();
-		xPanel.update( renderer.info.render.triangles , 10000);
-	}
+	orbit_control.update(); // only required if orbit_control.enableDamping = true, or if orbit_control.autoRotate = true
+
+	renderer.render( scene, camera );
 }
 
 function getMouseMeshList(){
