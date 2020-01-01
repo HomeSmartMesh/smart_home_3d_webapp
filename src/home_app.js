@@ -6,6 +6,7 @@ import config from "../config.js";
 
 let is_emulation = false;
 let hue_mesh_name = {};
+let mqtt_mesh_name = {};
 let hue_light_states = {};
 
 function send_custom_event(event_name,data){
@@ -23,6 +24,7 @@ function init(){
 	window.addEventListener( 'mesh_control', onMeshControl, false );
 	window.addEventListener( 'mesh_click', onMeshClick, false );
 	window.addEventListener( 'mesh_hold', onMeshHold, false );
+	window.addEventListener( 'mqtt_message', onMqttMessage, false);
 	
 }
 
@@ -34,16 +36,23 @@ function on_load(){
 	mouse.SetMeshList(mouse_mesh_list);
 
 	mouse_mesh_list.forEach(mesh => {
-		if(mesh.userData.hue != "undefined"){
+
+		if(typeof(mesh.userData.mqtt) != "undefined"){
+			mqtt_mesh_name[mesh.userData.mqtt] = mesh.name;
+		}
+
+		if(typeof(mesh.userData.hue) != "undefined"){
 			hue_mesh_name[mesh.userData.hue] = mesh.name;
 			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});
 		}
-		else if(mesh.userData.type == "lightgroup"){
+
+		if(mesh.userData.type == "lightgroup"){
 			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});		
 		}
 		else if(mesh.userData.type == "heating"){
 			send_custom_event("three_param",{name:mesh.name, color:0});
 		}
+
 	});
 
 	control.init(three.getScene(),three.getCamera(),three.getControl());
@@ -145,13 +154,13 @@ function onHueStartup(e){
 }
 
 function onMqttMessage(e){
-	const obj = three.mqtt_to_object(e.detail.topic);
+	const obj_name = mqtt_mesh_name[e.detail.topic];
+	const obj = three.getScene().getObjectByName(obj_name);
 	if(obj.userData.type == "heating"){
-		const obj_name = obj.name;
 		const heating_demand = e.detail.payload.pi_heating_demand;
 		const ratio = heating_demand / 255;
 		console.log(`home_app> heat mqtt : ${obj_name} ratio at ${ratio}`);
-		send_custom_event('three_param',{name:obj_name,Cool:1-ratio,Hot:ratio});
+		send_custom_event('three_param',{name:obj_name,color:Math.sqrt(ratio)});
 	}
 }
 

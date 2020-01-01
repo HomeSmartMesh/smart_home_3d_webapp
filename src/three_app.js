@@ -190,7 +190,7 @@ function init_custom_colors(scene){
 			color_params[obj.name]["object"] = obj;
 			color_params[obj.name]["color1"] = obj.material.color.getHexString();
 			color_params[obj.name]["color2"] = obj.userData.mutateColor;
-			console.log(`${obj.name} can mutate color from ${obj.material.color.getHexString()} to ${obj.userData.mutateColor}`);
+			//console.log(`${obj.name} can mutate color from ${obj.material.color.getHexString()} to ${obj.userData.mutateColor}`);
 		}
 	});
 }
