@@ -1,8 +1,8 @@
-import * as THREE from "../../jsm/three/three.module.js";
-import { GLTFLoader } from "../../jsm/three/GLTFLoader.js";
+import * as THREE from "./../jsm/three/three.module.js";
+import { GLTFLoader } from "./../jsm/three/GLTFLoader.js";
 
 import * as mouse from "./three_mouse.js";
-import config from "../config.js";
+import config from "./../config.js";
 
 var scene;
 var camera;

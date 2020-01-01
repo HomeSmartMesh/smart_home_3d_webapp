@@ -1,9 +1,9 @@
 import {
 	Raycaster,
 	Vector2
-} from "../../jsm/three/three.module.js";
+} from "./../jsm/three/three.module.js";
 
-import config from "../config.js";
+import config from "./../config.js";
 
 var camera;
 

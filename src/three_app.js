@@ -1,6 +1,6 @@
-import * as THREE from "../../jsm/three/three.module.js";
-import { OrbitControls } from "../../jsm/three/OrbitControls.js";
-import { GLTFLoader } from "../../jsm/three/GLTFLoader.js";
+import * as THREE from "./../jsm/three/three.module.js";
+import { OrbitControls } from "./../jsm/three/OrbitControls.js";
+import { GLTFLoader } from "./../jsm/three/GLTFLoader.js";
 
 var camera, scene, renderer;
 var orbit_control;
@@ -94,6 +94,9 @@ function onWindowResize() {
 }
 
 function add_ambient_light(){
+
+	var hlight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 2 );
+	scene.add( hlight );
 
 	var light = new THREE.AmbientLight( 0xB0B0B0 );
 	scene.add( light );
