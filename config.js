@@ -10,7 +10,8 @@ export default
         "space_range":3,
         "screen_move_sensitivity":150.0,
         "is_bullet_centered_not_slider":true,
-        "sliderPos_CamToObj_ratio":0.3
+        "sliderPos_CamToObj_ratio":0.3,
+        "sliderScale_ToObj_ratio":2
     },
     "stats":{
         "enabled_by_default":true

@@ -69,7 +69,7 @@ function process_mouse_event(event_name, event){
 }
 
 function eventDelay(){
-	//console.log(`event mouse status = ${mouse.status}`);
+	//console.log(`three_mouse>eventDelay() mouse status = ${mouse.status}`);
 	if(mouse.status === "started"){
 		send_custom_event("mesh_hold",{name:mouse.object,userData:mouse.userData,y:mouse.y});
 		mouse.status = "idle";
@@ -82,21 +82,20 @@ function onTouch(event){
 	}
 	mouse.eventStart = Date.now();
 	setTimeout(eventDelay,config.mouse.click_hold_delay_ms);
-	event.preventDefault();
-	//console.log("onTouch",event);
-	if(event.type == "touchstart"){
-		var obj = get_mesh_intersect(event.targetTouches[0].clientX,event.targetTouches[0].clientY);
-		if ( obj != "") {
-			mouse.is_inside_object = true;
-			mouse.object = obj.name;
-			mouse.userData = obj.userData;
-			mouse.y = event.targetTouches[0].clientY;
-			send_custom_event("mesh_touch_start",{ name: obj.name, userData:obj.userData, event:event});
-		}
+	//event.preventDefault();
+	var obj = get_mesh_intersect(event.targetTouches[0].clientX,event.targetTouches[0].clientY);
+	if ( obj != "") {
+		//console.log(`three_mouse> onTouch() at '${obj.name}'`);
+		mouse.is_inside_object = true;
+		mouse.object = obj.name;
+		mouse.userData = obj.userData;
+		mouse.y = event.targetTouches[0].clientY;
+		send_custom_event("mesh_touch_start",{ name: obj.name, userData:obj.userData, event:event});
 	}
 	if(mouse.is_inside_object){
 		mouse.status = "started";
 	}
+	//console.log(`three_mouse> onTouch() mouse status ${mouse.status}`);
 }
 
 function onMouseDown(event){
@@ -112,15 +111,14 @@ function onMouseDown(event){
 }
 
 function onMouseUp(){
-	if(!is_active){
-		return;
+	if(is_active){
+		send_custom_event("mesh_mouse_up",{});
+		if(mouse.status === "started"){
+			//console.log(`three_mouse> onMouseUp --> click on ${mouse.object} ; status = ${mouse.status}`);
+			send_custom_event("mesh_click",{name:mouse.object,userData:mouse.userData});
+		}
 	}
 	mouse.is_inside_object = false;
-	send_custom_event("mesh_mouse_up",{});
-	if(mouse.status === "started"){
-		//console.log(`three_mouse> onMouseUp --> click on ${mouse.object} ; status = ${mouse.status}`);
-		send_custom_event("mesh_click",{name:mouse.object,userData:mouse.userData});
-	}
 	mouse.status = "idle";
 }
 
@@ -143,15 +141,25 @@ function init(l_camera) {
 	container.addEventListener( 'touchstart', onTouch, false );
 	container.addEventListener( 'mouseup', onMouseUp, false );
     container.addEventListener('touchend', onMouseUp, false );
+
+	window.addEventListener( 'three_list', onThreeList, false);
 	
 }
 
 function SetMeshList(l_mesh_list){
 	mesh_list = l_mesh_list;
-	mesh_list.forEach(mesh =>{
-		//console.log(`three_mouse> added mouseEvent to mesh ${mesh.name}`);
-	})
+	//mesh_list.forEach(mesh =>{
+	//	console.log(`three_mouse> added mouseEvent to mesh ${mesh.name}`);
+	//})
 }
+
+function onThreeList(e){
+	if(e.detail.type == "mouseEvent"){
+		SetMeshList(e.detail.list);
+	}
+}
+
+
 
 function suspend(){
 	is_active = false;

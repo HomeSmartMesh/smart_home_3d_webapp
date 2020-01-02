@@ -15,6 +15,11 @@ var is_stats;
 var stats1,stats2,stats3;
 var xPanel;
 
+function send_custom_event(event_name,data){
+	var event = new CustomEvent(event_name, {detail:data});
+	window.dispatchEvent(event);
+}
+
 function create_camera(gltf){
 	let res_cam;
 	var container = document.getElementById('viewer');
@@ -280,6 +285,7 @@ function load_scene(user_on_load,gltf_filename){
 			document.getElementById("three_bar").style.width = "100%";
 			user_on_load();
 			//setParam("Axis","pull",4);
+			sendMeshLists();
 		},
 		// called while loading is progressing
 		xhr => {
@@ -373,19 +379,29 @@ function animate() {
 
 }
 
-function getMouseMeshList(){
-	var mesh_list = [];
+function sendMeshLists(){
+	var mouse_events = [];
+	var mqtt_topics_map = {};
+	var hue_light_map = {};
 	scene.traverse(obj => {
 		if((obj.type == "Mesh")&&(obj.userData.mouseEvent == 'true')){
-			mesh_list.push(obj);
+			mouse_events.push(obj);
 			//console.log(`three_app> mesh '${obj.name}' with mouseEvent`);
 		}
 		if((obj.type == "Group")&&(obj.userData.mouseEvent == 'true')){
-			mesh_list.push(obj);
+			mouse_events.push(obj);
 			//console.log(`three_app> mesh '${obj.name}' with mouseEvent`);
 		}
+		if(typeof(obj.userData.mqtt) != "undefined"){
+			mqtt_topics_map[obj.userData.mqtt] = obj.name;
+		}
+		if(typeof(obj.userData.hue) != "undefined"){
+			hue_light_map[obj.userData.hue] = obj.name;
+		}
 	});
-	return mesh_list;
+	send_custom_event("three_list",{type:"mouseEvent",list:mouse_events});
+	send_custom_event("three_list",{type:"mqtt",map:mqtt_topics_map});
+	send_custom_event("three_list",{type:"hue",map:hue_light_map});
 }
 
 function getCamera(){
@@ -490,7 +506,6 @@ function onParamUpdate(e){
 export{
 		init,
 		animate,
-		getMouseMeshList,
 		getCamera,
 		getScene,
 		getControl

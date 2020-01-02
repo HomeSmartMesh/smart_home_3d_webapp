@@ -25,6 +25,7 @@ function init(){
 	window.addEventListener( 'mesh_click', onMeshClick, false );
 	window.addEventListener( 'mesh_hold', onMeshHold, false );
 	window.addEventListener( 'mqtt_message', onMqttMessage, false);
+	window.addEventListener( 'three_list', onThreeList, false);
 	
 }
 
@@ -35,29 +36,6 @@ function on_load(){
 	document.getElementById("three_bar").innerHTML = "on_load()";
 	document.getElementById("three_bar").style.width = "10%";
 	mouse.init(three.getCamera());
-	const mouse_mesh_list = three.getMouseMeshList();
-	mouse.SetMeshList(mouse_mesh_list);
-
-	document.getElementById("three_bar").style.width = "40%";
-	mouse_mesh_list.forEach(mesh => {
-
-		if(typeof(mesh.userData.mqtt) != "undefined"){
-			mqtt_mesh_name[mesh.userData.mqtt] = mesh.name;
-		}
-
-		if(typeof(mesh.userData.hue) != "undefined"){
-			hue_mesh_name[mesh.userData.hue] = mesh.name;
-			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});
-		}
-
-		if(mesh.userData.type == "lightgroup"){
-			send_custom_event("three_param",{name:mesh.name, color:0, light:0, emissive:0});		
-		}
-		else if(mesh.userData.type == "heating"){
-			send_custom_event("three_param",{name:mesh.name, color:0});
-		}
-
-	});
 
 	document.getElementById("three_bar").style.width = "70%";
 	control.init(three.getScene(),three.getCamera(),three.getControl());
@@ -69,6 +47,20 @@ function on_load(){
 	document.getElementById("three_bar").style.width = "100%";
 	document.getElementById("three_bar").style.display = "none";
 
+
+}
+
+function onThreeList(e){
+	if(e.detail.type == "mqtt"){
+		mqtt_mesh_name = e.detail.map;
+	}
+
+	if(e.detail.type == "hue"){
+		hue_mesh_name = e.detail.map;
+		for(let hue_name in hue_mesh_name){
+			send_custom_event("three_param",{name:hue_mesh_name[hue_name], color:0, light:0, emissive:0});
+		}
+	}
 
 }
 
@@ -166,7 +158,7 @@ function onHueStartup(e){
 function onMqttMessage(e){
 	const obj_name = mqtt_mesh_name[e.detail.topic];
 	const scene = three.getScene();
-	if(scene === "undefined"){
+	if(typeof(scene) === "undefined"){
 		console.warn(`home_app> mqtt message but scene not ready yet`);
 		return
 	}
@@ -174,8 +166,16 @@ function onMqttMessage(e){
 	if(obj.userData.type == "heating"){
 		const heating_demand = e.detail.payload.pi_heating_demand;
 		const ratio = heating_demand / 255;
-		console.log(`home_app> heat mqtt : ${obj_name} ratio at ${ratio}`);
+		console.log(`home_app> heat mqtt : ${obj_name} ratio at ${ratio.toFixed(2)}`);
 		send_custom_event('three_param',{name:obj_name,color:Math.sqrt(ratio)});
+	}
+	if(obj.userData.type == "temperature"){
+		const temp = e.detail.payload.temperature;
+		if(typeof(temp) != "undefined"){
+			const ratio = (temp - (-5.0)) / 40.0;
+			console.log(`home_app> mqtt temperature : ${obj_name} ratio at ${ratio.toFixed(2)}`);
+			send_custom_event('three_param',{name:obj_name,color:ratio});
+		}
 	}
 }
 

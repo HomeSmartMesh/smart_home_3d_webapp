@@ -68,7 +68,7 @@ function run(l_name,clientY,l_start_val=0.5){
     }
     const box_target = new THREE.Box3().setFromObject(target);
     const box_slider = new THREE.Box3().setFromObject(path);
-    const scale = (box_target.max.y - box_target.min.y) / (box_slider.max.y - box_slider.min.y);
+    const scale = config.control.sliderScale_ToObj_ratio * (box_target.max.y - box_target.min.y) / (box_slider.max.y - box_slider.min.y);
     group.scale.set(scale,scale,scale);
     group.visible = true;
     document.getElementById('viewer').style.cursor = "none";

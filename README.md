@@ -117,15 +117,15 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * Hue query on startup to set correct light states, on/off and reachability
 * Consistent state on startup and on actions with the real light bulbs (but no polling in between)
 * mqtt events forward to javascript events
-* stats and fps. Stats can be disabled in [config.json](./config.js)
-```json
-    "stats":{
-        "enabled_by_default":true
-    }
-```
+* stats and fps. (can be disabled in [config.json](./config.js))
 
 ## Planned Features
 
+* use 3d slide with world coordinate on scaled objects
+* adjust light brightness with 3d slider
+* adjust heating with 3d slider
+* switch light groups on / off
+* handle both hue light groups and model made groups with parenting
 * fall back on interactive demo mode from within the same app
 * use lower poly mesh
 
@@ -172,3 +172,13 @@ Limitation when using from github .io :
 <img src="./media/unsafe2.png" width="300">
 
 then reload the page
+
+# Performance
+[webgl report website](https://webglreport.com/)
+
+test model : 8000 triangls
+
+* PC wtih NVIDIA GeForce GTX 745 : 30 FPS, 5 ms
+* Samsung galaxy S10 : 60 FPS
+* Samsung galaxy S5 : 14 FPS
+* Samsung galaxy Tab pro (SM-P900) :  N.A (does not fully load, simplified scene with 3000 tri at 2 FPS)

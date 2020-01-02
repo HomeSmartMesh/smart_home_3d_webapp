@@ -6,6 +6,9 @@ var mqtt_host = "10.0.0.42";
 var mqtt_port = 1884;
 
 var mqtt_in_use = false;
+var mqtt_connected = false;
+
+var mqtt_pending_topics = {};
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -16,13 +19,13 @@ function send_custom_event(event_name,data){
 function onConnect() {
   localStorage.setItem("mqtt","in_use");
   mqtt_in_use = true;
+  mqtt_connected = true;
   // Once a connection has been made, make a subscription and send a message.
   console.log("onConnect");
-  client.subscribe("lzig/office heat");
-  client.subscribe("lzig/bathroom heat");
-  client.subscribe("lzig/living heat");
-  client.subscribe("lzig/bedroom heat");
-  client.subscribe("lzig/kitchen heat");
+  for(let topic in mqtt_pending_topics){
+    client.subscribe(topic);
+    console.log(`mqtt_app> - subscribed to ${topic}`);
+  }
 }
 
 // called when the client loses its connection
@@ -30,6 +33,7 @@ function onConnectionLost(responseObject) {
   if (responseObject.errorCode !== 0) {
     console.log("onConnectionLost:"+responseObject.errorMessage);
   }
+  mqtt_connected = false;
 }
 
 // called when a message arrives
@@ -64,6 +68,7 @@ function init(){
   }
 
   window.addEventListener( 'mesh_click', onMeshClick, false );
+	window.addEventListener( 'three_list', onThreeList, false);
 }
 
 function onMeshClick(event){
@@ -75,6 +80,20 @@ function onMeshClick(event){
         mqtt_connect();
       }
   }
+}
+
+function onThreeList(e){
+	if(e.detail.type == "mqtt"){
+    const mqtt_topics_map = e.detail.map;
+    if(mqtt_connected){
+      for(let topic in mqtt_topics_map){
+        client.subscribe(topic);
+      }
+    }
+    else{
+      mqtt_pending_topics = mqtt_topics_map;
+    }
+	}
 }
 
 //----------------------------------------------------------------------------------
