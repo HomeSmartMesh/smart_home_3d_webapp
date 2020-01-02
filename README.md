@@ -10,7 +10,7 @@
 <img src="./media/hue_register.gif" width="600">
 
 ## Live demo
-Link to [Github .io live demo ]("https://homesmartmesh.github.io/smart_home_3d_webapp/")
+Link to [Github .io live demo](https://homesmartmesh.github.io/smart_home_3d_webapp/)
 
 ## Gif Demo
 
