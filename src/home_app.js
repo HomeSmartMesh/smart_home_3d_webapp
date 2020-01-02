@@ -165,7 +165,12 @@ function onHueStartup(e){
 
 function onMqttMessage(e){
 	const obj_name = mqtt_mesh_name[e.detail.topic];
-	const obj = three.getScene().getObjectByName(obj_name);
+	const scene = three.getScene();
+	if(scene === "undefined"){
+		console.warn(`home_app> mqtt message but scene not ready yet`);
+		return
+	}
+	const obj = scene.getObjectByName(obj_name);
 	if(obj.userData.type == "heating"){
 		const heating_demand = e.detail.payload.pi_heating_demand;
 		const ratio = heating_demand / 255;

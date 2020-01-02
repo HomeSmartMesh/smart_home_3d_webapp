@@ -11,7 +11,7 @@ var anim_params = {};
 var color_params = {};
 var user_hue_to_name = {};
 
-var is_stats = config.stats.enabled_by_default;
+var is_stats;
 var stats1,stats2,stats3;
 var xPanel;
 
@@ -295,6 +295,7 @@ function load_scene(user_on_load,gltf_filename){
 
 function set_stats_view(l_view){
 	is_stats = l_view;
+	console.log(`set_stats_view() to ${l_view}`);
 	if(is_stats){
 		stats1.showPanel(0); // Panel 0 = fps
 		stats2.showPanel(1); // Panel 1 = ms
@@ -320,6 +321,13 @@ function init_stats(){
 	stats3.domElement.style.cssText = 'position:absolute;top:0px;left:160px;';
 	xPanel = stats3.addPanel( new Stats.Panel( 'tri', '#ff8', '#221' ) );
 	document.body.appendChild(stats3.domElement);
+	if(localStorage.getItem("stats") === null){
+		is_stats = config.stats.enabled_by_default;
+	}
+	else{
+		is_stats = (localStorage.getItem("stats") === "true");
+		console.log(`using stats display config from storage : '${is_stats}'`);
+	}
 	set_stats_view(is_stats);
 }
 
@@ -340,7 +348,9 @@ function init(on_load,glTF_filename){
 
 function onKeyPress(e){
 	if(String.fromCharCode(event.which) === 's'){
-		set_stats_view(! is_stats);
+		const new_is_stats = ! is_stats;
+		set_stats_view(new_is_stats);
+		localStorage.setItem("stats",new_is_stats);
 	}
 }
 
