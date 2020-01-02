@@ -13,6 +13,63 @@ We see in this demo a home 3d model augmented with interactive mesh items. Some 
 
 As a demonstration for the reaction time of the real light switching on and off, we can see in the gif animation the power consumption log of the light switched. This log comes from a [shelly 2.5 device](https://shelly.cloud/shelly-25-wifi-smart-relay-roller-shutter-home-automation/) with power monitoring capabilites. This measure device is itself powering up the hue light. Note that the slow power up and down ramp are due to the hue effect of slow variation when switching on and off.
 
+# Concept
+<img src="./media/concept.png" width="600">
+
+Home automation connected to 3d events in javascript
+
+```javascript
+send_custom_event("three_param",{name:"Kitchen", color:0.3});
+send_custom_event("three_param",{name:"Kitchen", light:0.3});
+send_custom_event("three_param",{name:"Kitchen", anim:0.3});
+send_custom_event("three_param",{name:"Kitchen", pull:0.3});
+send_custom_event("three_param",{name:"Kitchen", push:0.3});
+```
+
+<img src="https://github.com/HomeSmartMesh/web_three_interface/raw/master/12_multiple_parameters/media/demo.gif" width="400">
+
+See `three_param` running in a [live demo](https://homesmartmesh.github.io/web_three_interface/12_multiple_parameters/)
+
+
+## Hue config in blender
+<img src="./media/hue_blender.png" width="500">
+
+configuration of hue light name in blender Light bulb object Custom properties.
+
+## Hue events application code
+
+```javascript
+window.addEventListener( 'hue_lights_on_startup', onHueStartup, false );
+window.addEventListener( 'hue_light_state', onHueLightState, false );
+
+function onHueLightState(e){
+    const name = hue_mesh_name[e.detail.name];
+    send_custom_event("three_param",{name:name, light:e.detail.on});
+}
+```
+
+lights broadcast their state on startup and as a feedback when updated from javascript
+
+## Mqtt config in blender
+
+<img src="./media/mqtt_blender.png" width="500">
+
+The mqtt topic has to be assigned to an `mqtt` custom property
+
+## Mqtt events application code
+
+```javascript
+window.addEventListener( 'mqtt_message', onMqttMessage, false);
+
+function onMqttMessage(e){
+    ...
+	if(obj.userData.type == "heating"){
+		const heating_demand = e.detail.payload.pi_heating_demand;
+		send_custom_event('three_param',{name:obj_name,color:heating_demand});
+	}
+}
+```
+
 # blender model
 
 <img src="./media/blender_model.png" width="600">
@@ -63,9 +120,10 @@ then reload the page
 2. adjust the light names to match your hue lights names
 3. press the Hue Gateway authorisation button
 4. Load or reload the web app page
-5. An alert will apear on the screen to wait for confirmation
+5. Click on the 3d model of the hue gateway
+6. An alert will apear on the screen to wait for confirmation
 
-<img src="./media/alert_first_time.png" width="400">
+<img src="./media/hue_register.gif" width="600">
 
 6. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
 

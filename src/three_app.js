@@ -26,7 +26,7 @@ function create_camera(gltf){
 		if(gltf_cam.type == "PerspectiveCamera"){
 			//issue assigning the camera does not succeed, so mapping params on creation
 			res_cam = new THREE.PerspectiveCamera( gltf_cam.fov, w / h, gltf_cam.near, gltf_cam.far );
-			console.log(`three_app> create_camera()`);
+			//console.log(`three_app> create_camera()`);
 			res_cam.position.copy(scene_cam.position);
 			res_cam.rotation.copy(scene_cam.rotation);
 		}
@@ -34,8 +34,8 @@ function create_camera(gltf){
 
 	if(typeof(res_cam) == "undefined"){
 		res_cam = new THREE.PerspectiveCamera( cam.fov, w / h, 0.01, 50 );
-		console.log(`three_app> create_camera()`);
-		console.log(cam.position);
+		//console.log(`three_app> create_camera()`);
+		//console.log(cam.position);
 		res_cam.position.setX(0);
 		res_cam.position.setY(5);
 		res_cam.position.setz(5);
@@ -96,6 +96,9 @@ function onWindowResize() {
 
 function add_ambient_light(){
 
+	var plight = new THREE.PointLight( 0xffffff, 2, 0,0 );
+	plight.position.set( 0, 4, 5 );
+	scene.add( plight );
 	var hlight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 2 );
 	scene.add( hlight );
 
@@ -284,7 +287,7 @@ function load_scene(user_on_load,gltf_filename){
 			const percent = xhr.loaded / xhr.total * 100;
 			document.getElementById("three_bar").style.width = percent +"%";
 			//elem.style.width = percent + "%";
-			console.log( percent + '% loaded' )},
+			console.log( `three_app> model loading ${percent.toFixed(0)} %` )},
 		// called when loading has errors
 		error => console.log( 'An error happened',error )
 	);
@@ -364,6 +367,10 @@ function getMouseMeshList(){
 	var mesh_list = [];
 	scene.traverse(obj => {
 		if((obj.type == "Mesh")&&(obj.userData.mouseEvent == 'true')){
+			mesh_list.push(obj);
+			//console.log(`three_app> mesh '${obj.name}' with mouseEvent`);
+		}
+		if((obj.type == "Group")&&(obj.userData.mouseEvent == 'true')){
 			mesh_list.push(obj);
 			//console.log(`three_app> mesh '${obj.name}' with mouseEvent`);
 		}

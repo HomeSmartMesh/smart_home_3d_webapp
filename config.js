@@ -1,6 +1,6 @@
 export default
 {
-    "glTF_model":"./3d_models/home_simplified.gltf",
+    "glTF_model":"./3d_models/home.gltf",
     "mouse":{
         click_hold_delay_ms : 600
     },

@@ -4,6 +4,7 @@ var user;
 var lights;
 var light_ids;
 var hue_available = false;
+var hue_registred = false;
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -16,8 +17,8 @@ function get_lights_state(){
     user.getLights().then(data => {
         console.log("getLights response");
         lights = data;
-        send_custom_event('hue_lights_on_startup',lights);
         hue_available = true;
+        send_custom_event('hue_lights_on_startup',lights);
         light_ids = {};
         for (const [light_id,light] of Object.entries(lights)) {
             light_ids[light.name] = light_id;
@@ -36,6 +37,7 @@ function create_user(bridge_ip){
             console.log('New username:', username);
             localStorage.setItem("username",username);
             user = bridge.user(username);
+            hue_registred = true;
             get_lights_state();
         }
         else if(typeof(data[0].error) != "undefined"){
@@ -44,12 +46,7 @@ function create_user(bridge_ip){
     });
 }
 
-function init(){
-
-    if (typeof(Storage) == "undefined") {
-        console.error("local storage is not supported");
-        return;
-    }
+function discover(){
     hue.discover().then(bridges => {
         if(bridges.length === 0) {
             console.log('No bridges found. :(');
@@ -67,6 +64,7 @@ function init(){
                 console.log(`using username from browser's local storage`);
                 let bridge = hue.bridge(bridge_ip);
                 user = bridge.user(username);
+                hue_registred = true;
                 get_lights_state();
             }
         }
@@ -75,6 +73,21 @@ function init(){
             console.error(`${bridges.length} bridges found - not supported`);
         }
     }).catch(e => console.log('Error finding bridges', e));
+}
+
+function init(){
+
+    if (localStorage.getItem("username") === null){
+        console.warn(`hue_app> hue not registred, click on hue gateway to start`);
+    }
+    else{
+        console.log(`hue_app> init() hue registred`);
+        hue_registred = true;
+    }
+
+    if(hue_registred){
+        discover();
+    }
             
     window.addEventListener( 'mesh_click', onMeshClick, false );
 
@@ -82,30 +95,41 @@ function init(){
 
 
 function onMeshClick(event){
-    const name = event.detail.name;
-    const hue_name = event.detail.userData.hue;
-    if(typeof(hue_name) != "undefined"){
-        console.log(`hue_app> Mesh Light click on '${name}' with hue = '${hue_name}'`);
-            if(!hue_available){
-                console.log(`hue not available`);
-                return;
-            }
-            var l_id = light_ids[hue_name];
-            user.getLight(l_id).then(data => {
-                if(typeof(data[0]) != "undefined"){
-                    console.warn(`hue_app> hue light '${hue_name}' unreachable`);
-                    console.warn(data[0].error);
-                    send_custom_event("hue_light_state",{name:hue_name,reach:false});
+    if(hue_registred){
+        const name = event.detail.name;
+        const hue_name = event.detail.userData.hue;
+        if(typeof(hue_name) != "undefined"){
+            console.log(`hue_app> Mesh Light click on '${name}' with hue = '${hue_name}'`);
+                if(!hue_available){
+                    console.log(`hue not available`);
+                    return;
                 }
-                else if(data.state.reachable == true) {
-                    const light_new_state = !data.state.on;
-                    user.setLightState(l_id, { on: light_new_state }).then(data => {
-                        send_custom_event("hue_light_state",{name:hue_name,on:light_new_state});
-                        console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
-                    });
-                }
-            });
+                var l_id = light_ids[hue_name];
+                user.getLight(l_id).then(data => {
+                    if(typeof(data[0]) != "undefined"){
+                        console.warn(`hue_app> hue light '${hue_name}' unreachable`);
+                        console.warn(data[0].error);
+                        send_custom_event("hue_light_state",{name:hue_name,reach:false});
+                    }
+                    else if(data.state.reachable == true) {
+                        const light_new_state = !data.state.on;
+                        user.setLightState(l_id, { on: light_new_state }).then(data => {
+                            send_custom_event("hue_light_state",{name:hue_name,on:light_new_state});
+                            console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
+                        });
+                    }
+                });
+        }
     }
+    
+    if((event.detail.name == "Hue Mesh_0") || (event.detail.name == "Hue Mesh_1")){
+        if(hue_registred){
+            console.warn(`hue already registred, delete local storage to reset registration`);
+        }
+        else{
+            discover();
+        }
+	}
 }
 //----------------------------------------------------------------------------------
-export{init,create_user};
+export{init};

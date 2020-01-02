@@ -103,7 +103,7 @@ function onMeshControl(e){
 }
 
 function onMeshClick(e){
-	//console.log(`home_app> mesh_click on ${e.detail.name}`);
+	console.log(`home_app> mesh_click on ${e.detail.name}`);
 	if(e.detail.userData.type == "light"){
 		if(is_emulation){
 			const current_state = hue_light_states[e.detail.name];
@@ -148,12 +148,12 @@ function onHueStartup(e){
 			if(light.state.reachable){
 				send_custom_event("three_param",{name:mesh_name, color:1});
 				set_mesh_light(mesh_name,light.state.on);
-				console.log(`home_app> - ${mesh_name} is ${light.state.on}`);
+				console.log(`home_app> - '${light.name}' is ${(light.state.on==true)?"on":"off"}`);
 			}
 			else{
 				send_custom_event("three_param",{name:mesh_name, color:0});
 				set_mesh_light(mesh_name,false);
-				console.log(`home_app> - ${mesh_name} is not reachable`);
+				console.log(`home_app> - '${light.name}' is not reachable`);
 			}
 		}
 		else{

@@ -91,7 +91,7 @@ function onTouch(event){
 			mouse.object = obj.name;
 			mouse.userData = obj.userData;
 			mouse.y = event.targetTouches[0].clientY;
-			send_custom_event("mesh_touch_start",{ name: object_name, userData:obj.userData, event:event});
+			send_custom_event("mesh_touch_start",{ name: obj.name, userData:obj.userData, event:event});
 		}
 	}
 	if(mouse.is_inside_object){
