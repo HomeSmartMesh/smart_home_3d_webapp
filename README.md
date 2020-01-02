@@ -1,13 +1,23 @@
 # First time usage
 1. host this project on your local raspberry pi or see ['Local host vs Remote host' section](#Local-host-vs-remote-host) on how to use the live demo
-1. create your own glTF model from blender (optional)
-2. adjust the light names to match your hue lights names
-3. press the Hue Gateway authorisation button (on the real device)
-5. Click on the 3d model of the hue gateway
-6. An alert will apear on the screen to wait for confirmation
-7. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
+2. create your own glTF model from blender (optional)
 
+## activate hue bridge connection
 <img src="./media/hue_register.gif" width="600">
+
+1. adjust the light names to match your hue lights names
+2. press the Hue Gateway authorisation button (on the real device)
+3. Click on the 3d model of the hue gateway
+4. An alert will apear on the screen to wait for confirmation
+5. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
+
+
+## activate mqtt connection
+<img src="./media/mqtt_activate.gif" width="600">
+
+1. adjust the mqtt topic names to match your mqtt devices
+2. install a mosquitto version with websocket support
+3. Click on the 3d model of the mosquitto gateway
 
 ## Live demo
 Link to [Github .io live demo](https://homesmartmesh.github.io/smart_home_3d_webapp/)
