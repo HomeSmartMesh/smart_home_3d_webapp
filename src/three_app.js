@@ -101,14 +101,18 @@ function onWindowResize() {
 
 function add_ambient_light(){
 
-	var plight = new THREE.PointLight( 0xffffff, 2, 0,0 );
-	plight.position.set( 0, 4, 5 );
-	scene.add( plight );
-	var hlight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 2 );
+	var hlight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
 	scene.add( hlight );
 
-	var light = new THREE.AmbientLight( 0xB0B0B0 );
-	scene.add( light );
+	//var rectLight = new THREE.RectAreaLight( 0xffffff, 10,  1, 1 );
+	//rectLight.position.set( 0, 5, 0 );
+	//rectLight.lookAt( 0, 0, 0 );
+	//scene.add( rectLight )
+	
+	//rectLightHelper = new THREE.RectAreaLightHelper( rectLight );
+	//rectLight.add( rectLightHelper );
+	//var light = new THREE.AmbientLight( 0xB0B0B0 );
+	//scene.add( light );
 }
 
 function get_scene_box(scene){
@@ -267,22 +271,17 @@ function load_scene(user_on_load,gltf_filename){
 	loader.load(gltf_filename,
 		// called when the resource is loaded
 		gltf => {
-			document.getElementById("three_bar").innerHTML = "glTF loaded()";
-			document.getElementById("three_bar").style.width = "0%";
 			scene = gltf.scene;
 			init_custom_visibility(scene);
 			init_custom_animations(gltf,scene);
-			document.getElementById("three_bar").style.width = "10%";
 			init_custom_colors(scene);
 			init_custom_names(scene);
-			document.getElementById("three_bar").style.width = "50%";
 			init_shadows(scene);
 			add_ambient_light();
-			document.getElementById("three_bar").style.width = "70%";
 			camera = create_camera(gltf);
 			renderer = create_renderer();
 			orbit_control = add_view_orbit(camera,renderer);
-			document.getElementById("three_bar").style.width = "100%";
+			//scene.background = new THREE.Color(0,0,0);
 			user_on_load();
 			//setParam("Axis","pull",4);
 			sendMeshLists();
@@ -420,7 +419,7 @@ function update_light(params){
 	const parent = scene.getObjectByName(params.name);
 	parent.traverse(obj =>{
 		if(["PointLight","SpotLight","DirectionalLight"].includes(obj.type)){
-			const maxLight = (typeof(obj.parent.userData.maxLight) == "undefined")?50:obj.parent.userData.maxLight;
+			const maxLight = (typeof(parent.userData.maxLight) == "undefined")?50:parent.userData.maxLight;
 			obj.intensity = params.light * maxLight;
 			//console.log(`three_app> '${params.name}' has light '${obj.name}' set to ${obj.intensity}`);
 		}

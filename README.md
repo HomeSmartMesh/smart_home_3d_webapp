@@ -128,6 +128,8 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * adjust heating with 3d slider
 * switch light groups on / off
 * handle both hue light groups and model made groups with parenting
+* directional light to reflect room sensors ambient light
+* add windows open close with colors
 * fall back on interactive demo mode from within the same app
 * use lower poly mesh
 
@@ -138,9 +140,11 @@ The currently provided 3d interaction types are :
 * Animted : glTF Mesh Animation
 * Color : Properties Color Animation
 
-## glTF limitations
+## issues and limitations
 * no material animation
 * No Custom Properties export for Light Object Data Properties (green), only Object Properties (orange)
+* gltf-blender : No area light export possible [github issue](https://github.com/KhronosGroup/glTF-Blender-IO/issues/786)
+* three.js : RectAreaLight shows artefacts
 
 ## Create your own home model
 

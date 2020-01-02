@@ -166,13 +166,13 @@ function onMqttMessage(e){
 	if(obj.userData.type == "heating"){
 		const heating_demand = e.detail.payload.pi_heating_demand;
 		const ratio = heating_demand / 255;
-		console.log(`home_app> heat mqtt : ${obj_name} ratio at ${ratio.toFixed(2)}`);
+		console.log(`home_app> mqtt heater : ${obj_name} ratio at ${ratio.toFixed(2)}`);
 		send_custom_event('three_param',{name:obj_name,color:Math.sqrt(ratio)});
 	}
 	if(obj.userData.type == "temperature"){
 		const temp = e.detail.payload.temperature;
 		if(typeof(temp) != "undefined"){
-			const ratio = (temp - (-5.0)) / 40.0;
+			const ratio = (temp - (15.0)) / 28.0;
 			console.log(`home_app> mqtt temperature : ${obj_name} ratio at ${ratio.toFixed(2)}`);
 			send_custom_event('three_param',{name:obj_name,color:ratio});
 		}
