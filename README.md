@@ -1,12 +1,19 @@
-# hue lights integration
+# First time usage
+1. host this project on your local raspberry pi or see ['Local host vs Remote host' section](#Local-host-vs-remote-host) on how to use the live demo
+1. create your own glTF model from blender (optional)
+2. adjust the light names to match your hue lights names
+3. press the Hue Gateway authorisation button (on the real device)
+5. Click on the 3d model of the hue gateway
+6. An alert will apear on the screen to wait for confirmation
+7. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
 
-<table>
-<tr>
-<td>Link to Github .io live demo (see HowTo / Usage)</td>
-<td><a href="https://homesmartmesh.github.io/smart_home_3d_webapp/">smart home 3d webapp</a></td>
-</tr>
-</table>
-<br>
+<img src="./media/hue_register.gif" width="600">
+
+## Live demo
+Link to [Github .io live demo ]("https://homesmartmesh.github.io/smart_home_3d_webapp/")
+
+## Gif Demo
+
 <img src="./media/demo1.gif" width="600">
 
 We see in this demo a home 3d model augmented with interactive mesh items. Some meshes represent light bulbs and generate events when the user clicks on them. Those events are handled by a hue light client that interacts with the real hue gateway. The hue client publishes as events the actual state of the switched light, and that state is updated by the mesh bulb color and the associated 3d light.
@@ -80,7 +87,48 @@ The blender model export in .glTF is already part of this repo. So you would onl
 
 Files within the [project's google drive folder](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing) will have commit ids to match them with this repo.
 
-# How to
+# How to start
+
+
+# Dependencies
+
+* [three.js](https://threejs.org/)
+* [jsHue.js](https://github.com/blargoner/jshue)
+* [mqttws31](https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js)
+* [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface)
+
+## web_three_interface
+The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) is not a direct dependency but is used as a boiler plate for 3d interactive meshes. It is still a useful repo that helps understand the workflow step by step with increasingly complex demo, and also debug in case one step is failing.
+
+
+# Features
+* 3d interactions with click and hold
+* glTF model with custom properties including interactive meshes and hue light names
+* Hue query on startup to set correct light states, on/off and reachability
+* Consistent state on startup and on actions with the real light bulbs (but no polling in between)
+* mqtt events forward to javascript events
+* stats and fps. Stats can be disabled in [config.json](./config.js)
+```json
+    "stats":{
+        "enabled_by_default":true
+    }
+```
+
+## Planned Features
+
+* fall back on interactive demo mode from within the same app
+* use lower poly mesh
+
+# Interaction models with glTF custom properties
+The currently provided 3d interaction types are :
+* Light
+* Lightgroup
+* Animted : glTF Mesh Animation
+* Color : Properties Color Animation
+
+## glTF limitations
+* no material animation
+* No Custom Properties export for Light Object Data Properties (green), only Object Properties (orange)
 
 ## Create your own home model
 
@@ -88,12 +136,14 @@ The created home model should have custom properties. It is also possible to use
 
 Example below :
 
+```json
     "extras" : {
         "mouseEvent" : "true",
         "type" : "light",
         "hue" : "Bathroom main"
+```
 
-## Usage
+## Local host vs remote host
 * preffered and recommended way : host this repo on your own local rapsberry pi webserver. A vpn is recommended as a solution to remotely get into your local netwrok. Any sort of port exposing and https secure hosting will require a complete security check and would be run with an unknown risk.
 
 * non preferred way : but can be used for test and demonstration purpose, directly from github.io : https://homesmartmesh.github.io/smart_home_3d_webapp/
@@ -112,64 +162,3 @@ Limitation when using from github .io :
 <img src="./media/unsafe2.png" width="300">
 
 then reload the page
-
-## First time usage
-
-
-1. create your own glTF model from blender (or use existing one)
-2. adjust the light names to match your hue lights names
-3. press the Hue Gateway authorisation button
-4. Load or reload the web app page
-5. Click on the 3d model of the hue gateway
-6. An alert will apear on the screen to wait for confirmation
-
-<img src="./media/hue_register.gif" width="600">
-
-6. The user creation will proceed and the username will be stored as local storage (ctrl+j in chrome to oben the debug window)
-
-<img src="./media/local_storage.png" width="600">
-
-7. The webapp can be now used in sync with the hue Gateway interactions. In case a Gateway sync is not needed, it is possible to click "Ok" on the later and proceed with a non synced app.
-
-
-# Dependencies
-
-* [three.js](https://threejs.org/)
-* [jsHue.js](https://github.com/blargoner/jshue)
-* [mqttws31](https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js)
-* [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface)
-
-## Features
-* glTF model with custom properties including interactive meshes and hue light names
-* Hue query on startup to set correct light states, on/off and reachability
-* Consistent state on startup and on actions with the real light bulbs (but no polling in between)
-
-## web_three_interface
-The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) is not a direct dependency but is used as a boiler plate for 3d interactive meshes. It is still a useful repo that helps understand the workflow step by step with increasingly complex demo, and also debug in case one step is failing.
-
-# Features plan
-
-* update 3d items interactions with clicks and holds for brightness
-* fall back on interactive demo mode from within the same app
-* use lower poly mesh
-* add stats and fps
-
-# Interaction models with glTF custom properties
-The currently provided 3d interaction types are :
-* Light
-* Lightgroup
-* State : Mesh States
-* Animted : glTF Mesh Animation
-* Color : Properties Color Animation
-
-<img src="./media/data_structure.svg">
-
-## Events propagation model and API
-<img src="./media/parameters.svg">
-
-## Mouse events propagation
-<img src="./media/mouse_events.svg">
-
-## glTF limitations
-* no material animation
-* No Custom Properties export for Light Object Data Properties (green), only Object Properties (orange)
