@@ -97,9 +97,6 @@ The blender model export in .glTF is already part of this repo. So you would onl
 
 Files within the [project's google drive folder](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing) will have commit ids to match them with this repo.
 
-# How to start
-
-
 # Dependencies
 
 * [three.js](https://threejs.org/)
@@ -118,6 +115,11 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * Consistent state on startup and on actions with the real light bulbs (but no polling in between)
 * mqtt events forward to javascript events
 * stats and fps. (can be disabled in [config.json](./config.js))
+* hue lights on-off
+* heaters pi_heating_demand on colors
+* rooms temperature on floor color
+
+<img src="./media/floor_temperature.png" width="500">
 
 ## Planned Features
 

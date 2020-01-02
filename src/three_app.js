@@ -218,7 +218,7 @@ function init_shadows(scene){
 			if(obj.userData.type == "wall"){
 				obj.castShadow = true;
 			}
-			else if(obj.userData.type == "floor"){
+			else if(typeof(obj.userData.floor) != "undefined"){
 				obj.receiveShadow = true;
 			}
 		}else if(obj.type == "PointLight"){
