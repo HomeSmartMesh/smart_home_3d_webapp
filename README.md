@@ -82,8 +82,11 @@ Indiviual lights have to be attached to a parent mesh that have these custom pro
 * a lightgroup shall also have a `hue` field, the only differerence is that it has no blender light item and does have a `type:lightgroup` property.
 * as the hue gateway allow it, a normal light and a lightgroup can have the same name.
 
-## demo
+## demo light groups
 <img src="./media/lightgroup.gif" width="600">
+
+## demo light and group dimming
+<img src="./media/light_dimming.gif" width="600">
 
 ## Mqtt config in blender
 
@@ -104,6 +107,10 @@ function onMqttMessage(e){
 	}
 }
 ```
+## Mqtt temperature sensors on room floor color
+
+<img src="./media/floor_temperature.png" width="500">
+
 
 # blender home model
 
@@ -141,22 +148,20 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 
 # Features
 * 3d interactions with click and hold
+* 3d slider positioning relative to child world coordinate
 * glTF model with custom properties (hue, mqtt, mouse)
 * Hue: query on startup to set correct light states, on/off and reachability
 * Hue: mesh click to control lights on-off
 * Hue: light groups use any_on to control all on / off
 * Hue: Consistent state on startup and on actions with the real light bulbs (but no polling in between)
+* Hue: adjust light brightness with 3d slider
 * mqtt: events forward to javascript events
 * stats and fps. (can be disabled in [config.json](./config.js))
 * heaters pi_heating_demand on heater mesh colors
 * rooms temperature on floor color
 
-<img src="./media/floor_temperature.png" width="500">
-
 ## Planned Features
 
-* use 3d slide with world coordinate on scaled objects
-* adjust light brightness with 3d slider
 * adjust heating with 3d slider
 * meta light groups with parenting
 * directional light to reflect room sensors ambient light
@@ -167,6 +172,7 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * add direct mqtt support wtihout websockets through node server
 * add android native app with sockets and coap permissions
 * add fallback support with a websocket/socket wrapper https://github.com/novnc/websockify
+* hue light dimming : required visible difference between minimal dimm and off
 
 ## issues and limitations
 * no material animation supported by gltf, so fallback on a mutateColor custom property
