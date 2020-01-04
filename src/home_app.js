@@ -24,7 +24,7 @@ let hue_mesh_name = {};
 let mqtt_mesh_name = {};
 let hue_light_list = [];
 let hue_lights_on_startup_reached = false;
-let three_list_reached = false;
+let hue_three_list_reached = false;
 
 function init(){
 	three.init(on_load,config.glTF_model);
@@ -65,10 +65,10 @@ function onThreeList(e){
 		for(let hue_name in hue_mesh_name){
 			send_custom_event("three_param",{name:hue_mesh_name[hue_name], color:0, light:0, emissive:0});
 		}
-	}
-	three_list_reached = true;
-	if(hue_lights_on_startup_reached && three_list_reached){
-		apply_hue_on_three();
+		hue_three_list_reached = true;
+		if(hue_lights_on_startup_reached && hue_three_list_reached){
+			apply_hue_on_three();
+		}
 	}
 }
 
@@ -103,9 +103,10 @@ function onMeshHold(e){
 	control.run(e.detail);
 }
 
-function set_mesh_light(name,bri){
+function set_mesh_light(name,state_on,state_bri){
 	//console.log(`${name} set to ${bri.toFixed(2)}`);
-	send_custom_event("three_param",{name:name, light:bri, emissive:bri*0.5});
+	const brightness = (state_on===true)?state_bri/255.0:0;
+	send_custom_event("three_param",{name:name, light:brightness, emissive:brightness*0.5});
 }
 
 function onHueLightState(e){
@@ -114,20 +115,16 @@ function onHueLightState(e){
 		set_mesh_light(mesh_name,0);
 		send_custom_event("three_param",{name:mesh_name, color:0});
 	}
-	else if(typeof(e.detail.bri) != "undefined"){
+	else{
 		const mesh_name = hue_mesh_name[e.detail.name];
-		set_mesh_light(mesh_name,e.detail.bri/255.0);
-	}
-	else if(typeof(e.detail.on) != "undefined"){
-		const mesh_name = hue_mesh_name[e.detail.name];
-		set_mesh_light(mesh_name,(e.detail.on==true)?1:0);
+		set_mesh_light(mesh_name,e.detail.on,e.detail.bri);
 	}
 }
 
 function onHueAllLights(e){
 	hue_light_list = e.detail;
 	hue_lights_on_startup_reached = true;
-	if(hue_lights_on_startup_reached && three_list_reached){
+	if(hue_lights_on_startup_reached && hue_three_list_reached){
 		apply_hue_on_three();
 	}
 }
@@ -143,8 +140,8 @@ function apply_hue_on_three(){
 			const mesh_name = hue_mesh_name[light.name];
 			if(light.state.reachable){
 				send_custom_event("three_param",{name:mesh_name, color:1});
-				set_mesh_light(mesh_name,(light.state.on == true)?light.state.bri/255.0:0);
-				console.log(`home_app> - '${light.name}' is ${(light.state.on==true)?"on":"off"}`);
+				set_mesh_light(mesh_name,light.state.on,light.state.bri);
+				console.log(`home_app> - '${light.name}' is ${(light.state.on==true)?"on at "+light.state.bri:"off"}`);
 			}
 			else{
 				send_custom_event("three_param",{name:mesh_name, color:0});

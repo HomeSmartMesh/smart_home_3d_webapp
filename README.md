@@ -49,6 +49,16 @@ See `three_param` running in a [live demo](https://homesmartmesh.github.io/web_t
 
 # Hue lights usage
 Note : This project is not related to the hue devices supplier and is a simple user of the provided API.
+## Hue features
+* All individual lights and lightgroups visible and usable on the same view (not possible with other hue apps)
+* Correct display of light status. On off and grayed when not reachable (other apps might show out of reach lights same color as the ones switched on)
+* Click/Touch light to control on-off
+* Cilck/Touch lightgroup to control on / off (using any_on)
+* hold and use 3d slider to adjust the light brightness (lights and groups)
+* hold and control allows to dim light up gradually out of zero without a bang in case of previous dim state was high, and it is possible to jump to previous dim state by switch on with touch or click (other apps dissociate switch on and dimming functions, so that if left at high dim level, you have to switch it on on full brightness first before being able to dim it lower)
+* 3d light bulbs and 3d light brightness vary in sync when controlling the 3d slider (groups slider on exit only)
+* webapp lights kept in sync even when used externally. Configurable polling is used (default is 2 sec), event `hue_all_lights` only sent on changes
+
 
 ## Hue config in blender
 <img src="./media/hue_blender.png" width="500">
@@ -150,11 +160,6 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * 3d interactions with click and hold
 * 3d slider positioning relative to child world coordinate
 * glTF model with custom properties (hue, mqtt, mouse)
-* Hue: query on startup to set correct light states, on/off and reachability
-* Hue: mesh click to control lights on-off
-* Hue: light groups use any_on to control all on / off
-* Hue: Consistent state on startup and on actions with the real light bulbs (but no polling in between)
-* Hue: adjust light brightness with 3d slider
 * mqtt: events forward to javascript events
 * stats and fps. (can be disabled in [config.json](./config.js))
 * heaters pi_heating_demand on heater mesh colors

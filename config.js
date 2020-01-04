@@ -18,7 +18,8 @@ export default
     },
     "hue":{
         "enabled":true,
-        "slider_timer_ms":100
+        "slider_timer_ms":100,
+        "poll_interval_ms":2000
     },
     "mqtt":{
         "enabled":true

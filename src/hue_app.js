@@ -44,6 +44,8 @@ function init(){
     window.addEventListener( 'mesh_control', onMeshControl, false );
     window.addEventListener( 'mesh_hold', onMeshHold, false );
 
+    //only way to keep lights in sync when used from outside this app
+    setInterval(get_lights,config.hue.poll_interval_ms);
 }
 
 function send_custom_event(event_name,data){
@@ -85,7 +87,10 @@ function onMeshHold(event){
         const hue_name = event.detail.userData.hue;
         user.getLight(light_ids[hue_name]).then(data => {
             if(check_light_data(hue_name,data)){
-                const initial_val = data.state.bri / 255.0;
+                let initial_val = data.state.bri / 255.0;
+                if(data.state.on == false){
+                    initial_val = 0;
+                }
                 control.run(event.detail,initial_val);
             }
         });
@@ -94,7 +99,10 @@ function onMeshHold(event){
         const hue_name = event.detail.userData.hue;
         user.getGroup(group_ids[hue_name]).then(data => {
             if(check_light_data(hue_name,data)){
-                const initial_val = data.action.bri / 255.0;
+                let initial_val = data.action.bri / 255.0;
+                if(data.state.any_on == false){
+                    initial_val = 0;
+                }
                 control.run(event.detail,initial_val);
             }
         });
@@ -102,15 +110,17 @@ function onMeshHold(event){
 }
 
 function get_lights(){
-    console.log("hue_app> get_lights()")
+    //console.log("hue_app> get_lights()")
     user.getLights().then(data => {
-        console.log("hue_app> getLights response");
-        lights = data;
+        //console.log("hue_app> getLights response");
         hue_available = true;
-        send_custom_event('hue_all_lights',lights);
-        light_ids = {};
-        for (const [light_id,light] of Object.entries(lights)) {
-            light_ids[light.name] = light_id;
+        if(JSON.stringify(data) != JSON.stringify(lights)){
+            lights = data;
+            send_custom_event('hue_all_lights',lights);
+            light_ids = {};
+            for (const [light_id,light] of Object.entries(lights)) {
+                light_ids[light.name] = light_id;
+            }
         }
     });
 }
@@ -178,7 +188,7 @@ function discover(){
 }
 
 function hueLightClick(hue_name){
-    console.log(`hue_app> Mesh Light click on '${name}' with hue = '${hue_name}'`);
+    console.log(`hue_app> Mesh Light click on hue '${hue_name}'`);
     if(!hue_available){
         console.warn(`hue not available`);
         return;
@@ -187,8 +197,10 @@ function hueLightClick(hue_name){
     user.getLight(l_id).then(data => {
         if(check_light_data(hue_name,data)){
             const light_new_state = !data.state.on;
+            const old_bri_val = data.state.bri;
             user.setLightState(l_id, { on: light_new_state }).then(data => {
-                send_custom_event("hue_light_state",{name:hue_name,on:light_new_state});
+                console.log(data);
+                send_custom_event("hue_light_state",{name:hue_name,on:light_new_state,bri:old_bri_val});
                 console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
             });
         }
@@ -262,7 +274,7 @@ function hueLightDimm(){
 
     var l_id = light_ids[hue_name];
     const light_new_state = (val==0)?false:true;
-    const bri = Math.trunc(val*255);
+    const bri = Math.trunc(val*255.0);
     const start_time = Date.now();
     user.setLightState(l_id, {on:light_new_state, bri:bri }).then(data => {
         const resData = extract_hue_params(data,{name:hue_name});
