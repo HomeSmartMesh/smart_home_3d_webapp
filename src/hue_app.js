@@ -4,11 +4,16 @@
  * sent events :
  * - hue_all_lights
  * - hue_light_state
+ * - hue_group_state
  * 
  * used events :
  * - mesh_click
+ * - mesh_control
  * 
  */
+import * as control from "./three_control.js";
+import config from "../config.js";
+
 let hue = jsHue();
 let user;
 let lights;
@@ -17,6 +22,9 @@ let light_ids;
 let group_ids;
 let hue_available = false;
 let hue_registred = false;
+let dimm = {
+    active:false
+};
 
 function init(){
 
@@ -33,12 +41,64 @@ function init(){
     }
             
     window.addEventListener( 'mesh_click', onMeshClick, false );
+    window.addEventListener( 'mesh_control', onMeshControl, false );
+    window.addEventListener( 'mesh_hold', onMeshHold, false );
 
 }
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
 	window.dispatchEvent(event);
+}
+
+function get_hue_type(userData){
+    const hue_name = userData.hue;
+    let res = "";
+    if(typeof(hue_name) != "undefined"){
+        const obj_type = event.detail.userData.type;
+        if(typeof(obj_type) != "undefined"){
+            if(obj_type == "lightgroup"){
+                res = "lightgroup";
+            }
+        }
+        else{
+            res = "light";
+        }
+    }
+    return res;
+}
+
+function check_light_data(hue_name,data){
+    if(typeof(data[0]) != "undefined"){
+        console.warn(`hue_app> hue light '${hue_name}' unreachable`);
+        console.warn(data[0].error);
+        send_custom_event("hue_light_state",{name:hue_name,reach:false});
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+function onMeshHold(event){
+    const hue_type = get_hue_type(event.detail.userData);
+    if(hue_type === "light"){
+        const hue_name = event.detail.userData.hue;
+        user.getLight(light_ids[hue_name]).then(data => {
+            if(check_light_data(hue_name,data)){
+                const initial_val = data.state.bri / 255.0;
+                control.run(event.detail,initial_val);
+            }
+        });
+    }
+    else if(hue_type === "lightgroup"){
+        const hue_name = event.detail.userData.hue;
+        user.getGroup(group_ids[hue_name]).then(data => {
+            if(check_light_data(hue_name,data)){
+                const initial_val = data.action.bri / 255.0;
+                control.run(event.detail,initial_val);
+            }
+        });
+    }
 }
 
 function get_lights(){
@@ -117,20 +177,15 @@ function discover(){
     }).catch(e => console.log('Error finding bridges', e));
 }
 
-function hueLightClick(name,hue_name){
+function hueLightClick(hue_name){
     console.log(`hue_app> Mesh Light click on '${name}' with hue = '${hue_name}'`);
     if(!hue_available){
         console.warn(`hue not available`);
         return;
     }
-    var l_id = light_ids[hue_name];
+    const l_id = light_ids[hue_name];
     user.getLight(l_id).then(data => {
-        if(typeof(data[0]) != "undefined"){
-            console.warn(`hue_app> hue light '${hue_name}' unreachable`);
-            console.warn(data[0].error);
-            send_custom_event("hue_light_state",{name:hue_name,reach:false});
-        }
-        else if(data.state.reachable == true) {
+        if(check_light_data(hue_name,data)){
             const light_new_state = !data.state.on;
             user.setLightState(l_id, { on: light_new_state }).then(data => {
                 send_custom_event("hue_light_state",{name:hue_name,on:light_new_state});
@@ -140,20 +195,15 @@ function hueLightClick(name,hue_name){
     });
 }
 
-function hueLightGroupClick(name,hue_name){
-    console.log(`hue_app> Mesh Light Group click on '${name}' with hue = '${hue_name}'`);
+function hueLightGroupClick(hue_name){
+    console.log(`hue_app> Mesh Light Group click on hue = '${hue_name}'`);
     if(!hue_available){
         console.warn(`hue not available`);
         return;
     }
     const l_id = group_ids[hue_name];
     user.getGroup(l_id).then(data => {
-        if(typeof(data[0]) != "undefined"){
-            console.warn(`hue_app> hue group '${hue_name}' unreachable`);
-            console.warn(data[0].error);
-            //send_custom_event("hue_light_state",{name:hue_name,reach:false});
-        }
-        else{
+        if(check_light_data(hue_name,data)){
             let group_new_state;
             if(data.state.any_on == true){
                 group_new_state = false;
@@ -170,18 +220,13 @@ function hueLightGroupClick(name,hue_name){
 }
 
 function onMeshClick(event){
-    const name = event.detail.name;
-    const hue_name = event.detail.userData.hue;
-    if(typeof(hue_name) != "undefined"){
-        const obj_type = event.detail.userData.type;
-        if(typeof(obj_type) != "undefined"){
-            if(obj_type == "lightgroup"){
-                hueLightGroupClick(name,hue_name);
-            }
-        }
-        else{
-            hueLightClick(name,hue_name);
-        }
+    const hue_type = get_hue_type(event.detail.userData);
+    if(hue_type === "light"){
+        const hue_name = event.detail.userData.hue;
+        hueLightClick(hue_name);
+    }else if(hue_type === "lightgroup"){
+        const hue_name = event.detail.userData.hue;
+        hueLightGroupClick(hue_name);
     }
     
     if((event.detail.name == "Hue Mesh_0") || (event.detail.name == "Hue Mesh_1")){
@@ -192,6 +237,106 @@ function onMeshClick(event){
             discover();
         }
 	}
+}
+
+function extract_hue_params(data,init){
+    let resData = init;
+    data.forEach(info => {
+        if(typeof(info.success) != "undefined"){
+            for(let topic in info.success){
+                const res_array = topic.split('/');
+                const param = res_array[res_array.length-1];
+                resData[param] = info.success[topic];
+                //console.log(`topic ${param} = ${resData[param]}`);
+            }
+        }
+    });
+    return resData;
+}
+
+
+function hueLightDimm(){
+    const name = dimm["name"];
+    const hue_name = dimm["hume_name"];
+    const val = dimm["val"];
+
+    var l_id = light_ids[hue_name];
+    const light_new_state = (val==0)?false:true;
+    const bri = Math.trunc(val*255);
+    const start_time = Date.now();
+    user.setLightState(l_id, {on:light_new_state, bri:bri }).then(data => {
+        const resData = extract_hue_params(data,{name:hue_name});
+        send_custom_event("hue_light_state",resData);
+        console.log(`hue_app> ${dimm.active?"":"(final)"} set light '${hue_name}' to ${light_new_state} at brightness ${bri} in ${Date.now()-start_time} ms`);
+    });
+    //clear request executed from the timer itself not to skipp a last pending call
+    if(!dimm.active){
+        clearInterval(dimm.timer);
+    }
+}
+
+function hueLightDimm_request(name,hue_name,val){
+    dimm["name"] = name;
+    dimm["hume_name"] = hue_name;
+    dimm["val"] = val;
+    if(!dimm.active){
+        dimm.active = true;
+        dimm["timer"] = setInterval(hueLightDimm,config.hue.slider_timer_ms);
+    }
+}
+
+function hueLightGroupDimm(){
+    const name = dimm["name"];
+    const hue_name = dimm["hume_name"];
+    const val = dimm["val"];
+
+    var l_id = group_ids[hue_name];
+    const light_new_state = (val==0)?false:true;
+    const bri = Math.trunc(val*255);
+    user.setGroupState(l_id, { on:light_new_state, bri:bri }).then(data => {
+        const resData = extract_hue_params(data,{name:hue_name});
+        send_custom_event("hue_group_state",resData);
+        console.log(`hue_app> ${dimm.active?"":"(final)"} set hue group '${hue_name}' to ${light_new_state} at brightness ${bri}`);
+    });
+    //clear request executed from the timer itself not to skipp a last pending call
+    if(!dimm.active){
+        clearInterval(dimm.timer);
+        get_lights();
+    }
+}
+
+function hueLightGroupDimm_request(name,hue_name,val){
+    dimm["name"] = name;
+    dimm["hume_name"] = hue_name;
+    dimm["val"] = val;
+    if(!dimm.active){
+        dimm.active = true;
+        dimm["timer"] = setInterval(hueLightGroupDimm,config.hue.slider_timer_ms);
+    }
+}
+
+function onMeshControl(event){
+    const hue_name = event.detail.userData.hue;
+    const hue_type = get_hue_type(event.detail.userData);
+    if(hue_type != ""){
+        //console.log(`hue_app> hue ${hue_type} Dimm on '${hue_name}'`);
+        if(!hue_available){
+            console.warn(`hue not available`);
+            return;
+        }
+        if(hue_type === "light"){
+            const name = event.detail.name;
+            hueLightDimm_request(name,hue_name,event.detail.val);
+        }
+        else if(hue_type === "lightgroup"){
+            const name = event.detail.name;
+            hueLightGroupDimm_request(name,hue_name,event.detail.val);
+        }
+        //let the timer stop itself after handling next and last value
+        if(typeof(event.detail.mouseUp) != "undefined"){
+            dimm.active = false;
+        }
+    }
 }
 //----------------------------------------------------------------------------------
 export{init};

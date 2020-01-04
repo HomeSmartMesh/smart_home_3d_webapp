@@ -4,6 +4,7 @@
  * - mesh_mouse_down
  * - mesh_mouse_up
  * - mesh_click
+ * - mesh_hold
  * - mesh_mouse_move
  * 
  * used events:

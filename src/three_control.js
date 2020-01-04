@@ -1,3 +1,14 @@
+/**
+ * sent events :
+ * - mesh_control
+ * 
+ * used events :
+ * - mousemove
+ * - touchmove
+ * - mouseup
+ * - touchend
+ */
+
 import * as THREE from "./../jsm/three/three.module.js";
 import { GLTFLoader } from "./../jsm/three/GLTFLoader.js";
 
@@ -10,14 +21,9 @@ var orbit_control;
 var isActive = false;
 var active_name ="";
 var current_val,start_val;
-var last_screen_y;
+var last_screen_y,last_userData;
 var group,path,slider;
 var is_bullet_centered = config.control.is_bullet_centered_not_slider;
-
-function send_custom_event(event_name,data){
-	var event = new CustomEvent(event_name, {detail:data});
-	window.dispatchEvent(event);
-}
 
 function init(l_scene,l_camera,l_orbit_control){
     scene = l_scene;
@@ -45,19 +51,27 @@ function init(l_scene,l_camera,l_orbit_control){
         
 }
 
+function send_custom_event(event_name,data){
+	var event = new CustomEvent(event_name, {detail:data});
+	window.dispatchEvent(event);
+}
+
 function log_pos(obj){
     return `(${obj.position.x.toFixed(2)},${obj.position.y.toFixed(2)},${obj.position.z.toFixed(2)})`;
 }
 
-function run(l_name,clientY,l_start_val=0.5){
+function run(detail,l_start_val=0.5){
     start_val = l_start_val;
-    last_screen_y = clientY;
-    const target = scene.getObjectByName(l_name);
-    console.log(`running ${config.control.name} control at (${start_val.toFixed(2)}) on ${l_name} at y = ${target.position.y.toFixed(2)}`);
+    last_screen_y = detail.y;
+    last_userData = detail.userData;
+    const target = scene.getObjectByName(detail.name);
+    console.log(`running ${config.control.name} control at (${start_val.toFixed(2)}) on ${detail.name} at y = ${target.position.y.toFixed(2)}`);
     let place = new THREE.Vector3(0,0,0);
     const ratio = config.control.sliderPos_CamToObj_ratio;
     place.addScaledVector(camera.position,ratio);
-    place.addScaledVector(target.position,1-ratio);
+    let target_pos = new THREE.Vector3();
+    target_pos.setFromMatrixPosition(target.matrixWorld);
+    place.addScaledVector(target_pos,1-ratio);
     group.position.set(place.x,place.y,place.z);
     if(is_bullet_centered)    {
         const range = config.control.space_range;
@@ -66,17 +80,17 @@ function run(l_name,clientY,l_start_val=0.5){
     else{
         path.position.y = 0;
     }
-    const box_target = new THREE.Box3().setFromObject(target);
-    const box_slider = new THREE.Box3().setFromObject(path);
-    const scale = config.control.sliderScale_ToObj_ratio * (box_target.max.y - box_target.min.y) / (box_slider.max.y - box_slider.min.y);
-    group.scale.set(scale,scale,scale);
+    //const box_target = new THREE.Box3().setFromObject(target);
+    //const box_slider = new THREE.Box3().setFromObject(path);
+    //const scale = config.control.sliderScale_ToObj_ratio * (box_target.max.y - box_target.min.y) / (box_slider.max.y - box_slider.min.y);
+    //group.scale.set(scale,scale,scale);
     group.visible = true;
     document.getElementById('viewer').style.cursor = "none";
     mouse.suspend();
     orbit_control.saveState();
     orbit_control.enabled = false;
     isActive = true;
-    active_name = l_name;
+    active_name = detail.name;
     set_control_pos(start_val);//using active_name
 }
 
@@ -95,7 +109,7 @@ function set_control_pos(target_val){
     else{
         slider.position.y = -(range/2) + current_val*range;
     }
-    send_custom_event("mesh_control",{name:active_name,config:config.control.name,val:current_val});
+    send_custom_event("mesh_control",{name:active_name,val:current_val,userData:last_userData});
 }
 
 function process_move(y){
@@ -126,6 +140,7 @@ function onMouseUp(e){
         orbit_control.reset();
         isActive = false;
         const target = scene.getObjectByName(active_name);
+        send_custom_event("mesh_control",{name:active_name,val:current_val,userData:last_userData,mouseUp:true});
         console.log(`releasing ${config.control.name} control at (${current_val.toFixed(2)}) from ${active_name} at y = ${target.position.y.toFixed(2)}`);
     }
 }

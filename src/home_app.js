@@ -34,7 +34,7 @@ function init(){
 	window.addEventListener( 'hue_all_lights', onHueAllLights, false );
 	window.addEventListener( 'hue_light_state', onHueLightState, false );
 	window.addEventListener( 'mesh_control', onMeshControl, false );
-	window.addEventListener( 'mesh_hold', onMeshHold, false );
+	//window.addEventListener( 'mesh_hold', onMeshHold, false );
 	window.addEventListener( 'mqtt_message', onMqttMessage, false);
 	window.addEventListener( 'three_list', onThreeList, false);
 	
@@ -100,25 +100,27 @@ function onMeshControl(e){
 }
 
 function onMeshHold(e){
-	control.run(e.detail.name,e.detail.y);
+	control.run(e.detail);
 }
 
-function set_mesh_light(name,state){
-	const var_light = (state === true)? 1 : 0;
-	const var_emissive = (state === true)? 0.5 : 0;
-	//console.log(`${name} has emissive set to ${var_emissive}`);
-	send_custom_event("three_param",{name:name, light:var_light, emissive:var_emissive});
+function set_mesh_light(name,bri){
+	//console.log(`${name} set to ${bri.toFixed(2)}`);
+	send_custom_event("three_param",{name:name, light:bri, emissive:bri*0.5});
 }
 
 function onHueLightState(e){
 	if(typeof(e.detail.reach) != "undefined"){
 		const mesh_name = hue_mesh_name[e.detail.name];
-		set_mesh_light(mesh_name,false);
+		set_mesh_light(mesh_name,0);
 		send_custom_event("three_param",{name:mesh_name, color:0});
+	}
+	else if(typeof(e.detail.bri) != "undefined"){
+		const mesh_name = hue_mesh_name[e.detail.name];
+		set_mesh_light(mesh_name,e.detail.bri/255.0);
 	}
 	else if(typeof(e.detail.on) != "undefined"){
 		const mesh_name = hue_mesh_name[e.detail.name];
-		set_mesh_light(mesh_name,e.detail.on);
+		set_mesh_light(mesh_name,(e.detail.on==true)?1:0);
 	}
 }
 
@@ -141,12 +143,12 @@ function apply_hue_on_three(){
 			const mesh_name = hue_mesh_name[light.name];
 			if(light.state.reachable){
 				send_custom_event("three_param",{name:mesh_name, color:1});
-				set_mesh_light(mesh_name,light.state.on);
+				set_mesh_light(mesh_name,(light.state.on == true)?light.state.bri/255.0:0);
 				console.log(`home_app> - '${light.name}' is ${(light.state.on==true)?"on":"off"}`);
 			}
 			else{
 				send_custom_event("three_param",{name:mesh_name, color:0});
-				set_mesh_light(mesh_name,false);
+				set_mesh_light(mesh_name,0);
 				console.log(`home_app> - '${light.name}' is not reachable`);
 			}
 		}

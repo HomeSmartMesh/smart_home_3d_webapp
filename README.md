@@ -105,7 +105,7 @@ function onMqttMessage(e){
 }
 ```
 
-# blender model
+# blender home model
 
 <img src="./media/blender_model.png" width="600">
 
@@ -114,6 +114,19 @@ function onMqttMessage(e){
 The blender model export in .glTF is already part of this repo. So you would only need the blender file in case you'd like a template to start with and customise.
 
 Files within the [project's google drive folder](https://drive.google.com/drive/folders/1DFyGKp_6VMN4Vp36PCXglEsV0zEX9iyz?usp=sharing) will have commit ids to match them with this repo.
+
+The created home model should have custom properties. It is also possible to use the repo's home model file and edit it as it is a json format : `./3d_models/home.gltf`. It is possible to rename the `hue: ` field with your own hue lights names as known by the hue gateway.
+
+```json
+    "extras" : {
+        "mouseEvent" : "true",
+        "type" : "light",
+        "hue" : "Bathroom main"
+```
+
+# Requirements
+
+* mqtt usage require a mosquitto with websocket support, see this guide on how to [install mosquitto with websockets](https://gist.github.com/smoofit/dafa493aec8d41ea057370dbfde3f3fc)
 
 # Dependencies
 
@@ -128,13 +141,14 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 
 # Features
 * 3d interactions with click and hold
-* glTF model with custom properties including interactive meshes and hue light names
-* Hue query on startup to set correct light states, on/off and reachability
-* Consistent state on startup and on actions with the real light bulbs (but no polling in between)
-* mqtt events forward to javascript events
+* glTF model with custom properties (hue, mqtt, mouse)
+* Hue: query on startup to set correct light states, on/off and reachability
+* Hue: mesh click to control lights on-off
+* Hue: light groups use any_on to control all on / off
+* Hue: Consistent state on startup and on actions with the real light bulbs (but no polling in between)
+* mqtt: events forward to javascript events
 * stats and fps. (can be disabled in [config.json](./config.js))
-* hue lights on-off
-* heaters pi_heating_demand on colors
+* heaters pi_heating_demand on heater mesh colors
 * rooms temperature on floor color
 
 <img src="./media/floor_temperature.png" width="500">
@@ -144,8 +158,7 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * use 3d slide with world coordinate on scaled objects
 * adjust light brightness with 3d slider
 * adjust heating with 3d slider
-* switch light groups on / off
-* handle both hue light groups and model made groups with parenting
+* meta light groups with parenting
 * directional light to reflect room sensors ambient light
 * add windows open close with colors
 * fall back on interactive demo mode from within the same app
@@ -153,46 +166,14 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * add coap support through node server (split, back+front) but keep the same front
 * add direct mqtt support wtihout websockets through node server
 * add android native app with sockets and coap permissions
-
-# Features description
-## Hue
-* light structure
-* light custom properties
- 
-  * hue:hue light name
-  * mouseEvent:true
-* lightgroup custom properties
-
-  * type:lightgroup
-  * hue:hue group name
-  * mouseEvent:true
-
-
-# Interaction models with glTF custom properties
-The currently provided 3d interaction types are :
-* Light
-* Lightgroup
-* Animted : glTF Mesh Animation
-* Color : Properties Color Animation
+* add fallback support with a websocket/socket wrapper https://github.com/novnc/websockify
 
 ## issues and limitations
-* no material animation
+* no material animation supported by gltf, so fallback on a mutateColor custom property
 * No Custom Properties export for Light Object Data Properties (green), only Object Properties (orange)
 * gltf-blender : No area light export possible [github issue](https://github.com/KhronosGroup/glTF-Blender-IO/issues/786)
 * three.js : RectAreaLight [has limitations and conditions](https://threejs.org/docs/#api/en/lights/RectAreaLight) [RectAreaLight demo](https://threejs.org/examples/webgl_lights_rectarealight.html)
 
-## Create your own home model
-
-The created home model should have custom properties. It is also possible to use the existing home model file and edit it as it is a json format : `./3d_models/home.gltf`. It is possible to rename the `hue: ` field with your own hue lights names as known by the hue gateway.
-
-Example below :
-
-```json
-    "extras" : {
-        "mouseEvent" : "true",
-        "type" : "light",
-        "hue" : "Bathroom main"
-```
 
 ## Local host vs remote host
 * preffered and recommended way : host this repo on your own local rapsberry pi webserver. A vpn is recommended as a solution to remotely get into your local netwrok. Any sort of port exposing and https secure hosting will require a complete security check and would be run with an unknown risk.

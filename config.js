@@ -17,7 +17,8 @@ export default
         "enabled_by_default":true
     },
     "hue":{
-        "enabled":true
+        "enabled":true,
+        "slider_timer_ms":100
     },
     "mqtt":{
         "enabled":true
