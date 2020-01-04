@@ -1,3 +1,14 @@
+/**
+ * sent events:
+ * - three_list
+ * 
+ * used events:
+ * - resize
+ * - three_param
+ * - keypress
+ * 
+ */
+
 import * as THREE from "./../jsm/three/three.module.js";
 import { OrbitControls } from "./../jsm/three/OrbitControls.js";
 import { GLTFLoader } from "./../jsm/three/GLTFLoader.js";
@@ -14,6 +25,19 @@ var user_hue_to_name = {};
 var is_stats;
 var stats1,stats2,stats3;
 var xPanel;
+
+function init(on_load,glTF_filename){
+
+	console.log("three_app> init()");
+
+	init_stats();
+
+	load_scene(on_load,glTF_filename);
+
+	window.addEventListener( 'resize', onWindowResize, false );
+	window.addEventListener( 'three_param', onParamUpdate, false );
+	window.addEventListener( 'keypress', onKeyPress, false );
+}
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -264,33 +288,34 @@ function init_custom_names(scene){
 	});
 }
 
+function self_on_load(scene){
+	init_custom_visibility(scene);
+	init_custom_colors(scene);
+	init_custom_names(scene);
+	init_shadows(scene);
+	add_ambient_light();
+	renderer = create_renderer();
+	orbit_control = add_view_orbit(camera,renderer);
+	animate();
+}
+
 function load_scene(user_on_load,gltf_filename){
-	document.getElementById("three_bar").innerHTML = "glTF loading()";
-	document.getElementById("three_bar").style.width = "0%";
 	var loader = new GLTFLoader();
 	loader.load(gltf_filename,
 		// called when the resource is loaded
 		gltf => {
 			scene = gltf.scene;
-			init_custom_visibility(scene);
-			init_custom_animations(gltf,scene);
-			init_custom_colors(scene);
-			init_custom_names(scene);
-			init_shadows(scene);
-			add_ambient_light();
 			camera = create_camera(gltf);
-			renderer = create_renderer();
-			orbit_control = add_view_orbit(camera,renderer);
-			//scene.background = new THREE.Color(0,0,0);
+			init_custom_animations(gltf,scene);
+			self_on_load(scene);
 			user_on_load();
-			//setParam("Axis","pull",4);
+			//after the user on load so that the user can make use of it
 			sendMeshLists();
 		},
 		// called while loading is progressing
 		xhr => {
 			var elem = document.getElementById("myBar");
 			const percent = xhr.loaded / xhr.total * 100;
-			document.getElementById("three_bar").style.width = percent +"%";
 			//elem.style.width = percent + "%";
 			console.log( `three_app> model loading ${percent.toFixed(0)} %` )},
 		// called when loading has errors
@@ -334,21 +359,6 @@ function init_stats(){
 		console.log(`using stats display config from storage : '${is_stats}'`);
 	}
 	set_stats_view(is_stats);
-}
-
-function init(on_load,glTF_filename){
-
-	console.log("three_app> init()");
-
-	init_stats();
-
-	document.getElementById("three_bar").style.width = "0%";
-
-	load_scene(on_load,glTF_filename);
-
-	window.addEventListener( 'resize', onWindowResize, false );
-	window.addEventListener( 'three_param', onParamUpdate, false );
-	window.addEventListener( 'keypress', onKeyPress, false );
 }
 
 function onKeyPress(e){

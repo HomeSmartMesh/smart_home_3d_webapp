@@ -1,3 +1,21 @@
+/**
+ * sent events:
+ * - mesh_mouse_enter
+ * - mesh_mouse_down
+ * - mesh_mouse_up
+ * - mesh_click
+ * - mesh_mouse_move
+ * 
+ * used events:
+ * - mousemove
+ * - mousedown
+ * - touchstart
+ * - mouseup
+ * - touchend
+ * - three_list
+
+ */
+
 import {
 	Raycaster,
 	Vector2
@@ -18,6 +36,22 @@ var mouse = {
 var is_active = true;
 
 var mesh_list = [];
+
+function init(l_camera) {
+	camera = l_camera;
+	const container = document.getElementById('viewer');
+    console.log("three_mouse> init()");
+
+	raycaster = new Raycaster();
+	container.addEventListener( 'mousemove', onMouseMove, false );
+	container.addEventListener( 'mousedown', onMouseDown, false );
+	container.addEventListener( 'touchstart', onTouch, false );
+	container.addEventListener( 'mouseup', onMouseUp, false );
+    container.addEventListener('touchend', onMouseUp, false );
+
+	window.addEventListener( 'three_list', onThreeList, false);
+	
+}
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -85,7 +119,7 @@ function onTouch(event){
 	//event.preventDefault();
 	var obj = get_mesh_intersect(event.targetTouches[0].clientX,event.targetTouches[0].clientY);
 	if ( obj != "") {
-		//console.log(`three_mouse> onTouch() at '${obj.name}'`);
+		console.log(`three_mouse> onTouch() at '${obj.name}'`);
 		mouse.is_inside_object = true;
 		mouse.object = obj.name;
 		mouse.userData = obj.userData;
@@ -95,7 +129,7 @@ function onTouch(event){
 	if(mouse.is_inside_object){
 		mouse.status = "started";
 	}
-	//console.log(`three_mouse> onTouch() mouse status ${mouse.status}`);
+	console.log(`three_mouse> onTouch() mouse status ${mouse.status}`);
 }
 
 function onMouseDown(event){
@@ -129,22 +163,6 @@ function onMouseMove(event){
 	process_mouse_event("mesh_mouse_move",event);
 }
 
-
-function init(l_camera) {
-	camera = l_camera;
-	const container = document.getElementById('viewer');
-    console.log("three_mouse> init()");
-
-	raycaster = new Raycaster();
-	container.addEventListener( 'mousemove', onMouseMove, false );
-	container.addEventListener( 'mousedown', onMouseDown, false );
-	container.addEventListener( 'touchstart', onTouch, false );
-	container.addEventListener( 'mouseup', onMouseUp, false );
-    container.addEventListener('touchend', onMouseUp, false );
-
-	window.addEventListener( 'three_list', onThreeList, false);
-	
-}
 
 function SetMeshList(l_mesh_list){
 	mesh_list = l_mesh_list;

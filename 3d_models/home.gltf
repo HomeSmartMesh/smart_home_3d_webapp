@@ -676,6 +676,11 @@
                 23,
                 26
             ],
+            "extras" : {
+                "type" : "lightgroup",
+                "hue" : "Bedroom",
+                "mouseEvent" : "true"
+            },
             "mesh" : 17,
             "name" : "Bedroom Light Group",
             "scale" : [
@@ -790,6 +795,11 @@
                 30,
                 33
             ],
+            "extras" : {
+                "type" : "lightgroup",
+                "mouseEvent" : "true",
+                "hue" : "Hallway"
+            },
             "mesh" : 20,
             "name" : "Hallway Light Group",
             "scale" : [
@@ -1049,6 +1059,11 @@
                 46,
                 49
             ],
+            "extras" : {
+                "type" : "lightgroup",
+                "mouseEvent" : "true",
+                "hue" : "sofa"
+            },
             "mesh" : 26,
             "name" : "Livingroom Center Light Group",
             "scale" : [
@@ -1260,6 +1275,11 @@
                 59,
                 62
             ],
+            "extras" : {
+                "type" : "lightgroup",
+                "hue" : "malms",
+                "mouseEvent" : "true"
+            },
             "mesh" : 31,
             "name" : "Livingroom Malms Light Group",
             "scale" : [
@@ -1883,6 +1903,20 @@
         },
         {
             "doubleSided" : true,
+            "name" : "Bedroom lightgroup Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
             "name" : "Hallway Light 1 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
@@ -1903,6 +1937,20 @@
                     0.14412856101989746,
                     0.14412851631641388,
                     0.14702731370925903,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Hallway lightroup Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1973,6 +2021,20 @@
                     0.14412856101989746,
                     0.14412851631641388,
                     0.14702731370925903,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "sofa lightgroup Material",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2442,11 +2504,6 @@
             ]
         },
         {
-            "extras" : {
-                "hue" : "Bedroom",
-                "mouseEvent" : "true",
-                "type" : "lightgroup"
-            },
             "name" : "Bedroom Light Group Mesh",
             "primitives" : [
                 {
@@ -2455,7 +2512,8 @@
                         "NORMAL" : 64,
                         "TEXCOORD_0" : 65
                     },
-                    "indices" : 66
+                    "indices" : 66,
+                    "material" : 16
                 }
             ]
         },
@@ -2469,7 +2527,7 @@
                         "TEXCOORD_0" : 69
                     },
                     "indices" : 70,
-                    "material" : 16
+                    "material" : 17
                 }
             ]
         },
@@ -2483,16 +2541,11 @@
                         "TEXCOORD_0" : 73
                     },
                     "indices" : 70,
-                    "material" : 17
+                    "material" : 18
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "lightgroup",
-                "hue" : "Hallway"
-            },
             "name" : "Hallway Light Group Mesh.001",
             "primitives" : [
                 {
@@ -2501,7 +2554,8 @@
                         "NORMAL" : 75,
                         "TEXCOORD_0" : 76
                     },
-                    "indices" : 66
+                    "indices" : 66,
+                    "material" : 19
                 }
             ]
         },
@@ -2515,7 +2569,7 @@
                         "TEXCOORD_0" : 79
                     },
                     "indices" : 56,
-                    "material" : 18
+                    "material" : 20
                 }
             ]
         },
@@ -2529,7 +2583,7 @@
                         "TEXCOORD_0" : 82
                     },
                     "indices" : 56,
-                    "material" : 19
+                    "material" : 21
                 }
             ]
         },
@@ -2543,7 +2597,7 @@
                         "TEXCOORD_0" : 85
                     },
                     "indices" : 56,
-                    "material" : 20
+                    "material" : 22
                 }
             ]
         },
@@ -2557,7 +2611,7 @@
                         "TEXCOORD_0" : 88
                     },
                     "indices" : 56,
-                    "material" : 21
+                    "material" : 23
                 }
             ]
         },
@@ -2571,15 +2625,11 @@
                         "TEXCOORD_0" : 91
                     },
                     "indices" : 56,
-                    "material" : 22
+                    "material" : 24
                 }
             ]
         },
         {
-            "extras" : {
-                "type" : "lightgroup",
-                "mouseEvent" : "true"
-            },
             "name" : "Livingroom Center Light Group Mesh",
             "primitives" : [
                 {
@@ -2588,7 +2638,8 @@
                         "NORMAL" : 93,
                         "TEXCOORD_0" : 94
                     },
-                    "indices" : 66
+                    "indices" : 66,
+                    "material" : 25
                 }
             ]
         },
@@ -2602,7 +2653,7 @@
                         "TEXCOORD_0" : 97
                     },
                     "indices" : 56,
-                    "material" : 23
+                    "material" : 26
                 }
             ]
         },
@@ -2616,7 +2667,7 @@
                         "TEXCOORD_0" : 100
                     },
                     "indices" : 56,
-                    "material" : 24
+                    "material" : 27
                 }
             ]
         },
@@ -2630,7 +2681,7 @@
                         "TEXCOORD_0" : 103
                     },
                     "indices" : 56,
-                    "material" : 25
+                    "material" : 28
                 }
             ]
         },
@@ -2644,15 +2695,11 @@
                         "TEXCOORD_0" : 106
                     },
                     "indices" : 56,
-                    "material" : 26
+                    "material" : 29
                 }
             ]
         },
         {
-            "extras" : {
-                "mouseEvent" : "true",
-                "type" : "lightgroup"
-            },
             "name" : "Livingroom Malms Light Group Mesh",
             "primitives" : [
                 {
@@ -2662,7 +2709,7 @@
                         "TEXCOORD_0" : 109
                     },
                     "indices" : 66,
-                    "material" : 27
+                    "material" : 30
                 }
             ]
         },
@@ -2676,7 +2723,7 @@
                         "TEXCOORD_0" : 112
                     },
                     "indices" : 113,
-                    "material" : 28
+                    "material" : 31
                 }
             ]
         },
@@ -2690,7 +2737,7 @@
                         "TEXCOORD_0" : 116
                     },
                     "indices" : 70,
-                    "material" : 29
+                    "material" : 32
                 }
             ]
         },
@@ -2704,7 +2751,7 @@
                         "TEXCOORD_0" : 119
                     },
                     "indices" : 113,
-                    "material" : 30
+                    "material" : 33
                 }
             ]
         },
@@ -2718,7 +2765,7 @@
                         "TEXCOORD_0" : 122
                     },
                     "indices" : 113,
-                    "material" : 31
+                    "material" : 34
                 }
             ]
         },
@@ -2732,7 +2779,7 @@
                         "TEXCOORD_0" : 125
                     },
                     "indices" : 70,
-                    "material" : 32
+                    "material" : 35
                 }
             ]
         },
@@ -2746,7 +2793,7 @@
                         "TEXCOORD_0" : 128
                     },
                     "indices" : 129,
-                    "material" : 33
+                    "material" : 36
                 }
             ]
         },
@@ -2760,7 +2807,7 @@
                         "TEXCOORD_0" : 132
                     },
                     "indices" : 129,
-                    "material" : 34
+                    "material" : 37
                 }
             ]
         },
@@ -2774,7 +2821,7 @@
                         "TEXCOORD_0" : 135
                     },
                     "indices" : 129,
-                    "material" : 35
+                    "material" : 38
                 }
             ]
         },
@@ -2788,7 +2835,7 @@
                         "TEXCOORD_0" : 138
                     },
                     "indices" : 129,
-                    "material" : 36
+                    "material" : 39
                 }
             ]
         },
@@ -2802,7 +2849,7 @@
                         "TEXCOORD_0" : 141
                     },
                     "indices" : 129,
-                    "material" : 37
+                    "material" : 40
                 }
             ]
         }

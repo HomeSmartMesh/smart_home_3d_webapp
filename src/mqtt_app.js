@@ -1,4 +1,13 @@
-//http://w3c.github.io/html-reference/input.color.html
+/** http://w3c.github.io/html-reference/input.color.html
+ * 
+ * sent events:
+ * - mqtt_message
+ * 
+ * used events:
+ * - mesh_click
+ * - three_list
+ */
+
 
 var client,textBox;
 
@@ -9,6 +18,23 @@ var mqtt_in_use = false;
 var mqtt_connected = false;
 
 var mqtt_pending_topics = {};
+
+function init(){
+
+  if(localStorage.getItem("mqtt") === "in_use"){
+    mqtt_in_use = true;
+  }
+
+  if(!mqtt_in_use){
+    console.warn(`mqtt not in use, click on the mosquitto 3d model to init`);
+  }
+  else{
+    mqtt_connect();
+  }
+
+  window.addEventListener( 'mesh_click', onMeshClick, false );
+	window.addEventListener( 'three_list', onThreeList, false);
+}
 
 function send_custom_event(event_name,data){
 	var event = new CustomEvent(event_name, {detail:data});
@@ -54,22 +80,6 @@ function mqtt_connect(){
     client.connect({onSuccess:onConnect});
 }
 
-function init(){
-
-  if(localStorage.getItem("mqtt") === "in_use"){
-    mqtt_in_use = true;
-  }
-
-  if(!mqtt_in_use){
-    console.warn(`mqtt not in use, click on the mosquitto 3d model to init`);
-  }
-  else{
-    mqtt_connect();
-  }
-
-  window.addEventListener( 'mesh_click', onMeshClick, false );
-	window.addEventListener( 'three_list', onThreeList, false);
-}
 
 function onMeshClick(event){
   if(event.detail.name == "MQTT"){

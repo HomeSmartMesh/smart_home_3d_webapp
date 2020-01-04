@@ -22,7 +22,7 @@
 ## Live demo
 Link to [Github .io live demo](https://homesmartmesh.github.io/smart_home_3d_webapp/)
 
-## Gif Demo
+## Demo light control with power log
 
 <img src="./media/demo1.gif" width="600">
 
@@ -47,6 +47,8 @@ send_custom_event("three_param",{name:"Kitchen", push:0.3});
 
 See `three_param` running in a [live demo](https://homesmartmesh.github.io/web_three_interface/12_multiple_parameters/)
 
+# Hue lights usage
+Note : This project is not related to the hue devices supplier and is a simple user of the provided API.
 
 ## Hue config in blender
 <img src="./media/hue_blender.png" width="500">
@@ -66,6 +68,22 @@ function onHueLightState(e){
 ```
 
 lights broadcast their state on startup and as a feedback when updated from javascript
+
+## Hue light groups
+* Lightgroup are optional and the individual light items configuration does not differ depending on if they are part of a light group or not.
+* only the hue gateway lightgroup is being used. That means a lightgroup has to be created with the hue app before it can be used in this webapp.
+
+<img src="./media/hue_lightgroup_structure.png" width="300">
+
+Indiviual lights have to be attached to a parent mesh that have these custom properties
+
+<img src="./media/hue_light_groups.png" width="500">
+
+* a lightgroup shall also have a `hue` field, the only differerence is that it has no blender light item and does have a `type:lightgroup` property.
+* as the hue gateway allow it, a normal light and a lightgroup can have the same name.
+
+## demo
+<img src="./media/lightgroup.gif" width="600">
 
 ## Mqtt config in blender
 
@@ -132,6 +150,23 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * add windows open close with colors
 * fall back on interactive demo mode from within the same app
 * use lower poly mesh
+* add coap support through node server (split, back+front) but keep the same front
+* add direct mqtt support wtihout websockets through node server
+* add android native app with sockets and coap permissions
+
+# Features description
+## Hue
+* light structure
+* light custom properties
+ 
+  * hue:hue light name
+  * mouseEvent:true
+* lightgroup custom properties
+
+  * type:lightgroup
+  * hue:hue group name
+  * mouseEvent:true
+
 
 # Interaction models with glTF custom properties
 The currently provided 3d interaction types are :
@@ -144,7 +179,7 @@ The currently provided 3d interaction types are :
 * no material animation
 * No Custom Properties export for Light Object Data Properties (green), only Object Properties (orange)
 * gltf-blender : No area light export possible [github issue](https://github.com/KhronosGroup/glTF-Blender-IO/issues/786)
-* three.js : RectAreaLight shows artefacts
+* three.js : RectAreaLight [has limitations and conditions](https://threejs.org/docs/#api/en/lights/RectAreaLight) [RectAreaLight demo](https://threejs.org/examples/webgl_lights_rectarealight.html)
 
 ## Create your own home model
 

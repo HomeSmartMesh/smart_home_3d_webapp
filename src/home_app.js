@@ -1,3 +1,18 @@
+/**
+ * sent events:
+ * - three_param
+ * 
+ * used events:
+ * - mesh_mouse_enter
+ * - mesh_mouse_exit
+ * - hue_all_lights
+ * - hue_light_state
+ * - mesh_control
+ * - mesh_hold
+ * - mqtt_message
+ * - three_list
+ */
+
 import * as three from "./three_app.js";
 import * as mouse from "./three_mouse.js";
 import * as control from "./three_control.js";
@@ -7,46 +22,36 @@ import config from "../config.js";
 let is_emulation = false;
 let hue_mesh_name = {};
 let mqtt_mesh_name = {};
-let hue_light_states = {};
-
-function send_custom_event(event_name,data){
-	var event = new CustomEvent(event_name, {detail:data});
-	window.dispatchEvent(event);
-}
+let hue_light_list = [];
+let hue_lights_on_startup_reached = false;
+let three_list_reached = false;
 
 function init(){
 	three.init(on_load,config.glTF_model);
 
 	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );
 	window.addEventListener( 'mesh_mouse_exit', onMeshMouseExit, false );
-	window.addEventListener( 'hue_lights_on_startup', onHueStartup, false );
+	window.addEventListener( 'hue_all_lights', onHueAllLights, false );
 	window.addEventListener( 'hue_light_state', onHueLightState, false );
 	window.addEventListener( 'mesh_control', onMeshControl, false );
-	window.addEventListener( 'mesh_click', onMeshClick, false );
 	window.addEventListener( 'mesh_hold', onMeshHold, false );
 	window.addEventListener( 'mqtt_message', onMqttMessage, false);
 	window.addEventListener( 'three_list', onThreeList, false);
 	
 }
 
+function send_custom_event(event_name,data){
+	var event = new CustomEvent(event_name, {detail:data});
+	window.dispatchEvent(event);
+}
+
 
 //in this callback, three is ready
 function on_load(){
 
-	document.getElementById("three_bar").innerHTML = "on_load()";
-	document.getElementById("three_bar").style.width = "10%";
 	mouse.init(three.getCamera());
 
-	document.getElementById("three_bar").style.width = "70%";
 	control.init(three.getScene(),three.getCamera(),three.getControl());
-	//control.init(scene,camera,orbit_control);
-
-	document.getElementById("three_bar").style.width = "90%";
-	three.animate();
-
-	document.getElementById("three_bar").style.width = "100%";
-	document.getElementById("three_bar").style.display = "none";
-
 
 }
 
@@ -61,7 +66,10 @@ function onThreeList(e){
 			send_custom_event("three_param",{name:hue_mesh_name[hue_name], color:0, light:0, emissive:0});
 		}
 	}
-
+	three_list_reached = true;
+	if(hue_lights_on_startup_reached && three_list_reached){
+		apply_hue_on_three();
+	}
 }
 
 function onMeshMouseEnter(e){
@@ -74,9 +82,6 @@ function onMeshMouseExit(e){
 	//console.log(`Mesh Mouse Exit out of ${e.detail.name}`)
 	document.getElementById('viewer').style.cursor = "default";
 	//three.setBulbState(e.detail.name,"highlight",false);
-}
-
-function onMeshMouseDown(e){
 }
 
 function onMeshControl(e){
@@ -94,20 +99,6 @@ function onMeshControl(e){
 	}
 }
 
-function onMeshClick(e){
-	console.log(`home_app> mesh_click on ${e.detail.name}`);
-	if(e.detail.userData.type == "light"){
-		if(is_emulation){
-			const current_state = hue_light_states[e.detail.name];
-			set_mesh_light(e.detail.name,!current_state);
-		}
-	}
-	else if(e.detail.userData.type == "lightgroup"){
-	}
-	else if(e.detail.userData.type == "heating"){
-	}
-}
-
 function onMeshHold(e){
 	control.run(e.detail.name,e.detail.y);
 }
@@ -122,19 +113,30 @@ function set_mesh_light(name,state){
 function onHueLightState(e){
 	if(typeof(e.detail.reach) != "undefined"){
 		const mesh_name = hue_mesh_name[e.detail.name];
-		hue_light_states[mesh_name] = false;
 		set_mesh_light(mesh_name,false);
 		send_custom_event("three_param",{name:mesh_name, color:0});
 	}
 	else if(typeof(e.detail.on) != "undefined"){
 		const mesh_name = hue_mesh_name[e.detail.name];
-		hue_light_states[mesh_name] = e.detail.on;
 		set_mesh_light(mesh_name,e.detail.on);
 	}
 }
 
-function onHueStartup(e){
-	for (const [light_id,light] of Object.entries(e.detail)) {
+function onHueAllLights(e){
+	hue_light_list = e.detail;
+	hue_lights_on_startup_reached = true;
+	if(hue_lights_on_startup_reached && three_list_reached){
+		apply_hue_on_three();
+	}
+}
+
+/**	
+ * requires
+ * - hue_light_list from 'hue_lights_on_startup'
+ * - hue_mesh_name from 'three_list'
+ */
+function apply_hue_on_three(){
+	for (const [light_id,light] of Object.entries(hue_light_list)) {
 		if(light.name in hue_mesh_name){
 			const mesh_name = hue_mesh_name[light.name];
 			if(light.state.reachable){
@@ -152,7 +154,6 @@ function onHueStartup(e){
 			console.warn(`home_app> no Object has hue property = '${light.name}'`);
 		}
 	}
-
 }
 
 function onMqttMessage(e){
