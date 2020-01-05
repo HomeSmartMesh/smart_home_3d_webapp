@@ -3,6 +3,7 @@
  * - mesh_mouse_enter
  * - mesh_mouse_down
  * - mesh_mouse_up
+ * - mesh_touch_start
  * - mesh_click
  * - mesh_hold
  * - mesh_mouse_move
@@ -81,10 +82,12 @@ function process_mouse_event(event_name, event){
 	const obj = get_mesh_intersect(event.clientX,event.clientY);
 
 	if ( obj != "") {
-		if((mouse.object != "")&&(mouse.object != obj.name)){
-			//jump from object to object, exist last one
-			send_custom_event("mesh_mouse_enter",{ name: mouse.object, userData: obj.userData});
-			mouse.is_inside_object = false;
+		if(mouse.is_inside_object){
+			if((mouse.object != "")&&(mouse.object != obj.name)){
+				//jump from object to object, exist last one
+				send_custom_event("mesh_mouse_exit",{ name: mouse.object, userData: obj.userData});
+				mouse.is_inside_object = false;
+			}
 		}
 		mouse.object = obj.name;
 		mouse.userData = obj.userData;
@@ -130,7 +133,7 @@ function onTouch(event){
 	if(mouse.is_inside_object){
 		mouse.status = "started";
 	}
-	console.log(`three_mouse> onTouch() mouse status ${mouse.status}`);
+	//console.log(`three_mouse> onTouch() mouse status ${mouse.status}`);
 }
 
 function onMouseDown(event){

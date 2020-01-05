@@ -63,7 +63,10 @@ function onThreeList(e){
 	if(e.detail.type == "hue"){
 		hue_mesh_name = e.detail.map;
 		for(let hue_name in hue_mesh_name){
-			send_custom_event("three_param",{name:hue_mesh_name[hue_name], color:0, light:0, emissive:0});
+			set_hue_light(hue_mesh_name[hue_name], 0);
+			//set_hue_reach(hue_mesh_name[hue_name], 0);
+			send_custom_event("three_param",{name:hue_mesh_name[hue_name], outline:true});
+
 		}
 		hue_three_list_reached = true;
 		if(hue_lights_on_startup_reached && hue_three_list_reached){
@@ -75,49 +78,44 @@ function onThreeList(e){
 function onMeshMouseEnter(e){
 	//console.log(`Mesh Mouse Enter in ${e.detail.name}`);
 	document.getElementById('viewer').style.cursor = "pointer";
-	//three.setBulbState(e.detail.name,"highlight",true);
+	//send_custom_event("three_param",{name:e.detail.name, outline:true});
 }
 
 function onMeshMouseExit(e){
-	//console.log(`Mesh Mouse Exit out of ${e.detail.name}`)
+	//console.log(`Mesh Mouse Exit from ${e.detail.name}`)
 	document.getElementById('viewer').style.cursor = "default";
-	//three.setBulbState(e.detail.name,"highlight",false);
+	//send_custom_event("three_param",{name:e.detail.name, outline:false});
 }
 
 function onMeshControl(e){
 	//console.log(`home_app> onMeshControl() ${e.detail.name} has ${e.detail.config} at ${e.detail.val.toFixed(2)}`);
-	if(e.detail.name === "Kitchen"){
-		if(e.detail.config == "slider"){
-			items_anim[e.detail.name] = e.detail.val;
-			items_anim.Emissive = e.detail.val*0.5;
-			items_anim.Light = e.detail.val*0.8;
-			items_anim.Color = e.detail.val;
-			send_custom_event("three_param",{name:"Kitchen", emissive:items_anim.Emissive});
-			send_custom_event("three_param",{name:"Kitchen", light:items_anim.Light});
-			send_custom_event("three_param",{name:"Kitchen", color:items_anim.Color});
-		}
-	}
 }
 
 function onMeshHold(e){
 	control.run(e.detail);
 }
 
-function set_mesh_light(name,state_on,state_bri){
+function set_hue_light(name,state_on,state_bri){
 	//console.log(`${name} set to ${bri.toFixed(2)}`);
 	const brightness = (state_on===true)?state_bri/255.0:0;
 	send_custom_event("three_param",{name:name, light:brightness, emissive:brightness*0.5});
 }
 
+function set_hue_reach(name,color){
+	//console.log(`${name} reach set to ${color}`);
+	//send_custom_event("three_param",{name:name, color:color, outline:(color==1)?true:false});
+	send_custom_event("three_param",{name:name, color:color});
+}
+
 function onHueLightState(e){
 	if(typeof(e.detail.reach) != "undefined"){
 		const mesh_name = hue_mesh_name[e.detail.name];
-		set_mesh_light(mesh_name,0);
-		send_custom_event("three_param",{name:mesh_name, color:0});
+		set_hue_light(mesh_name,0);
+		set_hue_reach(mesh_name, 1);
 	}
 	else{
 		const mesh_name = hue_mesh_name[e.detail.name];
-		set_mesh_light(mesh_name,e.detail.on,e.detail.bri);
+		set_hue_light(mesh_name,e.detail.on,e.detail.bri);
 	}
 }
 
@@ -135,17 +133,18 @@ function onHueAllLights(e){
  * - hue_mesh_name from 'three_list'
  */
 function apply_hue_on_three(){
+	//console.log(`home_app> apply_hue_on_three()`);
 	for (const [light_id,light] of Object.entries(hue_light_list)) {
 		if(light.name in hue_mesh_name){
 			const mesh_name = hue_mesh_name[light.name];
 			if(light.state.reachable){
-				send_custom_event("three_param",{name:mesh_name, color:1});
-				set_mesh_light(mesh_name,light.state.on,light.state.bri);
+				set_hue_reach(mesh_name, 1);
+				set_hue_light(mesh_name,light.state.on,light.state.bri);
 				console.log(`home_app> - '${light.name}' is ${(light.state.on==true)?"on at "+light.state.bri:"off"}`);
 			}
 			else{
-				send_custom_event("three_param",{name:mesh_name, color:0});
-				set_mesh_light(mesh_name,0);
+				set_hue_reach(mesh_name, 0);
+				set_hue_light(mesh_name,0);
 				console.log(`home_app> - '${light.name}' is not reachable`);
 			}
 		}

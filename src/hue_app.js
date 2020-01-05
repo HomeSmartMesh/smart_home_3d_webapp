@@ -71,13 +71,16 @@ function get_hue_type(userData){
 }
 
 function check_light_data(hue_name,data){
-    if(typeof(data[0]) != "undefined"){
+    if((Array.isArray(data)) && (data.length > 0)){
         console.warn(`hue_app> hue light '${hue_name}' unreachable`);
         console.warn(data[0].error);
         send_custom_event("hue_light_state",{name:hue_name,reach:false});
         return false;
     }
-    else{
+    else if(typeof(data.state.reachable) != "undefined"){
+        return data.state.reachable;
+    }
+    else if(Array.isArray(data.lights)){
         return true;
     }
 }
@@ -126,9 +129,9 @@ function get_lights(){
 }
 
 function get_groups(){
-    console.log("hue_app> get_groups()")
+    //console.log("hue_app> get_groups()");
     user.getGroups().then(data => {
-        console.log("hue_app> getGroups response");
+        //console.log("hue_app> getGroups response");
         groups = data;
         group_ids = {};
         for (const [group_id,group] of Object.entries(groups)) {
@@ -199,7 +202,6 @@ function hueLightClick(hue_name){
             const light_new_state = !data.state.on;
             const old_bri_val = data.state.bri;
             user.setLightState(l_id, { on: light_new_state }).then(data => {
-                console.log(data);
                 send_custom_event("hue_light_state",{name:hue_name,on:light_new_state,bri:old_bri_val});
                 console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
             });
@@ -215,6 +217,7 @@ function hueLightGroupClick(hue_name){
     }
     const l_id = group_ids[hue_name];
     user.getGroup(l_id).then(data => {
+        console.log(data);
         if(check_light_data(hue_name,data)){
             let group_new_state;
             if(data.state.any_on == true){

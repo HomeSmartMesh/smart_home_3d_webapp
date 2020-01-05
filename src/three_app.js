@@ -6,16 +6,26 @@
  * - resize
  * - three_param
  * - keypress
+ * - mesh_mouse_down
+ * - mesh_touch_start
+ * - mesh_mouse_up
  * 
  */
 
-import * as THREE from "./../jsm/three/three.module.js";
-import { OrbitControls } from "./../jsm/three/OrbitControls.js";
-import { GLTFLoader } from "./../jsm/three/GLTFLoader.js";
+import * as THREE 			from "./../jsm/three/three.module.js";
+import { OrbitControls } 	from "./../jsm/three/OrbitControls.js";
+import { GLTFLoader } 		from "./../jsm/three/GLTFLoader.js";
+import { EffectComposer } 	from './../jsm/three/postprocessing/EffectComposer.js';
+import { RenderPass } 		from './../jsm/three/postprocessing/RenderPass.js';
+import { OutlinePass } 		from './../jsm/three/postprocessing/OutlinePass.js';
+import { ShaderPass } 		from './../jsm/three/postprocessing/ShaderPass.js';
+import { FXAAShader } 		from './../jsm/three/shaders/FXAAShader.js';
+import { GUI } 				from './../jsm/dat.gui.module.js';
 
 import config from "./../config.js";
 
 var camera, scene, renderer;
+var composer,outlinePass, effectFXAA;
 var orbit_control;
 
 var anim_params = {};
@@ -34,9 +44,15 @@ function init(on_load,glTF_filename){
 
 	load_scene(on_load,glTF_filename);
 
-	window.addEventListener( 'resize', onWindowResize, false );
+	//offered services
 	window.addEventListener( 'three_param', onParamUpdate, false );
+
+	//used services
+	window.addEventListener( 'resize', onWindowResize, false );
 	window.addEventListener( 'keypress', onKeyPress, false );
+	window.addEventListener( 'mesh_mouse_down', onMeshMouseDown, false );
+	window.addEventListener( 'mesh_touch_start', onMeshMouseDown, false );
+	window.addEventListener( 'mesh_mouse_up',  onMeshMouseUp, false );
 }
 
 function send_custom_event(event_name,data){
@@ -90,6 +106,7 @@ function create_renderer(){
 	//renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
 	container.appendChild(renderer.domElement);
+	
 	return renderer;
 }
 
@@ -111,16 +128,6 @@ function add_view_orbit(camera,renderer){
 
 	orbit_control.rotateSpeed = 0.7;
 	return orbit_control;
-}
-
-function onWindowResize() {
-	var container = document.getElementById('viewer');
-	var w = container.clientWidth;
-	var h = container.clientHeight;
-	camera.aspect = w / h;
-	camera.updateProjectionMatrix();
-
-	renderer.setSize( w, h );
 }
 
 function add_ambient_light(){
@@ -155,27 +162,6 @@ function get_scene_box(scene){
 	return box;
 }
 
-function center_scene(scene){
-	console.log(`centering the scene`);
-	var box = get_scene_box(scene);
-	var s = box.getSize();
-	console.log(`scene boxed from (${box.min.x},${box.min.y},${box.min.z}) to (${box.max.x},${box.max.y},${box.max.z}) with size (${s.x},${s.y},${s.z})`);
-	const center_x = (box.max.x - box.min.x)/2;
-	const center_y = (box.max.y - box.min.y)/2;
-	console.log(`shifting the scene by x = ${-center_x} , y = ${-center_y}`);
-	//scene.position.set(scene.position.x - center_x, scene.position.y - center_y, scene.position.z);
-	scene.traverse(obj =>{
-		//though only meshes are taken as input, here everything is shifted as lights shall shift too
-		//hierarchical structure does move end leaves multiple times, so selection of meshes only moved as workaround
-		if(obj.type == "Mesh"){
-			obj.position.set(obj.position.x + center_x, obj.position.y - center_y,obj.position.z);
-		}
-	} );
-	box = get_scene_box(scene);
-	s = box.getSize();
-	console.log(`now scene boxed from (${box.min.x},${box.min.y},${box.min.z}) to (${box.max.x},${box.max.y},${box.max.z}) with size (${s.x},${s.y},${s.z})`);
-}
-
 function init_custom_visibility(scene){
 	scene.traverse(obj =>{
 		//though only meshes are taken as input, here everything is shifted as lights shall shift too
@@ -186,30 +172,6 @@ function init_custom_visibility(scene){
 			}
 		}
 	} );
-}
-
-/**
- * To be deprecated
- * @param {*} obj 
- * @param {*} view_name 
- */
-function set_obj_state(obj,view_name){
-	console.log(`three_app> set_obj_state() ${obj.name} to : ${view_name}`);
-	obj.userData.state = view_name;
-	let view_set = false;
-	obj.children.forEach(child => {
-		//console.log(` - child : ${child.name}`);
-		if(child.name == view_name){
-			child.visible = true;
-			view_set = true;
-		}
-		else{
-			child.visible = false;
-		}
-	});
-	if(!view_set){
-		console.error(`${view_name} is not a view in ${obj.name}`);
-	}
 }
 
 function get_obj_states(obj_name){
@@ -238,6 +200,30 @@ function init_custom_colors(scene){
 			//console.log(`${obj.name} can mutate color from ${obj.material.color.getHexString()} to ${obj.userData.mutateColor}`);
 		}
 	});
+}
+
+function apply_toon_material(scene){
+
+	let alpha = 1;
+	let beta = 0.5;
+	let gamma = 1;
+	let diffuseColor = new THREE.Color().setHSL( alpha, 0.5, gamma * 0.5 + 0.1 ).multiplyScalar( 1 - beta * 0.2 );
+	let specularColor = new THREE.Color( beta * 0.2, beta * 0.2, beta * 0.2 );
+	let specularShininess = Math.pow( 2, alpha * 10 );
+	scene.traverse(obj =>{
+		if(typeof(obj.userData.hue) != "undefined"){
+			obj.material = new THREE.MeshToonMaterial( {
+				bumpScale: 1,
+				color: obj.material.color,
+				specular: specularColor,
+				shininess: specularShininess,
+			} );
+			//console.log(`${obj.name} can mutate color from ${obj.material.color.getHexString()} to ${obj.userData.mutateColor}`);
+		}
+	});
+	var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+				directionalLight.position.set( 1, 1, 1 ).normalize();
+	//scene.add( directionalLight );
 }
 
 function init_shadows(scene){
@@ -288,15 +274,70 @@ function init_custom_names(scene){
 	});
 }
 
-function self_on_load(scene){
+function init_effects_gui(outlinePass){
+	let params = {
+		edgeStrength: 3.0,
+		edgeGlow: 0.0,
+		edgeThickness: 1.0,
+		pulsePeriod: 0,
+		rotate: false,
+		usePatternTexture: false
+	};
+
+	var gui = new GUI( { width: 300 } );
+	gui.add( params, 'edgeStrength', 0.01, 10 ).onChange(  value => {outlinePass.edgeStrength = Number( value );} );
+	gui.add( params, 'edgeGlow', 0.0, 1 ).onChange( value => {outlinePass.edgeGlow = Number( value );} );
+	gui.add( params, 'edgeThickness', 1, 4 ).onChange( value => {outlinePass.edgeThickness = Number( value );} );
+	gui.add( params, 'pulsePeriod', 0.0, 5 ).onChange( value => {outlinePass.pulsePeriod = Number( value );} );
+	var Configuration = function () {
+		this.visibleEdgeColor = config.effects.outline.visibleEdgeColor;
+		this.hiddenEdgeColor = config.effects.outline.hiddenEdgeColor;
+	};
+	var conf = new Configuration();
+	gui.addColor( conf, 'visibleEdgeColor' ).onChange( value => {outlinePass.visibleEdgeColor.set( value );} );
+	gui.addColor( conf, 'hiddenEdgeColor' ).onChange( value => {outlinePass.hiddenEdgeColor.set( value );} );
+}
+
+function init_effects(scene,renderer,camera){
+	composer = new EffectComposer( renderer );
+
+	var renderPass = new RenderPass( scene, camera );
+	composer.addPass( renderPass );
+
+	outlinePass = new OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, camera );
+
+
+	outlinePass.selectedObjects = [];
+	outlinePass.visibleEdgeColor.set(config.effects.outline.visibleEdgeColor);
+	outlinePass.hiddenEdgeColor.set(config.effects.outline.hiddenEdgeColor);
+	composer.addPass( outlinePass );
+
+	if(config.effects.outline.show_gui){
+		init_effects_gui(outlinePass);
+	}
+
+	//anti aliasing
+	effectFXAA = new ShaderPass( FXAAShader );
+	effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
+	composer.addPass( effectFXAA );
+
+}
+
+function self_on_load(scene,camera){
 	init_custom_visibility(scene);
 	init_custom_colors(scene);
+	if(config.effects.lights_toon_material){
+		apply_toon_material(scene);
+	}
 	init_custom_names(scene);
 	init_shadows(scene);
 	add_ambient_light();
 	renderer = create_renderer();
+	if(config.effects.outline.enabled){
+		init_effects(scene,renderer,camera);
+	}
 	orbit_control = add_view_orbit(camera,renderer);
-	animate();
+	scene.background = new THREE.Color(parseInt(config.scene.background,16));
 }
 
 function load_scene(user_on_load,gltf_filename){
@@ -307,10 +348,11 @@ function load_scene(user_on_load,gltf_filename){
 			scene = gltf.scene;
 			camera = create_camera(gltf);
 			init_custom_animations(gltf,scene);
-			self_on_load(scene);
+			self_on_load(scene,camera);
 			user_on_load();
 			//after the user on load so that the user can make use of it
 			sendMeshLists();
+			animate();
 		},
 		// called while loading is progressing
 		xhr => {
@@ -329,7 +371,12 @@ function set_stats_view(l_view){
 	if(is_stats){
 		stats1.showPanel(0); // Panel 0 = fps
 		stats2.showPanel(1); // Panel 1 = ms
-		stats3.showPanel(3);
+		if(!config.effects.outline.enabled){//otherwise wrong number of triangles shown
+			stats3.showPanel(3);
+		}
+		else{
+			stats3.showPanel();
+		}
 	}
 	else{
 		stats1.showPanel();
@@ -369,6 +416,19 @@ function onKeyPress(e){
 	}
 }
 
+function onWindowResize() {
+	var container = document.getElementById('viewer');
+	var w = container.clientWidth;
+	var h = container.clientHeight;
+	camera.aspect = w / h;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( w, h );
+	if(config.effects.outline.enabled){
+		composer.setSize( w, h );
+	}
+}
+
 function animate() {
 
 	if(is_stats){
@@ -377,14 +437,22 @@ function animate() {
 	}
 
 	orbit_control.update(); // only required if orbit_control.enableDamping = true, or if orbit_control.autoRotate = true
-	renderer.render( scene, camera );
-	requestAnimationFrame( animate );
+	if(config.effects.outline.enabled){
+		composer.render( scene, camera );
+	}
+	else{
+		renderer.render(scene, camera);
+	}
 
 	if(is_stats){
 		stats1.end();
 		stats2.end();
-		xPanel.update( renderer.info.render.triangles , 10000);
+		if(!config.effects.outline.enabled){//otherwise wrong number of triangles shown
+			xPanel.update( renderer.info.render.triangles , 10000);
+		}
 	}
+
+	requestAnimationFrame( animate );
 
 }
 
@@ -468,6 +536,28 @@ function update_color(params){
 	}
 }
 
+function update_outline(params){
+	if(!config.effects.outline.enabled){
+		return;
+	}
+	if(params.outline){
+		const obj = scene.getObjectByName(params.name);
+		outlinePass.selectedObjects.push(obj);
+		//console.log(`   ++ added '${obj.name}'`);
+	}
+	else{
+		const obj_id = outlinePass.selectedObjects.findIndex(obj => {
+			//if(obj.name == params.name){console.log(`   -- findIndex found ${params.name}`);}
+			return (obj.name == params.name);
+		});
+		if(obj_id != -1){
+			//console.warn(`removing ${outlinePass.selectedObjects[obj_id].name} from the selection list`);
+			outlinePass.selectedObjects.splice(obj_id,1);
+			//outlinePass.selectedObjects.forEach(obj => {console.log(`    * remaining '${obj.name}''`)});
+		}
+	}
+}
+
 function check_update_anim(params){
 	const obj_name = params.name;
 	const val = params.val;
@@ -489,13 +579,6 @@ function check_update_anim(params){
 		}
 		mixer.setTime(time);
 	}
-	else if(anim_params[obj_name].type == "state"){
-		const obj = anim_params[obj_name].object;
-		set_obj_state(obj,val);
-	}
-	else if(anim_params[obj_name].type == "color"){
-		set_obj_color(anim_params[obj_name],params);
-	}
 }
 
 function onParamUpdate(e){
@@ -509,7 +592,18 @@ function onParamUpdate(e){
 	if(typeof(params.light) != "undefined"){
 		update_light(params);
 	}
+	if(typeof(params.outline) != "undefined"){
+		update_outline(params);
+	}
 	//check_update_anim(params);
+}
+
+function onMeshMouseDown(e){
+	orbit_control.enabled = false;
+}
+
+function onMeshMouseUp(e){
+	orbit_control.enabled = true;
 }
 
 export{

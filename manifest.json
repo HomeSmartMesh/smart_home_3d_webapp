@@ -1,0 +1,14 @@
+{
+    "short_name": "home3D",
+    "name": "Smart Home 3D",
+    "description":"a 3d webapp to control home smart devices such as lights and heating",
+    "icons": [
+      {
+        "src": "./image/Home.ico",
+        "type": "image/ico",
+        "sizes": "128x128"
+      }
+    ],
+    "start_url": "./index.html",
+    "display": "standalone"
+  }

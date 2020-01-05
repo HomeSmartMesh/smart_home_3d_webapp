@@ -145,12 +145,4 @@ function onMouseUp(e){
     }
 }
 
-function set_bullet_centered(val){
-    is_bullet_centered = val;
-}
-
-function get_bullet_centered(val){
-    return is_bullet_centered;
-}
-
-export{init,run,get_bullet_centered,set_bullet_centered};
+export{init,run};

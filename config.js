@@ -1,5 +1,8 @@
 export default
 {
+    "scene":{
+        "background":"0x4f6f8f"
+    },
     "glTF_model":"./3d_models/home.gltf",
     "mouse":{
         click_hold_delay_ms : 600
@@ -22,6 +25,15 @@ export default
         "poll_interval_ms":2000
     },
     "mqtt":{
-        "enabled":true
+        "enabled":false
+    },
+    "effects":{
+        "lights_toon_material":false,
+        "outline":{
+            "enabled":true,
+            "show_gui":false,
+            "visibleEdgeColor":"#004107",
+            "hiddenEdgeColor":"#39160b"
+        }
     }
 }

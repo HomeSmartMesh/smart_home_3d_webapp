@@ -57,7 +57,7 @@ Note : This project is not related to the hue devices supplier and is a simple u
 * hold and use 3d slider to adjust the light brightness (lights and groups)
 * hold and control allows to dim light up gradually out of zero without a bang in case of previous dim state was high, and it is possible to jump to previous dim state by switch on with touch or click (other apps dissociate switch on and dimming functions, so that if left at high dim level, you have to switch it on on full brightness first before being able to dim it lower)
 * 3d light bulbs and 3d light brightness vary in sync when controlling the 3d slider (groups slider on exit only)
-* webapp lights kept in sync even when used externally. Configurable polling is used (default is 2 sec), event `hue_all_lights` only sent on changes
+* webapp lights kept in sync even when used externally. Configurable polling is used (default is 2 sec), event `hue_all_lights` only sent on changes (shallow compare)
 
 
 ## Hue config in blender
@@ -164,20 +164,23 @@ The [web_three_interface](https://github.com/HomeSmartMesh/web_three_interface) 
 * stats and fps. (can be disabled in [config.json](./config.js))
 * heaters pi_heating_demand on heater mesh colors
 * rooms temperature on floor color
+* EffectComposer and outlinePass for app selected interactive objects (`three_param:outline`)
 
 ## Planned Features
 
+* enhance 3d slider with more info about limits and states
 * adjust heating with 3d slider
-* meta light groups with parenting
+* hue light dimming : required visible difference between minimal dimm and off
 * directional light to reflect room sensors ambient light
 * add windows open close with colors
-* fall back on interactive demo mode from within the same app
 * use lower poly mesh
 * add coap support through node server (split, back+front) but keep the same front
-* add direct mqtt support wtihout websockets through node server
 * add android native app with sockets and coap permissions
 * add fallback support with a websocket/socket wrapper https://github.com/novnc/websockify
-* hue light dimming : required visible difference between minimal dimm and off
+
+* fall back on interactive demo mode from within the same app
+* meta light groups with parenting
+* add direct mqtt support wtihout websockets through node server
 
 ## issues and limitations
 * no material animation supported by gltf, so fallback on a mutateColor custom property
