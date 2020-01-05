@@ -25,7 +25,7 @@ export default
         "poll_interval_ms":2000
     },
     "mqtt":{
-        "enabled":false
+        "enabled":true
     },
     "effects":{
         "lights_toon_material":false,

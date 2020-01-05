@@ -113,6 +113,9 @@ function onMeshHold(event){
 }
 
 function get_lights(){
+    if(!hue_available){
+        return;
+    }
     //console.log("hue_app> get_lights()")
     user.getLights().then(data => {
         //console.log("hue_app> getLights response");
