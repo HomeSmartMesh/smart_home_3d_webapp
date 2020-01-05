@@ -44,8 +44,6 @@ function init(){
     window.addEventListener( 'mesh_control', onMeshControl, false );
     window.addEventListener( 'mesh_hold', onMeshHold, false );
 
-    //only way to keep lights in sync when used from outside this app
-    setInterval(get_lights,config.hue.poll_interval_ms);
 }
 
 function send_custom_event(event_name,data){
@@ -113,12 +111,17 @@ function onMeshHold(event){
 }
 
 function get_lights(){
-    if(!hue_available){
+    if(!hue_registred){
         return;
     }
     //console.log("hue_app> get_lights()")
     user.getLights().then(data => {
         //console.log("hue_app> getLights response");
+        if(!hue_available){
+            //first time execution only, after success of first call
+            //only way to keep lights in sync when used from outside this app
+            setInterval(get_lights,config.hue.poll_interval_ms);
+        }
         hue_available = true;
         if(JSON.stringify(data) != JSON.stringify(lights)){
             lights = data;
