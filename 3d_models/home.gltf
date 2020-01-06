@@ -18,6 +18,16 @@
                         1,
                         1
                     ],
+                    "intensity" : 1,
+                    "type" : "directional",
+                    "name" : "Sun"
+                },
+                {
+                    "color" : [
+                        1,
+                        1,
+                        1
+                    ],
                     "intensity" : 10,
                     "spot" : {
                         "innerConeAngle" : 0.3337942263919169,
@@ -272,16 +282,15 @@
                 4,
                 5,
                 17,
-                27,
-                34,
-                50,
-                63,
-                66,
-                69,
-                72,
-                75,
-                78,
-                79,
+                19,
+                29,
+                36,
+                52,
+                65,
+                68,
+                71,
+                74,
+                77,
                 80,
                 81,
                 82,
@@ -292,7 +301,9 @@
                 87,
                 88,
                 89,
-                90
+                90,
+                91,
+                92
             ]
         }
     ],
@@ -535,7 +546,7 @@
                     "light" : 0
                 }
             },
-            "name" : "Malm Light Frame_Orientation",
+            "name" : "Sun_Orientation",
             "rotation" : [
                 -0.7071067690849304,
                 0,
@@ -547,6 +558,31 @@
             "children" : [
                 18
             ],
+            "name" : "Sun",
+            "translation" : [
+                0,
+                8.41873550415039,
+                0
+            ]
+        },
+        {
+            "extensions" : {
+                "KHR_lights_punctual" : {
+                    "light" : 1
+                }
+            },
+            "name" : "Malm Light Frame_Orientation",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                20
+            ],
             "name" : "Malm Light Frame",
             "scale" : [
                 0.47999998927116394,
@@ -556,11 +592,11 @@
         },
         {
             "children" : [
-                19
+                21
             ],
             "extras" : {
                 "hue" : "Bed Malm",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "mouseEvent" : "true"
             },
             "mesh" : 14,
@@ -579,7 +615,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 1
+                    "light" : 2
                 }
             },
             "name" : "N Night Light Frame_Orientation",
@@ -592,7 +628,7 @@
         },
         {
             "children" : [
-                21
+                23
             ],
             "name" : "N Night Light Frame",
             "scale" : [
@@ -603,11 +639,11 @@
         },
         {
             "children" : [
-                22
+                24
             ],
             "extras" : {
                 "hue" : "Bed N",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "mouseEvent" : "true"
             },
             "mesh" : 15,
@@ -626,7 +662,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 2
+                    "light" : 3
                 }
             },
             "name" : "W Night Light Frame_Orientation",
@@ -639,7 +675,7 @@
         },
         {
             "children" : [
-                24
+                26
             ],
             "name" : "W Night Light Frame",
             "scale" : [
@@ -650,11 +686,11 @@
         },
         {
             "children" : [
-                25
+                27
             ],
             "extras" : {
                 "hue" : "Bed W",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "mouseEvent" : "true"
             },
             "mesh" : 16,
@@ -672,9 +708,9 @@
         },
         {
             "children" : [
-                20,
-                23,
-                26
+                22,
+                25,
+                28
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -697,7 +733,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 3
+                    "light" : 4
                 }
             },
             "name" : "Hallway Light 1_Orientation",
@@ -710,7 +746,7 @@
         },
         {
             "children" : [
-                28
+                30
             ],
             "name" : "Hallway Light 1",
             "scale" : [
@@ -721,12 +757,12 @@
         },
         {
             "children" : [
-                29
+                31
             ],
             "extras" : {
                 "hue" : "Entrance White 1",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "maxLight" : 20
             },
             "mesh" : 18,
@@ -745,7 +781,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 4
+                    "light" : 5
                 }
             },
             "name" : "Hallway Light 2_Orientation",
@@ -758,7 +794,7 @@
         },
         {
             "children" : [
-                31
+                33
             ],
             "name" : "Hallway Light 2",
             "scale" : [
@@ -769,12 +805,12 @@
         },
         {
             "children" : [
-                32
+                34
             ],
             "extras" : {
                 "hue" : "Entrance White 2",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "maxLight" : 20
             },
             "mesh" : 19,
@@ -792,8 +828,8 @@
         },
         {
             "children" : [
-                30,
-                33
+                32,
+                35
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -816,7 +852,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 5
+                    "light" : 6
                 }
             },
             "name" : "LivingTop_Spot1_Orientation",
@@ -829,7 +865,7 @@
         },
         {
             "children" : [
-                35
+                37
             ],
             "extras" : {
                 "max" : 10
@@ -843,12 +879,12 @@
         },
         {
             "children" : [
-                36
+                38
             ],
             "extras" : {
                 "hue" : "LivingTop1",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 21,
             "name" : "LivingTop1",
@@ -859,14 +895,14 @@
             ],
             "translation" : [
                 0.8437916040420532,
-                -4.894954681396484,
+                -4.894956588745117,
                 -0.012054443359375
             ]
         },
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 6
+                    "light" : 7
                 }
             },
             "name" : "LivingTop_Spot2_Orientation",
@@ -879,7 +915,7 @@
         },
         {
             "children" : [
-                38
+                40
             ],
             "name" : "LivingTop_Spot2",
             "scale" : [
@@ -890,12 +926,12 @@
         },
         {
             "children" : [
-                39
+                41
             ],
             "extras" : {
                 "hue" : "LivingTop2",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 22,
             "name" : "LivingTop2",
@@ -913,7 +949,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 7
+                    "light" : 8
                 }
             },
             "name" : "LivingTop_Spot3_Orientation",
@@ -926,7 +962,7 @@
         },
         {
             "children" : [
-                41
+                43
             ],
             "name" : "LivingTop_Spot3",
             "scale" : [
@@ -937,12 +973,12 @@
         },
         {
             "children" : [
-                42
+                44
             ],
             "extras" : {
                 "hue" : "LivingTop3",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 23,
             "name" : "LivingTop3",
@@ -960,7 +996,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 8
+                    "light" : 9
                 }
             },
             "name" : "LivingTop_Spot4_Orientation",
@@ -973,7 +1009,7 @@
         },
         {
             "children" : [
-                44
+                46
             ],
             "name" : "LivingTop_Spot4",
             "scale" : [
@@ -984,12 +1020,12 @@
         },
         {
             "children" : [
-                45
+                47
             ],
             "extras" : {
                 "hue" : "LivingTop4",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 24,
             "name" : "LivingTop4",
@@ -999,7 +1035,7 @@
                 0.6249998807907104
             ],
             "translation" : [
-                -0.3995518684387207,
+                -0.3995516300201416,
                 -4.89495849609375,
                 -0.012052655220031738
             ]
@@ -1007,7 +1043,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 9
+                    "light" : 10
                 }
             },
             "name" : "LivingTop_Spot5_Orientation",
@@ -1020,7 +1056,7 @@
         },
         {
             "children" : [
-                47
+                49
             ],
             "name" : "LivingTop_Spot5",
             "scale" : [
@@ -1031,12 +1067,12 @@
         },
         {
             "children" : [
-                48
+                50
             ],
             "extras" : {
                 "hue" : "LivingTop5",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 25,
             "name" : "LivingTop5",
@@ -1046,18 +1082,18 @@
                 0.6249998807907104
             ],
             "translation" : [
-                -0.8081169128417969,
+                -0.8081166744232178,
                 -4.894960403442383,
                 -0.012052655220031738
             ]
         },
         {
             "children" : [
-                37,
-                40,
-                43,
-                46,
-                49
+                39,
+                42,
+                45,
+                48,
+                51
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -1072,15 +1108,15 @@
                 0.4000000059604645
             ],
             "translation" : [
-                -3.412297248840332,
-                3.1436429023742676,
+                -2.850606679916382,
+                2.351276159286499,
                 0.5945572853088379
             ]
         },
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 10
+                    "light" : 11
                 }
             },
             "name" : "malms 1 Light_Orientation",
@@ -1093,7 +1129,7 @@
         },
         {
             "children" : [
-                51
+                53
             ],
             "name" : "malms 1 Light",
             "scale" : [
@@ -1104,12 +1140,12 @@
         },
         {
             "children" : [
-                52
+                54
             ],
             "extras" : {
                 "hue" : "malms 1",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 27,
             "name" : "malms 1 Frame",
@@ -1119,7 +1155,7 @@
                 0.8333333134651184
             ],
             "translation" : [
-                -0.8851556777954102,
+                -0.885155439376831,
                 -5.430413246154785,
                 0.008185386657714844
             ]
@@ -1127,7 +1163,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 11
+                    "light" : 12
                 }
             },
             "name" : "malms 2 Light_Orientation",
@@ -1140,7 +1176,7 @@
         },
         {
             "children" : [
-                54
+                56
             ],
             "name" : "malms 2 Light",
             "scale" : [
@@ -1151,12 +1187,12 @@
         },
         {
             "children" : [
-                55
+                57
             ],
             "extras" : {
                 "hue" : "malms 2",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 28,
             "name" : "malms 2 Frame",
@@ -1166,7 +1202,7 @@
                 0.8333333134651184
             ],
             "translation" : [
-                -0.31845951080322266,
+                -0.31845927238464355,
                 -5.430413246154785,
                 0.008185386657714844
             ]
@@ -1174,7 +1210,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 12
+                    "light" : 13
                 }
             },
             "name" : "malms 3 Light_Orientation",
@@ -1187,7 +1223,7 @@
         },
         {
             "children" : [
-                57
+                59
             ],
             "name" : "malms 3 Light",
             "scale" : [
@@ -1198,12 +1234,12 @@
         },
         {
             "children" : [
-                58
+                60
             ],
             "extras" : {
                 "hue" : "malms 3",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 29,
             "name" : "malms 3 Frame",
@@ -1213,7 +1249,7 @@
                 0.8333333134651184
             ],
             "translation" : [
-                0.2641878128051758,
+                0.2641880512237549,
                 -5.430413246154785,
                 0.008185386657714844
             ]
@@ -1221,7 +1257,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 13
+                    "light" : 14
                 }
             },
             "name" : "malms 4 Light_Orientation",
@@ -1234,7 +1270,7 @@
         },
         {
             "children" : [
-                60
+                62
             ],
             "extras" : {
                 "max" : 10
@@ -1248,12 +1284,12 @@
         },
         {
             "children" : [
-                61
+                63
             ],
             "extras" : {
                 "hue" : "malms 4",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008"
+                "mutateColor" : "A49A29"
             },
             "mesh" : 30,
             "name" : "malms 4 Frame",
@@ -1263,17 +1299,17 @@
                 0.8333333134651184
             ],
             "translation" : [
-                0.855525016784668,
+                0.8555252552032471,
                 -5.430413246154785,
                 0.008185386657714844
             ]
         },
         {
             "children" : [
-                53,
-                56,
-                59,
-                62
+                55,
+                58,
+                61,
+                64
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -1288,7 +1324,7 @@
                 0.30000001192092896
             ],
             "translation" : [
-                -4.319902420043945,
+                -3.3743648529052734,
                 1.8807494640350342,
                 2.889397144317627
             ]
@@ -1296,7 +1332,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 14
+                    "light" : 15
                 }
             },
             "name" : "Bathroom Light1_Orientation",
@@ -1309,7 +1345,7 @@
         },
         {
             "children" : [
-                64
+                66
             ],
             "name" : "Bathroom Light1",
             "scale" : [
@@ -1325,11 +1361,11 @@
         },
         {
             "children" : [
-                65
+                67
             ],
             "extras" : {
                 "mouseEvent" : "true",
-                "muteteColor" : "022008",
+                "muteteColor" : "A49A29",
                 "hue" : "Bathroom main"
             },
             "mesh" : 32,
@@ -1348,7 +1384,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 15
+                    "light" : 16
                 }
             },
             "name" : "Corridor Light Frame_Orientation",
@@ -1361,7 +1397,7 @@
         },
         {
             "children" : [
-                67
+                69
             ],
             "name" : "Corridor Light Frame",
             "scale" : [
@@ -1372,10 +1408,10 @@
         },
         {
             "children" : [
-                68
+                70
             ],
             "extras" : {
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "mouseEvent" : "true",
                 "hue" : "corridor"
             },
@@ -1395,7 +1431,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 16
+                    "light" : 17
                 }
             },
             "name" : "Kitchen Light_Orientation",
@@ -1408,7 +1444,7 @@
         },
         {
             "children" : [
-                70
+                72
             ],
             "name" : "Kitchen Light",
             "scale" : [
@@ -1424,11 +1460,11 @@
         },
         {
             "children" : [
-                71
+                73
             ],
             "extras" : {
                 "mouseEvent" : "true",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "hue" : "Kitchen"
             },
             "mesh" : 34,
@@ -1447,7 +1483,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 17
+                    "light" : 18
                 }
             },
             "name" : "Office Light1_Orientation",
@@ -1460,7 +1496,7 @@
         },
         {
             "children" : [
-                73
+                75
             ],
             "extras" : {
                 "maxLight" : 10
@@ -1479,18 +1515,18 @@
         },
         {
             "children" : [
-                74
+                76
             ],
             "extras" : {
                 "hue" : "Office main",
                 "mouseEvent" : "true",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "maxLight" : 40
             },
             "mesh" : 35,
             "name" : "Office Bulb",
             "translation" : [
-                3.8885560035705566,
+                3.430154323577881,
                 2.1999998092651367,
                 0.8094472885131836
             ]
@@ -1498,7 +1534,7 @@
         {
             "extensions" : {
                 "KHR_lights_punctual" : {
-                    "light" : 18
+                    "light" : 19
                 }
             },
             "name" : "Toilet Light Frame_Orientation",
@@ -1511,7 +1547,7 @@
         },
         {
             "children" : [
-                76
+                78
             ],
             "name" : "Toilet Light Frame",
             "scale" : [
@@ -1522,11 +1558,11 @@
         },
         {
             "children" : [
-                77
+                79
             ],
             "extras" : {
                 "mouseEvent" : "true",
-                "mutateColor" : "022008",
+                "mutateColor" : "A49A29",
                 "hue" : "Toilet"
             },
             "mesh" : 36,
@@ -1864,9 +1900,9 @@
             "name" : "Malm Light Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1878,9 +1914,9 @@
             "name" : "N Night Light Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1892,9 +1928,9 @@
             "name" : "W Night Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1920,9 +1956,9 @@
             "name" : "Hallway Light 1 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1934,9 +1970,9 @@
             "name" : "Hallway Light 2 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1962,9 +1998,9 @@
             "name" : "LivingTop1 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1976,9 +2012,9 @@
             "name" : "LivingTop2 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -1990,9 +2026,9 @@
             "name" : "LivingTop3 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2004,9 +2040,9 @@
             "name" : "LivingTop4 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2018,9 +2054,9 @@
             "name" : "LivingTop5 Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2046,9 +2082,9 @@
             "name" : "malms 1 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2060,9 +2096,9 @@
             "name" : "malms 2 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2074,9 +2110,9 @@
             "name" : "malms 3 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2088,9 +2124,9 @@
             "name" : "malms 4 Mesh Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2116,9 +2152,9 @@
             "name" : "Bathroom_Bulb Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.014022068120539188,
+                    0.014022068120539188,
+                    0.014242441393435001,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2130,9 +2166,9 @@
             "name" : "Corridor Bulb Mesh Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2144,9 +2180,9 @@
             "name" : "Kitchen Bulb Mesh Material",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2158,9 +2194,9 @@
             "name" : "Office_Bulb_Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,
@@ -2172,9 +2208,9 @@
             "name" : "Toilet_Bulb_Mat",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.14412856101989746,
-                    0.14412851631641388,
-                    0.14702731370925903,
+                    0.013702085241675377,
+                    0.013702084310352802,
+                    0.014443839900195599,
                     1
                 ],
                 "metallicFactor" : 0,

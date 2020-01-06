@@ -92,6 +92,47 @@ Indiviual lights have to be attached to a parent mesh that have these custom pro
 * a lightgroup shall also have a `hue` field, the only differerence is that it has no blender light item and does have a `type:lightgroup` property.
 * as the hue gateway allow it, a normal light and a lightgroup can have the same name.
 
+## tested hue light types
+
+* productname: Hue color spot
+  * modelid: LCG002
+  * type: Extended color light
+  * config:{archetype:wallspot}
+  * state:{on, bri, hue, sat, effect, xy, ct}
+  * capabilities:{control:{mindimlevel, maxlumen, ct:{min,max}, colorgamuttype, colorgamut:[0,1,2]}}
+* productname: Hue ambiance spot
+  * modelid: LTW013
+  * type: Color temperature light
+  * config:{archetype:singlespot}
+  * state:{color,bri,ct}
+  * capabilities:{control:{mindimlevel, maxlumen, ct:{min,max}}}
+* productname: "Hue white lamp"
+  * modelid: LWB010
+  * type: Dimmable light
+  * config:{archetype:classicbulb}
+  * state:{on, bri}
+  * capabilities:{control:{mindimlevel, maxlumen}}
+* productname: Hue filament bulb
+  * modelid: LWO001
+  * type: Dimmable light
+  * config:{archetype:vintagebulb}
+  * state:{on, bri}
+  * capabilities:{control:{mindimlevel, maxlumen}}
+* productname: Color temperature light
+  * modelid: RS 128 T
+  * type: Color temperature light
+  * config:{archetype:wallspot}
+  * state:{on, bri, ct}
+  * capabilities:{control:{ct:{min,max}}}
+* productname: Color temperature light
+  * modelid: RB 148 T
+  * type: Color temperature light
+  * config:{archetype:candlebulb}
+  * state:{on, bri, ct}
+  * capabilities:{control:{ct:{min,max}}}
+
+ct unit is Mired M = 1000000/T; [Mired](https://en.wikipedia.org/wiki/Mired)
+
 ## demo light groups
 <img src="./media/lightgroup.gif" width="600">
 

@@ -72,7 +72,7 @@ function check_light_data(hue_name,data){
     if((Array.isArray(data)) && (data.length > 0)){
         console.warn(`hue_app> hue light '${hue_name}' unreachable`);
         console.warn(data[0].error);
-        send_custom_event("hue_light_state",{name:hue_name,reach:false});
+        send_custom_event("hue_light_state",{name:hue_name,state:{reachable:false}});
         return false;
     }
     else if(typeof(data.state.reachable) != "undefined"){
@@ -121,8 +121,10 @@ function get_lights(){
             //first time execution only, after success of first call
             //only way to keep lights in sync when used from outside this app
             setInterval(get_lights,config.hue.poll_interval_ms);
+            hue_available = true;
+            console.log("hue_app> get_lights(), hue available, all good, 3d model will be hidden");
+            send_custom_event("three_param",{name:"Hue",visible:false});
         }
-        hue_available = true;
         if(JSON.stringify(data) != JSON.stringify(lights)){
             lights = data;
             send_custom_event('hue_all_lights',lights);
@@ -208,7 +210,7 @@ function hueLightClick(hue_name){
             const light_new_state = !data.state.on;
             const old_bri_val = data.state.bri;
             user.setLightState(l_id, { on: light_new_state }).then(data => {
-                send_custom_event("hue_light_state",{name:hue_name,on:light_new_state,bri:old_bri_val});
+                send_custom_event("hue_light_state",{name:hue_name,state:{on:light_new_state,bri:old_bri_val}});
                 console.log(`hue_app> set hue light '${hue_name}' to ${light_new_state}`);
             });
         }
@@ -260,7 +262,7 @@ function onMeshClick(event){
 	}
 }
 
-function extract_hue_params(data,init){
+function extract_hue_params(data,init={}){
     let resData = init;
     data.forEach(info => {
         if(typeof(info.success) != "undefined"){
@@ -286,8 +288,8 @@ function hueLightDimm(){
     const bri = Math.trunc(val*255.0);
     const start_time = Date.now();
     user.setLightState(l_id, {on:light_new_state, bri:bri }).then(data => {
-        const resData = extract_hue_params(data,{name:hue_name});
-        send_custom_event("hue_light_state",resData);
+        const resData = extract_hue_params(data);
+        send_custom_event("hue_light_state",{name:hue_name,state:resData});
         console.log(`hue_app> ${dimm.active?"":"(final)"} set light '${hue_name}' to ${light_new_state} at brightness ${bri} in ${Date.now()-start_time} ms`);
     });
     //clear request executed from the timer itself not to skipp a last pending call

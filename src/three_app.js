@@ -21,6 +21,7 @@ import { OutlinePass } 		from './../jsm/three/postprocessing/OutlinePass.js';
 import { ShaderPass } 		from './../jsm/three/postprocessing/ShaderPass.js';
 import { FXAAShader } 		from './../jsm/three/shaders/FXAAShader.js';
 import { GUI } 				from './../jsm/dat.gui.module.js';
+import { kelvinToRGB }		from './../jsm/kelvin2rgb.js';
 
 import config from "./../config.js";
 
@@ -235,10 +236,16 @@ function init_shadows(scene){
 			else if(typeof(obj.userData.floor) != "undefined"){
 				obj.receiveShadow = true;
 			}
-		}else if(obj.type == "PointLight"){
+			else if(typeof(obj.userData.hue) != "undefined"){
+				obj.receiveShadow = true;
+			}
+		}
+		else if(obj.type == "PointLight"){
 			obj.castShadow = true;
 		}else if(obj.type == "SpotLight"){
 			obj.castShadow = false;
+		}else if(obj.type == "DirectionalLight"){
+			obj.castShadow = true;
 		}
 	});
 }
@@ -520,10 +527,33 @@ function update_emissive(params){
 }
 
 function update_color(params){
+	const obj = scene.getObjectByName(params.name);
+	obj.material.color = new THREE.Color(params.color);
+}
+
+function update_color_temperature(params){
+	const obj = scene.getObjectByName(params.name);
+	const col = kelvinToRGB(1000000.0/params.color_temperature);
+	const temp_col = new THREE.Color(col.r,col.g,col.b);
+	let temp_hsl={};temp_col.getHSL(temp_hsl);
+	let mat_hsl={};obj.material.color.getHSL(mat_hsl);
+	//hue from temperature, lightness from material
+	obj.material.color.setHSL(temp_hsl.h,mat_hsl.s,mat_hsl.l);
+	//console.log(`HSL >>>${obj.name} ${temp_hsl.h.toFixed(2)} ${mat_hsl.s.toFixed(2)} ${mat_hsl.l.toFixed(2)}`);
+}
+
+function update_color_lightness(params){
+	const obj = scene.getObjectByName(params.name);
+	let mat_hsl={};obj.material.color.getHSL(mat_hsl);
+	obj.material.color.setHSL(mat_hsl.h,mat_hsl.s,params.color_lightness);
+	//console.log(`light>>>${obj.name} ${mat_hsl.h.toFixed(2)} ${mat_hsl.s.toFixed(2)} ${params.color_lightness.toFixed(2)}`);
+}
+
+function update_color_ratio(params){
 	const obj_name = params.name;
-	//console.log(`${obj_name} color update`);
+	console.log(`${obj_name} color update`);
 	if(typeof(color_params[obj_name]) != "undefined"){
-		const val = params.color;
+		const val = params.color_ratio;
 		let weight_col1 = new THREE.Color(parseInt(color_params[obj_name].color1,16));
 		let weight_col2 = new THREE.Color(parseInt(color_params[obj_name].color2,16));
 		weight_col1.multiplyScalar(1-val);//0 gets full color 1
@@ -542,18 +572,21 @@ function update_outline(params){
 	}
 	if(params.outline){
 		const obj = scene.getObjectByName(params.name);
-		outlinePass.selectedObjects.push(obj);
-		//console.log(`   ++ added '${obj.name}'`);
+		if(obj.parent.type == "Mesh"){
+			outlinePass.selectedObjects.push(obj.parent);
+			//console.log(`${obj.parent.name} parent of ${obj.name} is a mesh`);
+		}
+		else{
+			outlinePass.selectedObjects.push(obj);
+		}
 	}
 	else{
 		const obj_id = outlinePass.selectedObjects.findIndex(obj => {
-			//if(obj.name == params.name){console.log(`   -- findIndex found ${params.name}`);}
 			return (obj.name == params.name);
 		});
 		if(obj_id != -1){
-			//console.warn(`removing ${outlinePass.selectedObjects[obj_id].name} from the selection list`);
 			outlinePass.selectedObjects.splice(obj_id,1);
-			//outlinePass.selectedObjects.forEach(obj => {console.log(`    * remaining '${obj.name}''`)});
+			//TODO: if no more siblings in the list, then remove the parent
 		}
 	}
 }
@@ -583,8 +616,14 @@ function check_update_anim(params){
 
 function onParamUpdate(e){
 	const params = e.detail;
-	if(typeof(params.color) != "undefined"){
-		update_color(params);
+	if(typeof(params.color_ratio) != "undefined"){
+		update_color_ratio(params);
+	}
+	if(typeof(params.color_temperature) != "undefined"){
+		update_color_temperature(params);
+	}
+	if(typeof(params.color_lightness) != "undefined"){
+		update_color_lightness(params);
 	}
 	if(typeof(params.emissive) != "undefined"){
 		update_emissive(params);
@@ -594,6 +633,9 @@ function onParamUpdate(e){
 	}
 	if(typeof(params.outline) != "undefined"){
 		update_outline(params);
+	}
+	if(typeof(params.visible) != "undefined"){
+		scene.getObjectByName(params.name).visible = params.visible;
 	}
 	//check_update_anim(params);
 }

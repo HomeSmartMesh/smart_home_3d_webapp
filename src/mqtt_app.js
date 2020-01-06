@@ -47,7 +47,8 @@ function onConnect() {
   mqtt_in_use = true;
   mqtt_connected = true;
   // Once a connection has been made, make a subscription and send a message.
-  console.log("onConnect");
+  console.log("mqtt_app> onConnect() mqtt running, all good, 3d model will be hidden");
+  send_custom_event("three_param",{name:"MQTT",visible:false});
   for(let topic in mqtt_pending_topics){
     client.subscribe(topic);
     console.log(`mqtt_app> - subscribed to ${topic}`);

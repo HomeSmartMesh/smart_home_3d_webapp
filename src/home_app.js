@@ -63,10 +63,7 @@ function onThreeList(e){
 	if(e.detail.type == "hue"){
 		hue_mesh_name = e.detail.map;
 		for(let hue_name in hue_mesh_name){
-			set_hue_light(hue_mesh_name[hue_name], 0);
-			//set_hue_reach(hue_mesh_name[hue_name], 0);
-			send_custom_event("three_param",{name:hue_mesh_name[hue_name], outline:true});
-
+			send_custom_event("three_param",{name:hue_mesh_name[hue_name], light:0});
 		}
 		hue_three_list_reached = true;
 		if(hue_lights_on_startup_reached && hue_three_list_reached){
@@ -78,13 +75,11 @@ function onThreeList(e){
 function onMeshMouseEnter(e){
 	//console.log(`Mesh Mouse Enter in ${e.detail.name}`);
 	document.getElementById('viewer').style.cursor = "pointer";
-	//send_custom_event("three_param",{name:e.detail.name, outline:true});
 }
 
 function onMeshMouseExit(e){
 	//console.log(`Mesh Mouse Exit from ${e.detail.name}`)
 	document.getElementById('viewer').style.cursor = "default";
-	//send_custom_event("three_param",{name:e.detail.name, outline:false});
 }
 
 function onMeshControl(e){
@@ -95,28 +90,21 @@ function onMeshHold(e){
 	control.run(e.detail);
 }
 
-function set_hue_light(name,state_on,state_bri){
-	//console.log(`${name} set to ${bri.toFixed(2)}`);
-	const brightness = (state_on===true)?state_bri/255.0:0;
-	send_custom_event("three_param",{name:name, light:brightness, emissive:brightness*0.5});
-}
-
-function set_hue_reach(name,color){
-	//console.log(`${name} reach set to ${color}`);
-	//send_custom_event("three_param",{name:name, color:color, outline:(color==1)?true:false});
-	send_custom_event("three_param",{name:name, color:color});
-}
-
 function onHueLightState(e){
-	if(typeof(e.detail.reach) != "undefined"){
-		const mesh_name = hue_mesh_name[e.detail.name];
-		set_hue_light(mesh_name,0);
-		set_hue_reach(mesh_name, 1);
+	const light = e.detail;
+	const mesh_name = hue_mesh_name[light.name];
+	send_custom_event("three_param",{name:mesh_name, outline:light.state.reachable});
+	const brightness = (light.state.on && light.state.reachable)?light.state.bri/255.0:0;
+	send_custom_event("three_param",{name:mesh_name, light:brightness});
+
+	let ct;
+	if(typeof(light.state.ct) != "undefined"){
+		ct = light.state.ct;
 	}
 	else{
-		const mesh_name = hue_mesh_name[e.detail.name];
-		set_hue_light(mesh_name,e.detail.on,e.detail.bri);
+		ct = get_ct_from_model_id(light.modelid);
 	}
+	send_custom_event("three_param",{name:mesh_name, color_temperature:ct, color_lightness:brightness});
 }
 
 function onHueAllLights(e){
@@ -124,6 +112,15 @@ function onHueAllLights(e){
 	hue_lights_on_startup_reached = true;
 	if(hue_lights_on_startup_reached && hue_three_list_reached){
 		apply_hue_on_three();
+	}
+}
+
+function get_ct_from_model_id(model_id){
+	if(model_id == "LWB010"){
+		return 1000000/2700;
+	}
+	else{
+		return 1000000/2700;
 	}
 }
 
@@ -136,17 +133,7 @@ function apply_hue_on_three(){
 	//console.log(`home_app> apply_hue_on_three()`);
 	for (const [light_id,light] of Object.entries(hue_light_list)) {
 		if(light.name in hue_mesh_name){
-			const mesh_name = hue_mesh_name[light.name];
-			if(light.state.reachable){
-				set_hue_reach(mesh_name, 1);
-				set_hue_light(mesh_name,light.state.on,light.state.bri);
-				console.log(`home_app> - '${light.name}' is ${(light.state.on==true)?"on at "+light.state.bri:"off"}`);
-			}
-			else{
-				set_hue_reach(mesh_name, 0);
-				set_hue_light(mesh_name,0);
-				console.log(`home_app> - '${light.name}' is not reachable`);
-			}
+			onHueLightState({detail:light});
 		}
 		else{
 			console.warn(`home_app> no Object has hue property = '${light.name}'`);
@@ -166,14 +153,14 @@ function onMqttMessage(e){
 		const heating_demand = e.detail.payload.pi_heating_demand;
 		const ratio = heating_demand / 255;
 		console.log(`home_app> mqtt heater : ${obj_name} ratio at ${ratio.toFixed(2)}`);
-		send_custom_event('three_param',{name:obj_name,color:Math.sqrt(ratio)});
+		send_custom_event('three_param',{name:obj_name,color_ratio:Math.sqrt(ratio)});
 	}
 	if(obj.userData.type == "temperature"){
 		const temp = e.detail.payload.temperature;
 		if(typeof(temp) != "undefined"){
 			const ratio = (temp - (15.0)) / 28.0;
 			console.log(`home_app> mqtt temperature : ${obj_name} ratio at ${ratio.toFixed(2)}`);
-			send_custom_event('three_param',{name:obj_name,color:ratio});
+			send_custom_event('three_param',{name:obj_name,color_ratio:ratio});
 		}
 	}
 }

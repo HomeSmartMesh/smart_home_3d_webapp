@@ -191,4 +191,5 @@ function resume(){
 	is_active = true;
 }
 
+//TODO, replace SetMeshList with add to mesh list and remove from mesh list (similar to three_param, outline)
 export{init,SetMeshList,suspend,resume};
