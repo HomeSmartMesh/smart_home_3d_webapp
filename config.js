@@ -22,7 +22,8 @@ export default
     "hue":{
         "enabled":true,
         "slider_timer_ms":100,
-        "poll_interval_ms":2000
+        "poll_interval_ms":2000,
+        "test_hsl":false
     },
     "mqtt":{
         "enabled":true

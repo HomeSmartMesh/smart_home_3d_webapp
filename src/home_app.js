@@ -16,6 +16,7 @@
 import * as three from "./three_app.js";
 import * as mouse from "./three_mouse.js";
 import * as control from "./three_control.js";
+import { GUI } 				from './../jsm/dat.gui.module.js';
 
 import config from "../config.js";
 
@@ -37,6 +38,10 @@ function init(){
 	//window.addEventListener( 'mesh_hold', onMeshHold, false );
 	window.addEventListener( 'mqtt_message', onMqttMessage, false);
 	window.addEventListener( 'three_list', onThreeList, false);
+
+	if(config.hue.test_hsl){
+		test_hsl();
+	}
 	
 }
 
@@ -45,6 +50,15 @@ function send_custom_event(event_name,data){
 	window.dispatchEvent(event);
 }
 
+function test_hsl(){
+	let params = {		h: 0.5,		s: 0.5,		l: 0.5,		ct:153,		lightness:0.5	};
+	var gui = new GUI( { width: 300 } );
+	gui.add( params, 'h'		, 0.0, 1.0 ).onChange(  value => {send_custom_event("three_param",{name:"Rooms", h:value,s:params.s,l:params.l})} );
+	gui.add( params, 's'		, 0.0, 1.0 ).onChange(  value => {send_custom_event("three_param",{name:"Rooms", h:params.h,s:value,l:params.l})} );
+	gui.add( params, 'l'		, 0.0, 1.0 ).onChange(  value => {send_custom_event("three_param",{name:"Rooms", h:params.h,s:params.s,l:value})} );
+	gui.add( params, 'ct'		, 153, 454 ).onChange(  value => {send_custom_event("three_param",{name:"Rooms", color_temperature:value})} );
+	gui.add( params, 'lightness', 0.0, 1.0 ).onChange(  value => {send_custom_event("three_param",{name:"Rooms", color_lightness:value})} );
+}
 
 //in this callback, three is ready
 function on_load(){

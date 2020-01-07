@@ -283,8 +283,8 @@ function init_custom_names(scene){
 
 function init_effects_gui(outlinePass){
 	let params = {
-		edgeStrength: 3.0,
-		edgeGlow: 0.0,
+		edgeStrength: 4.0,
+		edgeGlow: 0.5,
 		edgeThickness: 1.0,
 		pulsePeriod: 0,
 		rotate: false,
@@ -534,19 +534,20 @@ function update_color(params){
 function update_color_temperature(params){
 	const obj = scene.getObjectByName(params.name);
 	const col = kelvinToRGB(1000000.0/params.color_temperature);
-	const temp_col = new THREE.Color(col.r,col.g,col.b);
-	let temp_hsl={};temp_col.getHSL(temp_hsl);
-	let mat_hsl={};obj.material.color.getHSL(mat_hsl);
-	//hue from temperature, lightness from material
-	obj.material.color.setHSL(temp_hsl.h,mat_hsl.s,mat_hsl.l);
-	//console.log(`HSL >>>${obj.name} ${temp_hsl.h.toFixed(2)} ${mat_hsl.s.toFixed(2)} ${mat_hsl.l.toFixed(2)}`);
+	obj.material.color = new THREE.Color(col.r/255.0,col.g/255.0,col.b/255.0);
 }
 
 function update_color_lightness(params){
 	const obj = scene.getObjectByName(params.name);
 	let mat_hsl={};obj.material.color.getHSL(mat_hsl);
-	obj.material.color.setHSL(mat_hsl.h,mat_hsl.s,params.color_lightness);
+	const lightness = params.color_lightness * 0.6 + 0.2;
+	obj.material.color.setHSL(mat_hsl.h,mat_hsl.s,lightness);
 	//console.log(`light>>>${obj.name} ${mat_hsl.h.toFixed(2)} ${mat_hsl.s.toFixed(2)} ${params.color_lightness.toFixed(2)}`);
+}
+
+function update_color_hsl(params){
+	const obj = scene.getObjectByName(params.name);
+	obj.material.color.setHSL(params.h,params.s,params.l);
 }
 
 function update_color_ratio(params){
@@ -624,6 +625,9 @@ function onParamUpdate(e){
 	}
 	if(typeof(params.color_lightness) != "undefined"){
 		update_color_lightness(params);
+	}
+	if(typeof(params.h) != "undefined"){
+		update_color_hsl(params);
 	}
 	if(typeof(params.emissive) != "undefined"){
 		update_emissive(params);
