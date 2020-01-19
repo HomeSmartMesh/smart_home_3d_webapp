@@ -66,25 +66,23 @@ function create_camera(gltf){
 	var container = document.getElementById('viewer');
 	var w = container.clientWidth;
 	var h = container.clientHeight;
-	const scene_cam = gltf.scene.getObjectByName("Camera");
+	const scene_cam = gltf.scene.getObjectByName("MainCamera");
 	if(typeof(scene_cam) != "undefined"){
 		const gltf_cam = gltf.cameras[0];
 		if(gltf_cam.type == "PerspectiveCamera"){
 			//issue assigning the camera does not succeed, so mapping params on creation
-			res_cam = new THREE.PerspectiveCamera( gltf_cam.fov, w / h, gltf_cam.near, gltf_cam.far );
-			//console.log(`three_app> create_camera()`);
+			res_cam = new THREE.PerspectiveCamera( 45, w / h, gltf_cam.near, gltf_cam.far );
+			console.log(`three_app> create_camera() '${res_cam.name}' with fov: ${res_cam.fov}`);
 			res_cam.position.copy(scene_cam.position);
 			res_cam.rotation.copy(scene_cam.rotation);
 		}
 	}
 
 	if(typeof(res_cam) == "undefined"){
-		res_cam = new THREE.PerspectiveCamera( cam.fov, w / h, 0.01, 50 );
-		//console.log(`three_app> create_camera()`);
+		res_cam = new THREE.PerspectiveCamera( 45, w / h, 0.01, 50 );
+		console.log(`three_app> create_camera() Fallback camera`);
 		//console.log(cam.position);
-		res_cam.position.setX(0);
-		res_cam.position.setY(5);
-		res_cam.position.setz(5);
+		res_cam.position.set(0,5,5);
 	}
 
 	return res_cam;

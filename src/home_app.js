@@ -28,6 +28,7 @@ let hue_lights_on_startup_reached = false;
 let hue_three_list_reached = false;
 
 function init(){
+	
 	three.init(on_load,config.glTF_model);
 
 	window.addEventListener( 'mesh_mouse_enter', onMeshMouseEnter, false );

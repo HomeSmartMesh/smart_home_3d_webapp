@@ -278,19 +278,20 @@
             "name" : "Scene",
             "nodes" : [
                 1,
+                2,
                 3,
-                4,
-                5,
+                15,
                 17,
-                19,
-                29,
-                36,
-                52,
-                65,
-                68,
-                71,
-                74,
-                77,
+                27,
+                34,
+                50,
+                63,
+                66,
+                69,
+                72,
+                75,
+                78,
+                79,
                 80,
                 81,
                 82,
@@ -302,39 +303,12 @@
                 88,
                 89,
                 90,
-                91,
-                92
+                92,
+                94
             ]
         }
     ],
     "nodes" : [
-        {
-            "camera" : 0,
-            "name" : "Camera_Orientation",
-            "rotation" : [
-                -0.7071067690849304,
-                0,
-                0,
-                0.7071067690849304
-            ]
-        },
-        {
-            "children" : [
-                0
-            ],
-            "name" : "Camera",
-            "rotation" : [
-                0.4366999864578247,
-                0.008476975373923779,
-                -0.004115242976695299,
-                0.8995578289031982
-            ],
-            "translation" : [
-                -0.7210190296173096,
-                9.153792381286621,
-                9.523988723754883
-            ]
-        },
         {
             "extras" : {
                 "type" : "wall"
@@ -344,7 +318,7 @@
         },
         {
             "children" : [
-                2
+                0
             ],
             "name" : "home building",
             "rotation" : [
@@ -510,6 +484,8 @@
         },
         {
             "children" : [
+                4,
+                5,
                 6,
                 7,
                 8,
@@ -518,9 +494,7 @@
                 11,
                 12,
                 13,
-                14,
-                15,
-                16
+                14
             ],
             "name" : "rooms floor",
             "rotation" : [
@@ -556,7 +530,7 @@
         },
         {
             "children" : [
-                18
+                16
             ],
             "name" : "Sun",
             "translation" : [
@@ -581,7 +555,7 @@
         },
         {
             "children" : [
-                20
+                18
             ],
             "name" : "Malm Light Frame",
             "scale" : [
@@ -592,7 +566,7 @@
         },
         {
             "children" : [
-                21
+                19
             ],
             "extras" : {
                 "hue" : "Bed Malm",
@@ -628,7 +602,7 @@
         },
         {
             "children" : [
-                23
+                21
             ],
             "name" : "N Night Light Frame",
             "scale" : [
@@ -639,7 +613,7 @@
         },
         {
             "children" : [
-                24
+                22
             ],
             "extras" : {
                 "hue" : "Bed N",
@@ -675,7 +649,7 @@
         },
         {
             "children" : [
-                26
+                24
             ],
             "name" : "W Night Light Frame",
             "scale" : [
@@ -686,7 +660,7 @@
         },
         {
             "children" : [
-                27
+                25
             ],
             "extras" : {
                 "hue" : "Bed W",
@@ -708,9 +682,9 @@
         },
         {
             "children" : [
-                22,
-                25,
-                28
+                20,
+                23,
+                26
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -746,7 +720,7 @@
         },
         {
             "children" : [
-                30
+                28
             ],
             "name" : "Hallway Light 1",
             "scale" : [
@@ -757,7 +731,7 @@
         },
         {
             "children" : [
-                31
+                29
             ],
             "extras" : {
                 "hue" : "Entrance White 1",
@@ -794,7 +768,7 @@
         },
         {
             "children" : [
-                33
+                31
             ],
             "name" : "Hallway Light 2",
             "scale" : [
@@ -805,7 +779,7 @@
         },
         {
             "children" : [
-                34
+                32
             ],
             "extras" : {
                 "hue" : "Entrance White 2",
@@ -828,8 +802,8 @@
         },
         {
             "children" : [
-                32,
-                35
+                30,
+                33
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -865,7 +839,7 @@
         },
         {
             "children" : [
-                37
+                35
             ],
             "extras" : {
                 "max" : 10
@@ -879,7 +853,7 @@
         },
         {
             "children" : [
-                38
+                36
             ],
             "extras" : {
                 "hue" : "LivingTop1",
@@ -915,7 +889,7 @@
         },
         {
             "children" : [
-                40
+                38
             ],
             "name" : "LivingTop_Spot2",
             "scale" : [
@@ -926,7 +900,7 @@
         },
         {
             "children" : [
-                41
+                39
             ],
             "extras" : {
                 "hue" : "LivingTop2",
@@ -962,7 +936,7 @@
         },
         {
             "children" : [
-                43
+                41
             ],
             "name" : "LivingTop_Spot3",
             "scale" : [
@@ -973,7 +947,7 @@
         },
         {
             "children" : [
-                44
+                42
             ],
             "extras" : {
                 "hue" : "LivingTop3",
@@ -1009,7 +983,7 @@
         },
         {
             "children" : [
-                46
+                44
             ],
             "name" : "LivingTop_Spot4",
             "scale" : [
@@ -1020,7 +994,7 @@
         },
         {
             "children" : [
-                47
+                45
             ],
             "extras" : {
                 "hue" : "LivingTop4",
@@ -1056,7 +1030,7 @@
         },
         {
             "children" : [
-                49
+                47
             ],
             "name" : "LivingTop_Spot5",
             "scale" : [
@@ -1067,7 +1041,7 @@
         },
         {
             "children" : [
-                50
+                48
             ],
             "extras" : {
                 "hue" : "LivingTop5",
@@ -1089,11 +1063,11 @@
         },
         {
             "children" : [
-                39,
-                42,
-                45,
-                48,
-                51
+                37,
+                40,
+                43,
+                46,
+                49
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -1129,7 +1103,7 @@
         },
         {
             "children" : [
-                53
+                51
             ],
             "name" : "malms 1 Light",
             "scale" : [
@@ -1140,7 +1114,7 @@
         },
         {
             "children" : [
-                54
+                52
             ],
             "extras" : {
                 "hue" : "malms 1",
@@ -1176,7 +1150,7 @@
         },
         {
             "children" : [
-                56
+                54
             ],
             "name" : "malms 2 Light",
             "scale" : [
@@ -1187,7 +1161,7 @@
         },
         {
             "children" : [
-                57
+                55
             ],
             "extras" : {
                 "hue" : "malms 2",
@@ -1223,7 +1197,7 @@
         },
         {
             "children" : [
-                59
+                57
             ],
             "name" : "malms 3 Light",
             "scale" : [
@@ -1234,7 +1208,7 @@
         },
         {
             "children" : [
-                60
+                58
             ],
             "extras" : {
                 "hue" : "malms 3",
@@ -1270,7 +1244,7 @@
         },
         {
             "children" : [
-                62
+                60
             ],
             "extras" : {
                 "max" : 10
@@ -1284,7 +1258,7 @@
         },
         {
             "children" : [
-                63
+                61
             ],
             "extras" : {
                 "hue" : "malms 4",
@@ -1306,10 +1280,10 @@
         },
         {
             "children" : [
-                55,
-                58,
-                61,
-                64
+                53,
+                56,
+                59,
+                62
             ],
             "extras" : {
                 "type" : "lightgroup",
@@ -1345,7 +1319,7 @@
         },
         {
             "children" : [
-                66
+                64
             ],
             "name" : "Bathroom Light1",
             "scale" : [
@@ -1361,7 +1335,7 @@
         },
         {
             "children" : [
-                67
+                65
             ],
             "extras" : {
                 "mouseEvent" : "true",
@@ -1397,7 +1371,7 @@
         },
         {
             "children" : [
-                69
+                67
             ],
             "name" : "Corridor Light Frame",
             "scale" : [
@@ -1408,7 +1382,7 @@
         },
         {
             "children" : [
-                70
+                68
             ],
             "extras" : {
                 "mutateColor" : "A49A29",
@@ -1444,7 +1418,7 @@
         },
         {
             "children" : [
-                72
+                70
             ],
             "name" : "Kitchen Light",
             "scale" : [
@@ -1460,7 +1434,7 @@
         },
         {
             "children" : [
-                73
+                71
             ],
             "extras" : {
                 "mouseEvent" : "true",
@@ -1496,7 +1470,7 @@
         },
         {
             "children" : [
-                75
+                73
             ],
             "extras" : {
                 "maxLight" : 10
@@ -1515,7 +1489,7 @@
         },
         {
             "children" : [
-                76
+                74
             ],
             "extras" : {
                 "hue" : "Office main",
@@ -1547,7 +1521,7 @@
         },
         {
             "children" : [
-                78
+                76
             ],
             "name" : "Toilet Light Frame",
             "scale" : [
@@ -1558,7 +1532,7 @@
         },
         {
             "children" : [
-                79
+                77
             ],
             "extras" : {
                 "mouseEvent" : "true",
@@ -1703,9 +1677,72 @@
         },
         {
             "name" : "Balcony"
+        },
+        {
+            "camera" : 0,
+            "name" : "Office Cam_Orientation",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                91
+            ],
+            "name" : "Office Cam",
+            "rotation" : [
+                0.5226551294326782,
+                -0.1046295240521431,
+                0.06482259929180145,
+                0.8436126112937927
+            ],
+            "translation" : [
+                2.8176522254943848,
+                4.1330742835998535,
+                6.727717399597168
+            ]
+        },
+        {
+            "camera" : 1,
+            "name" : "MainCamera_Orientation",
+            "rotation" : [
+                -0.7071067690849304,
+                0,
+                0,
+                0.7071067690849304
+            ]
+        },
+        {
+            "children" : [
+                93
+            ],
+            "name" : "MainCamera",
+            "rotation" : [
+                0.4366999864578247,
+                0.008476975373923779,
+                -0.004115242976695299,
+                0.8995578289031982
+            ],
+            "translation" : [
+                -0.7210190296173096,
+                9.153792381286621,
+                9.523988723754883
+            ]
         }
     ],
     "cameras" : [
+        {
+            "name" : "Camera",
+            "perspective" : {
+                "yfov" : 0.39959652046304894,
+                "zfar" : 1000,
+                "znear" : 0.10000000149011612
+            },
+            "type" : "perspective"
+        },
         {
             "name" : "Camera.001",
             "perspective" : {
