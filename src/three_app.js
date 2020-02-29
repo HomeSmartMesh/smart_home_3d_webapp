@@ -37,6 +37,10 @@ var is_stats;
 var stats1,stats2,stats3;
 var xPanel;
 
+function defined(varName){
+	return (typeof(varName) != "undefined")
+}
+
 function init(on_load,glTF_filename){
 
 	console.log("three_app> init()");
@@ -637,7 +641,9 @@ function onParamUpdate(e){
 		update_outline(params);
 	}
 	if(typeof(params.visible) != "undefined"){
-		scene.getObjectByName(params.name).visible = params.visible;
+		if(defined(scene)){
+			scene.getObjectByName(params.name).visible = params.visible;
+		}
 	}
 	//check_update_anim(params);
 }

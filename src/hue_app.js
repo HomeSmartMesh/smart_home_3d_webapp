@@ -37,7 +37,8 @@ function init(){
     }
 
     if(hue_registred){
-        discover();
+        //discover();
+        start_using_bridge("10.0.0.38");
     }
             
     window.addEventListener( 'mesh_click', onMeshClick, false );
@@ -168,6 +169,16 @@ function create_user(bridge_ip){
     });
 }
 
+function start_using_bridge(bridge_ip){
+    let username = localStorage.getItem("username");
+    console.log(`using username from browser's local storage`);
+    let bridge = hue.bridge(bridge_ip);
+    user = bridge.user(username);
+    hue_registred = true;
+    get_lights();
+    get_groups();
+}
+
 function discover(){
     hue.discover().then(bridges => {
         if(bridges.length === 0) {
@@ -182,13 +193,7 @@ function discover(){
                 //create_server_bound_user(bridge_ip);
             }
             else{
-                let username = localStorage.getItem("username");
-                console.log(`using username from browser's local storage`);
-                let bridge = hue.bridge(bridge_ip);
-                user = bridge.user(username);
-                hue_registred = true;
-                get_lights();
-                get_groups();
+                start_using_bridge(bridge_ip);
             }
         }
         else{
