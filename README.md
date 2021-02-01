@@ -1,3 +1,14 @@
+# Discord invite
+get support, give feedback or simply chat to brainstorm about ideas
+
+<img src="./media/discord.png" href="https://discord.gg/bJcaMar9" width="100">
+
+[smart-home-3d](https://discord.gg/bJcaMar9)
+
+# Website documentation
+[Home 3D doc](https://www.homesmartmesh.com/docs/applications/home3d/)
+* documentation with interactive embeds
+
 # First time usage
 1. host this project on your local raspberry pi or see ['Local host vs Remote host' section](#Local-host-vs-remote-host) on how to use the live demo
 2. create your own glTF model from blender (optional)
