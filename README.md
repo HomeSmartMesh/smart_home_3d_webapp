@@ -3,7 +3,8 @@ get support, give feedback or simply chat to brainstorm about ideas
 
 <img src="./media/discord.png" width="100">
 
-[smart-home-3d ( https://discord.gg/bJcaMar9 )](https://discord.gg/bJcaMar9)
+[smart-home-3d ( https://discord.gg/4jcteVn9kP )](https://discord.gg/4jcteVn9kP)
+
 
 # Website documentation
 [Home 3D doc](https://www.homesmartmesh.com/docs/applications/home3d/)
