@@ -21,12 +21,15 @@ export default
         "enabled_by_default":true
     },
     "hue":{
+        "ip":"10.0.0.38",
         "enabled":true,
         "slider_timer_ms":100,
         "poll_interval_ms":2000,
         "test_hsl":false
     },
     "mqtt":{
+        "host":"10.0.0.42",
+        "port":1884,
         "enabled":true
     },
     "effects":{

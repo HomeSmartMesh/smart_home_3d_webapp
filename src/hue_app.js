@@ -26,19 +26,26 @@ let dimm = {
     active:false
 };
 
-function init(){
+async function init(){
 
-    if (localStorage.getItem("username") === null){
-        console.warn(`hue_app> hue not registred, click on hue gateway to start`);
-    }
-    else{
-        console.log(`hue_app> init() hue registred`);
-        hue_registred = true;
-    }
+    try {
+            let response = await fetch("../user.json")
+            let secret = await response.json()
+            localStorage.setItem("username",secret.username);
+            hue_registred = true;
+        } catch(err) {
+            if (localStorage.getItem("username") === null){
+                console.warn(`hue_app> hue not registred, click on hue gateway to start`);
+            }
+            else{
+                console.log(`hue_app> init() hue registred`);
+                hue_registred = true;
+            }
+        }
 
     if(hue_registred){
         //discover();
-        start_using_bridge("10.0.0.38");
+        start_using_bridge(config.hue.ip);
     }
             
     window.addEventListener( 'mesh_click', onMeshClick, false );
@@ -281,7 +288,6 @@ function extract_hue_params(data,init={}){
     });
     return resData;
 }
-
 
 function hueLightDimm(){
     const name = dimm["name"];

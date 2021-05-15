@@ -8,11 +8,9 @@
  * - three_list
  */
 
+import config from "../config.js";
 
 var client,textBox;
-
-var mqtt_host = "10.0.0.42";
-var mqtt_port = 1884;
 
 var mqtt_in_use = false;
 var mqtt_connected = false;
@@ -72,7 +70,7 @@ function onMessageArrived(message) {
 function mqtt_connect(){
     // Create a client instance
     const client_name = window.location.hostname + '#3d_webapp';
-    client = new Paho.MQTT.Client(mqtt_host, Number(mqtt_port), client_name);
+    client = new Paho.MQTT.Client(config.mqtt.host, Number(config.mqtt.port), client_name);
     // set callback handlers
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
