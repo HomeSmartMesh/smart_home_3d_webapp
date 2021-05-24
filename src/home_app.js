@@ -178,6 +178,13 @@ function onMqttMessage(e){
 			send_custom_event('three_param',{name:obj_name,color_ratio:ratio});
 		}
 	}
+	if(obj.userData.type == "uwb"){
+		const position = e.detail.payload.position;
+		if(typeof(position) != "undefined"){
+			//console.log(`home_app> uwb : ${obj_name} ratio at ${position.x.toFixed(2)}`);
+			send_custom_event('three_param',{name:obj_name,position:position});
+		}
+	}
 }
 
 export{init};

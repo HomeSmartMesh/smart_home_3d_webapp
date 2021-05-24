@@ -135,7 +135,7 @@ function add_view_orbit(camera,renderer){
 
 function add_ambient_light(){
 
-	var hlight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+	var hlight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 2 );
 	scene.add( hlight );
 
 	//var rectLight = new THREE.RectAreaLight( 0xffffff, 10,  1, 1 );
@@ -643,6 +643,15 @@ function onParamUpdate(e){
 	if(typeof(params.visible) != "undefined"){
 		if(defined(scene)){
 			scene.getObjectByName(params.name).visible = params.visible;
+		}
+	}
+	if(typeof(params.position) != "undefined"){
+		if(defined(scene)){
+			const p = params.position;
+			scene.getObjectByName(params.name).position.set(
+				//-p.x+6,0,1
+				-p.x+6,1-p.z,p.y
+				);
 		}
 	}
 	//check_update_anim(params);
