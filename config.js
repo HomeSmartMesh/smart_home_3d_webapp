@@ -4,7 +4,7 @@ export default
         "background":"0x4f6f8f"
     },
     "glb_model":"./3d_models/home.glb",
-    "glTF_model":"./3d_models/home.gltf",
+    "glTF_model":"./3d_models/home_s.gltf",
     "mouse":{
         click_hold_delay_ms : 600
     },
@@ -28,8 +28,8 @@ export default
         "test_hsl":false
     },
     "mqtt":{
-        "host":"10.0.0.42",
-        "port":1884,
+        "host":"10.0.0.34",
+        "port":15675,
         "enabled":true
     },
     "effects":{
