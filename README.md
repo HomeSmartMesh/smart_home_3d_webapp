@@ -1,7 +1,7 @@
 # Discourse forum
 get support, give feedback or simply chat to brainstorm about ideas on the forum
 
-<img src="./media/discourse.svg" width="100" href="https://homesmartmesh.discourse.group/c/webapps/14">
+[![discourse](./media/discourse.svg)](https://homesmartmesh.discourse.group/c/webapps/14)
 
 [smart-home-3d ( https://homesmartmesh.discourse.group/c/webapps/14 )](https://homesmartmesh.discourse.group/c/webapps/14)
 
