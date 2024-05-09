@@ -3,11 +3,6 @@ A Forum right here on github special for this repo :
 
 https://github.com/HomeSmartMesh/smart_home_3d_webapp/discussions
 
-
-# Website documentation
-[Home 3D doc](https://www.homesmartmesh.com/docs/applications/home3d/)
-* documentation with interactive embeds
-
 # First time usage
 1. host this project on your local raspberry pi or see ['Local host vs Remote host' section](#Local-host-vs-remote-host) on how to use the live demo
 2. create your own glTF model from blender (optional)
