@@ -3,6 +3,11 @@ A Forum right here on github special for this repo :
 
 https://github.com/HomeSmartMesh/smart_home_3d_webapp/discussions
 
+# Home Automation website
+This project is part of Home Smart Mesh, a developer guide about sensors, microcontrollers, scripting and services for home automation
+
+https://www.homesmartmesh.com/
+
 # First time usage
 1. host this project on your local raspberry pi or see ['Local host vs Remote host' section](#Local-host-vs-remote-host) on how to use the live demo
 2. create your own glTF model from blender (optional)
